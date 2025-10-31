@@ -16,6 +16,7 @@
   ],
   "exports": {
     "./package.json": "./package.json",
+    "./openapi": "./openapi/openapi.json",
     ".": {
       "import": "./dist/index.js",
       "default": "./dist/index.cjs"
