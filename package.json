@@ -12,7 +12,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "openapi"
   ],
   "exports": {
     "./package.json": "./package.json",
