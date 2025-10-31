@@ -1,7 +1,7 @@
 import { writeFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { openApiDocument } from '@/src/libs/openApi';
+import { openApiDocument } from '@/src/openApi';
 
 const main = async () => {
   // eslint-disable-next-line no-underscore-dangle
