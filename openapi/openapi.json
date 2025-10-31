@@ -1,0 +1,2392 @@
+{
+  "openapi": "3.0.2",
+  "paths": {
+    "/books": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "date"
+              ]
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "name": "featured",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "creator": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subject": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subjectCode": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "DAISY_V3",
+                              "EPUB3"
+                            ]
+                          },
+                          "storagePath": {
+                            "type": "string"
+                          },
+                          "coverImage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "durationSeconds": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "contentHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "featured": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "hidden": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "views": {
+                            "default": 0,
+                            "type": "number"
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "creator",
+                          "subject",
+                          "subjectCode",
+                          "description",
+                          "publisher",
+                          "date",
+                          "source",
+                          "language",
+                          "format",
+                          "storagePath",
+                          "coverImage",
+                          "durationSeconds",
+                          "contentHash",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "creator": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "subject": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "subjectCode": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "publisher": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "date": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "source": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "language": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "DAISY_V3",
+                      "EPUB3"
+                    ]
+                  },
+                  "storagePath": {
+                    "type": "string"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "durationSeconds": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "contentHash": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "featured": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "hidden": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "views": {
+                    "default": 0,
+                    "type": "number"
+                  },
+                  "tags": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "title",
+                  "creator",
+                  "subject",
+                  "subjectCode",
+                  "description",
+                  "publisher",
+                  "date",
+                  "source",
+                  "language",
+                  "format",
+                  "storagePath",
+                  "coverImage",
+                  "durationSeconds",
+                  "contentHash"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "creator": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "subject": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "subjectCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "date": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "language": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "DAISY_V3",
+                        "EPUB3"
+                      ]
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "coverImage": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "durationSeconds": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "contentHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "featured": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "hidden": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "views": {
+                      "default": 0,
+                      "type": "number"
+                    },
+                    "tags": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "creator",
+                    "subject",
+                    "subjectCode",
+                    "description",
+                    "publisher",
+                    "date",
+                    "source",
+                    "language",
+                    "format",
+                    "storagePath",
+                    "coverImage",
+                    "durationSeconds",
+                    "contentHash",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/featured": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "date"
+              ]
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "creator": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subject": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subjectCode": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "DAISY_V3",
+                              "EPUB3"
+                            ]
+                          },
+                          "storagePath": {
+                            "type": "string"
+                          },
+                          "coverImage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "durationSeconds": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "contentHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "featured": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "hidden": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "views": {
+                            "default": 0,
+                            "type": "number"
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "creator",
+                          "subject",
+                          "subjectCode",
+                          "description",
+                          "publisher",
+                          "date",
+                          "source",
+                          "language",
+                          "format",
+                          "storagePath",
+                          "coverImage",
+                          "durationSeconds",
+                          "contentHash",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/search": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "creator": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subject": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subjectCode": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "DAISY_V3",
+                              "EPUB3"
+                            ]
+                          },
+                          "storagePath": {
+                            "type": "string"
+                          },
+                          "coverImage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "durationSeconds": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "contentHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "featured": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "hidden": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "views": {
+                            "default": 0,
+                            "type": "number"
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "creator",
+                          "subject",
+                          "subjectCode",
+                          "description",
+                          "publisher",
+                          "date",
+                          "source",
+                          "language",
+                          "format",
+                          "storagePath",
+                          "coverImage",
+                          "durationSeconds",
+                          "contentHash",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{id}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "creator": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "subject": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "subjectCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "date": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "language": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "DAISY_V3",
+                        "EPUB3"
+                      ]
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "coverImage": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "durationSeconds": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "contentHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "featured": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "hidden": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "views": {
+                      "default": 0,
+                      "type": "number"
+                    },
+                    "tags": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "creator",
+                    "subject",
+                    "subjectCode",
+                    "description",
+                    "publisher",
+                    "date",
+                    "source",
+                    "language",
+                    "format",
+                    "storagePath",
+                    "coverImage",
+                    "durationSeconds",
+                    "contentHash",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/language/{language}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "creator": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subject": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subjectCode": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "DAISY_V3",
+                              "EPUB3"
+                            ]
+                          },
+                          "storagePath": {
+                            "type": "string"
+                          },
+                          "coverImage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "durationSeconds": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "contentHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "featured": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "hidden": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "views": {
+                            "default": 0,
+                            "type": "number"
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "creator",
+                          "subject",
+                          "subjectCode",
+                          "description",
+                          "publisher",
+                          "date",
+                          "source",
+                          "language",
+                          "format",
+                          "storagePath",
+                          "coverImage",
+                          "durationSeconds",
+                          "contentHash",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/subject/{subjectSlug}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "subjectSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "date"
+              ]
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "creator": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subject": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subjectCode": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "DAISY_V3",
+                              "EPUB3"
+                            ]
+                          },
+                          "storagePath": {
+                            "type": "string"
+                          },
+                          "coverImage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "durationSeconds": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "contentHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "featured": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "hidden": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "views": {
+                            "default": 0,
+                            "type": "number"
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "creator",
+                          "subject",
+                          "subjectCode",
+                          "description",
+                          "publisher",
+                          "date",
+                          "source",
+                          "language",
+                          "format",
+                          "storagePath",
+                          "coverImage",
+                          "durationSeconds",
+                          "contentHash",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "post": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "nullable": true
+                  },
+                  "lastAccess": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "lastAccess"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 50
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "nullable": true
+                    },
+                    "lastAccess": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "lastAccess",
+                    "createdAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 50
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "nullable": true
+                    },
+                    "lastAccess": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "lastAccess",
+                    "createdAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/recent/{accountId}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "creator": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "subject": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "subjectCode": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "description": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "publisher": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "date": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "source": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "language": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "format": {
+                        "type": "string",
+                        "enum": [
+                          "DAISY_V3",
+                          "EPUB3"
+                        ]
+                      },
+                      "storagePath": {
+                        "type": "string"
+                      },
+                      "coverImage": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "durationSeconds": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "contentHash": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "featured": {
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "hidden": {
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "views": {
+                        "default": 0,
+                        "type": "number"
+                      },
+                      "tags": {
+                        "default": [],
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "creator",
+                      "subject",
+                      "subjectCode",
+                      "description",
+                      "publisher",
+                      "date",
+                      "source",
+                      "language",
+                      "format",
+                      "storagePath",
+                      "coverImage",
+                      "durationSeconds",
+                      "contentHash",
+                      "createdAt",
+                      "updatedAt"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/inprogress/{accountId}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "creator": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subject": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "subjectCode": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "DAISY_V3",
+                              "EPUB3"
+                            ]
+                          },
+                          "storagePath": {
+                            "type": "string"
+                          },
+                          "coverImage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "durationSeconds": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "contentHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "featured": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "hidden": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "views": {
+                            "default": 0,
+                            "type": "number"
+                          },
+                          "tags": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "creator",
+                          "subject",
+                          "subjectCode",
+                          "description",
+                          "publisher",
+                          "date",
+                          "source",
+                          "language",
+                          "format",
+                          "storagePath",
+                          "coverImage",
+                          "durationSeconds",
+                          "contentHash",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/{id}": {
+      "patch": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accountId": {
+                    "type": "string"
+                  },
+                  "bookId": {
+                    "type": "string"
+                  },
+                  "currentTimeSeconds": {
+                    "type": "number"
+                  },
+                  "currentPosition": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "isCompleted": {
+                    "type": "boolean"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "accountId",
+                  "bookId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "accountId": {
+                      "type": "string"
+                    },
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "currentTimeSeconds": {
+                      "type": "number"
+                    },
+                    "currentPosition": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "isCompleted": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "accountId",
+                    "bookId",
+                    "currentTimeSeconds",
+                    "isCompleted",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marks": {
+      "post": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "accountId": {
+                    "type": "string"
+                  },
+                  "bookId": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "highlight",
+                      "note",
+                      "bookmark"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "selectedText": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "contextBefore": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "contextAfter": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "chapterId": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "audioTimeSeconds": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "textPosition": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "color": {
+                    "type": "string",
+                    "pattern": "^#[0-9A-Fa-f]{6}$",
+                    "nullable": true
+                  },
+                  "content": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "isOrphan": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "accountId",
+                  "bookId",
+                  "type",
+                  "title",
+                  "selectedText",
+                  "contextBefore",
+                  "contextAfter",
+                  "chapterId",
+                  "audioTimeSeconds",
+                  "textPosition",
+                  "color",
+                  "content"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "accountId": {
+                      "type": "string"
+                    },
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "highlight",
+                        "note",
+                        "bookmark"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "selectedText": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "contextBefore": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "contextAfter": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "chapterId": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "audioTimeSeconds": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "textPosition": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "color": {
+                      "type": "string",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "nullable": true
+                    },
+                    "content": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "isOrphan": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "accountId",
+                    "bookId",
+                    "type",
+                    "title",
+                    "selectedText",
+                    "contextBefore",
+                    "contextAfter",
+                    "chapterId",
+                    "audioTimeSeconds",
+                    "textPosition",
+                    "color",
+                    "content",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marks/{accountId}/{bookId}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "bookId": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "highlight",
+                          "note",
+                          "bookmark"
+                        ]
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "selectedText": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "contextBefore": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "contextAfter": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "chapterId": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "audioTimeSeconds": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "textPosition": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "color": {
+                        "type": "string",
+                        "pattern": "^#[0-9A-Fa-f]{6}$",
+                        "nullable": true
+                      },
+                      "content": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "isOrphan": {
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "accountId",
+                      "bookId",
+                      "type",
+                      "title",
+                      "selectedText",
+                      "contextBefore",
+                      "contextAfter",
+                      "chapterId",
+                      "audioTimeSeconds",
+                      "textPosition",
+                      "color",
+                      "content",
+                      "createdAt",
+                      "updatedAt"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{bookId}/files": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "bookTitle": {
+                      "type": "string"
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "totalFiles": {
+                      "type": "integer"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          },
+                          "extension": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "fileName",
+                          "extension",
+                          "contentType"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "bookTitle",
+                    "storagePath",
+                    "totalFiles",
+                    "files"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{bookId}/files/{fileName}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "schema": {
+              "default": "utf-8",
+              "type": "string",
+              "enum": [
+                "utf-8",
+                "base64"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "contentType": {
+                      "type": "string"
+                    },
+                    "encoding": {
+                      "type": "string",
+                      "enum": [
+                        "utf-8",
+                        "base64"
+                      ]
+                    },
+                    "size": {
+                      "type": "integer"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "fileName",
+                    "contentType",
+                    "encoding",
+                    "size",
+                    "content"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{bookId}/audio/{fileName}/signed-url": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiresIn",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/signed-url": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fileKey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiresIn",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "DAISY API",
+    "version": "1.0.0"
+  }
+}
