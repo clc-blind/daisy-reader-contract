@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.1...v1.0.2) (2025-10-31)
+
+
+### Bug Fixes
+
+* update exports ([3a619bd](https://github.com/clc-blind/daisy-reader-contract/commit/3a619bd7be24405e9e98ea7cce0c4f0a7004512c))
+
 ## [1.0.1](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.0...v1.0.1) (2025-10-31)
 
 
