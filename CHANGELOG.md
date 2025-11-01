@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.5](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.4...v1.0.5) (2025-11-01)
+
+
+### Bug Fixes
+
+* setup auth routes ([505933e](https://github.com/clc-blind/daisy-reader-contract/commit/505933e09b5768c7007caff0d0e93e8f76caabfe))
+* setup auth routes ([b3d79b9](https://github.com/clc-blind/daisy-reader-contract/commit/b3d79b9760e44ffd314f62562493ee184465296e))
+* update books & s3 operations ([bdaf9e8](https://github.com/clc-blind/daisy-reader-contract/commit/bdaf9e8be159b328995db83b5649712c425f44d9))
+
 ## [1.0.4](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.3...v1.0.4) (2025-10-31)
 
 
