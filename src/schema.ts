@@ -76,14 +76,6 @@ export const FileInfoSchema = z.object({
   contentType: z.string(), // MIME type
 });
 
-export const ListBookFilesResponseSchema = z.object({
-  bookId: z.string(),
-  bookTitle: z.string(),
-  storagePath: z.string(),
-  totalFiles: z.number().int(),
-  files: FileInfoSchema.array(),
-});
-
 export const FileContentSchema = z.object({
   bookId: z.string(),
   fileName: z.string(),
@@ -93,10 +85,23 @@ export const FileContentSchema = z.object({
   content: z.string(), // text (utf-8) or base64 string
 });
 
+export const S3UploadUrlRequestSchema = z.object({
+  fileName: z.string(),
+  contentType: z.string(),
+  fileSize: z.number().int().optional(),
+});
+
+export const S3UploadUrlResponseSchema = z.object({
+  uploadUrl: z.string().url(),
+  fileKey: z.string(),
+  expiresIn: z.number().int(),
+});
+
 export type Account = z.infer<typeof AccountSchema>;
 export type Book = z.infer<typeof BookSchema>;
 export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
 export type Mark = z.infer<typeof MarkSchema>;
 export type FileInfo = z.infer<typeof FileInfoSchema>;
-export type ListBookFilesResponse = z.infer<typeof ListBookFilesResponseSchema>;
 export type FileContent = z.infer<typeof FileContentSchema>;
+export type S3UploadUrlRequest = z.infer<typeof S3UploadUrlRequestSchema>;
+export type S3UploadUrlResponse = z.infer<typeof S3UploadUrlResponseSchema>;

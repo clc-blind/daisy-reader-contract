@@ -3,6 +3,7 @@
   "paths": {
     "/books": {
       "get": {
+        "summary": "Get all books with optional filtering and pagination",
         "tags": [],
         "parameters": [
           {
@@ -210,8 +211,18 @@
         }
       },
       "post": {
+        "summary": "Upload a new book",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Body",
           "content": {
@@ -440,6 +451,7 @@
     },
     "/books/featured": {
       "get": {
+        "summary": "Get featured books",
         "tags": [],
         "parameters": [
           {
@@ -620,6 +632,7 @@
     },
     "/books/search": {
       "get": {
+        "summary": "Search books by query string",
         "tags": [],
         "parameters": [
           {
@@ -787,6 +800,7 @@
     },
     "/books/{id}": {
       "get": {
+        "summary": "Get a book by ID",
         "tags": [],
         "parameters": [
           {
@@ -918,10 +932,281 @@
             }
           }
         }
+      },
+      "patch": {
+        "summary": "Edit a book",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "creator": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "subject": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "subjectCode": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "publisher": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "date": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "source": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "language": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "DAISY_V3",
+                      "EPUB3"
+                    ]
+                  },
+                  "storagePath": {
+                    "type": "string"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "durationSeconds": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "contentHash": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "featured": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "hidden": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "views": {
+                    "default": 0,
+                    "type": "number"
+                  },
+                  "tags": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "creator": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "subject": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "subjectCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "date": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "language": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "DAISY_V3",
+                        "EPUB3"
+                      ]
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "coverImage": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "durationSeconds": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "contentHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "featured": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "hidden": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "views": {
+                      "default": 0,
+                      "type": "number"
+                    },
+                    "tags": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "creator",
+                    "subject",
+                    "subjectCode",
+                    "description",
+                    "publisher",
+                    "date",
+                    "source",
+                    "language",
+                    "format",
+                    "storagePath",
+                    "coverImage",
+                    "durationSeconds",
+                    "contentHash",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a book",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
       }
     },
     "/books/language/{language}": {
       "get": {
+        "summary": "Get books by language",
         "tags": [],
         "parameters": [
           {
@@ -1088,6 +1373,7 @@
     },
     "/books/subject/{subjectSlug}": {
       "get": {
+        "summary": "Get books by subject",
         "tags": [],
         "parameters": [
           {
@@ -1276,6 +1562,7 @@
     },
     "/accounts": {
       "post": {
+        "summary": "Create a new account",
         "tags": [],
         "parameters": [],
         "requestBody": {
@@ -1355,6 +1642,7 @@
     },
     "/accounts/{id}": {
       "get": {
+        "summary": "Get an account by ID",
         "tags": [],
         "parameters": [
           {
@@ -1412,6 +1700,7 @@
     },
     "/progress/recent/{accountId}": {
       "get": {
+        "summary": "Get recently read books for an account",
         "tags": [],
         "parameters": [
           {
@@ -1558,6 +1847,7 @@
     },
     "/progress/inprogress/{accountId}": {
       "get": {
+        "summary": "Get in-progress books for an account",
         "tags": [],
         "parameters": [
           {
@@ -1724,11 +2014,20 @@
     },
     "/progress/{id}": {
       "patch": {
+        "summary": "Update reading progress",
         "tags": [],
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "required": true,
             "schema": {
               "type": "string"
@@ -1829,8 +2128,18 @@
     },
     "/marks": {
       "post": {
+        "summary": "Create a new mark (highlight, note)",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Body",
           "content": {
@@ -2015,6 +2324,7 @@
     },
     "/marks/{accountId}/{bookId}": {
       "get": {
+        "summary": "Get all marks for a book by an account",
         "tags": [],
         "parameters": [
           {
@@ -2137,6 +2447,7 @@
     },
     "/books/{bookId}/files": {
       "get": {
+        "summary": "List all files for a book",
         "tags": [],
         "parameters": [
           {
@@ -2211,6 +2522,7 @@
     },
     "/books/{bookId}/files/{fileName}": {
       "get": {
+        "summary": "Get file content for a book",
         "tags": [],
         "parameters": [
           {
@@ -2290,6 +2602,7 @@
     },
     "/books/{bookId}/audio/{fileName}/signed-url": {
       "get": {
+        "summary": "Get presigned URL for book audio file",
         "tags": [],
         "parameters": [
           {
@@ -2342,6 +2655,7 @@
     },
     "/files/signed-url": {
       "get": {
+        "summary": "Get presigned URL for downloading a file",
         "tags": [],
         "parameters": [
           {
@@ -2376,6 +2690,532 @@
                   },
                   "required": [
                     "url"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/upload-url": {
+      "post": {
+        "summary": "Get a presigned URL for uploading a file",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "contentType": {
+                    "type": "string"
+                  },
+                  "fileSize": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "fileName",
+                  "contentType"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploadUrl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "fileKey": {
+                      "type": "string"
+                    },
+                    "expiresIn": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "uploadUrl",
+                    "fileKey",
+                    "expiresIn"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/multipart/initiate": {
+      "post": {
+        "summary": "Initiate multipart upload for large files",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "contentType": {
+                    "type": "string"
+                  },
+                  "fileSize": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "fileName",
+                  "contentType",
+                  "fileSize"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploadId": {
+                      "type": "string"
+                    },
+                    "fileKey": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "uploadId",
+                    "fileKey"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/multipart/part-url": {
+      "post": {
+        "summary": "Get presigned URL for uploading a part",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uploadId": {
+                    "type": "string"
+                  },
+                  "fileKey": {
+                    "type": "string"
+                  },
+                  "partNumber": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10000
+                  }
+                },
+                "required": [
+                  "uploadId",
+                  "fileKey",
+                  "partNumber"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "partNumber": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "partNumber"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/multipart/complete": {
+      "post": {
+        "summary": "Complete multipart upload",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uploadId": {
+                    "type": "string"
+                  },
+                  "fileKey": {
+                    "type": "string"
+                  },
+                  "parts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "partNumber": {
+                          "type": "integer"
+                        },
+                        "etag": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "partNumber",
+                        "etag"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "uploadId",
+                  "fileKey",
+                  "parts"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fileKey": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "fileKey",
+                    "success"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/multipart/abort": {
+      "post": {
+        "summary": "Abort multipart upload",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uploadId": {
+                    "type": "string"
+                  },
+                  "fileKey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uploadId",
+                  "fileKey"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{fileKey}": {
+      "delete": {
+        "summary": "Delete a file",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fileKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{fileKey}/copy": {
+      "post": {
+        "summary": "Copy a file",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fileKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destinationKey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "destinationKey"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sourceKey": {
+                      "type": "string"
+                    },
+                    "destinationKey": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "sourceKey",
+                    "destinationKey",
+                    "success"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{fileKey}/rename": {
+      "post": {
+        "summary": "Rename a file",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fileKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newFileName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "newFileName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "oldKey": {
+                      "type": "string"
+                    },
+                    "newKey": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "oldKey",
+                    "newKey",
+                    "success"
                   ]
                 }
               }
