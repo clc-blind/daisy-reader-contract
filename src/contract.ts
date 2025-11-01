@@ -2,11 +2,17 @@ import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 import {
   AccountSchema,
+  AuthAccountSchema,
   BookSchema,
   FileContentSchema,
   FileInfoSchema,
+  LoginRequestSchema,
+  LoginResponseSchema,
   MarkSchema,
   ReadingProgressSchema,
+  RefreshTokenResponseSchema,
+  S3UploadUrlRequestSchema,
+  S3UploadUrlResponseSchema,
 } from '@/src/schema';
 
 const c = initContract();
@@ -29,6 +35,7 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
+    summary: 'Get all books with optional filtering and pagination',
   },
 
   getFeaturedBooks: {
@@ -43,6 +50,7 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
+    summary: 'Get featured books',
   },
 
   searchBooks: {
@@ -56,6 +64,7 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
+    summary: 'Search books by query string',
   },
 
   getBookById: {
@@ -64,6 +73,7 @@ export const appContract = c.router({
     responses: {
       200: BookSchema,
     },
+    summary: 'Get a book by ID',
   },
 
   getBooksByLanguage: {
@@ -76,6 +86,7 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
+    summary: 'Get books by language',
   },
 
   getBookBySubject: {
@@ -90,15 +101,50 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
+    summary: 'Get books by subject',
   },
 
   uploadBook: {
     method: 'POST',
     path: '/books',
+    headers: z.object({
+      authorization: z.string(),
+    }),
     body: BookSchema.omit({ id: true, createdAt: true, updatedAt: true }),
     responses: {
       201: BookSchema,
     },
+    summary: 'Upload a new book',
+  },
+
+  editBook: {
+    method: 'PATCH',
+    path: '/books/:id',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: BookSchema.omit({
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+    }).partial(),
+    responses: {
+      200: BookSchema,
+    },
+    summary: 'Edit a book',
+  },
+
+  deleteBook: {
+    method: 'DELETE',
+    path: '/books/:id',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.undefined(),
+    responses: {
+      204: z.undefined(),
+    },
+    summary: 'Delete a book',
   },
 
   // Accounts
@@ -109,6 +155,7 @@ export const appContract = c.router({
     responses: {
       201: AccountSchema,
     },
+    summary: 'Create a new account',
   },
 
   getAccountById: {
@@ -117,6 +164,7 @@ export const appContract = c.router({
     responses: {
       200: AccountSchema,
     },
+    summary: 'Get an account by ID',
   },
 
   // Reading progress
@@ -127,6 +175,7 @@ export const appContract = c.router({
     responses: {
       200: z.array(BookSchema),
     },
+    summary: 'Get recently read books for an account',
   },
 
   getInprogressBooks: {
@@ -139,11 +188,15 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
+    summary: 'Get in-progress books for an account',
   },
 
   updateReadingProgress: {
     method: 'PATCH',
     path: '/progress/:id',
+    headers: z.object({
+      authorization: z.string(),
+    }),
     body: ReadingProgressSchema.omit({
       id: true,
     }).partial({
@@ -158,16 +211,21 @@ export const appContract = c.router({
         currentPosition: true,
       }),
     },
+    summary: 'Update reading progress',
   },
 
   // Marks
   createMark: {
     method: 'POST',
     path: '/marks',
+    headers: z.object({
+      authorization: z.string(),
+    }),
     body: MarkSchema.omit({ createdAt: true, updatedAt: true }),
     responses: {
       201: MarkSchema,
     },
+    summary: 'Create a new mark (highlight, note)',
   },
 
   getMarksByBook: {
@@ -176,6 +234,7 @@ export const appContract = c.router({
     responses: {
       200: z.array(MarkSchema),
     },
+    summary: 'Get all marks for a book by an account',
   },
 
   listBookFiles: {
@@ -191,6 +250,7 @@ export const appContract = c.router({
         files: z.array(FileInfoSchema),
       }),
     },
+    summary: 'List all files for a book',
   },
 
   // Get file content for a given book/fileName
@@ -204,6 +264,7 @@ export const appContract = c.router({
     responses: {
       200: FileContentSchema,
     },
+    summary: 'Get file content for a book',
   },
 
   getBookAudioSignedUrl: {
@@ -216,6 +277,7 @@ export const appContract = c.router({
     responses: {
       200: z.object({ url: z.string().url() }),
     },
+    summary: 'Get presigned URL for book audio file',
   },
 
   getSignedGetUrl: {
@@ -228,5 +290,203 @@ export const appContract = c.router({
     responses: {
       200: z.object({ url: z.string().url() }),
     },
+    summary: 'Get presigned URL for downloading a file',
+  },
+
+  // File Upload Operations
+  requestFileUploadUrl: {
+    method: 'POST',
+    path: '/files/upload-url',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: S3UploadUrlRequestSchema,
+    responses: {
+      200: S3UploadUrlResponseSchema,
+    },
+    summary: 'Get a presigned URL for uploading a file',
+  },
+
+  // Multipart Upload for Large Files
+  initiateMultipartUpload: {
+    method: 'POST',
+    path: '/files/multipart/initiate',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.object({
+      fileName: z.string(),
+      contentType: z.string(),
+      fileSize: z.number().int(),
+    }),
+    responses: {
+      200: z.object({
+        uploadId: z.string(),
+        fileKey: z.string(),
+      }),
+    },
+    summary: 'Initiate multipart upload for large files',
+  },
+
+  getUploadPartUrl: {
+    method: 'POST',
+    path: '/files/multipart/part-url',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.object({
+      uploadId: z.string(),
+      fileKey: z.string(),
+      partNumber: z.number().int().min(1).max(10000),
+    }),
+    responses: {
+      200: z.object({
+        url: z.string().url(),
+        partNumber: z.number().int(),
+      }),
+    },
+    summary: 'Get presigned URL for uploading a part',
+  },
+
+  completeMultipartUpload: {
+    method: 'POST',
+    path: '/files/multipart/complete',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.object({
+      uploadId: z.string(),
+      fileKey: z.string(),
+      parts: z.array(
+        z.object({
+          partNumber: z.number().int(),
+          etag: z.string(),
+        }),
+      ),
+    }),
+    responses: {
+      200: z.object({
+        fileKey: z.string(),
+        success: z.boolean(),
+      }),
+    },
+    summary: 'Complete multipart upload',
+  },
+
+  abortMultipartUpload: {
+    method: 'POST',
+    path: '/files/multipart/abort',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.object({
+      uploadId: z.string(),
+      fileKey: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        success: z.boolean(),
+      }),
+    },
+    summary: 'Abort multipart upload',
+  },
+
+  // File Management
+  deleteFile: {
+    method: 'DELETE',
+    path: '/files/:fileKey',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    pathParams: z.object({
+      fileKey: z.string(),
+    }),
+    body: z.undefined(),
+    responses: {
+      204: z.undefined(),
+    },
+    summary: 'Delete a file',
+  },
+
+  copyFile: {
+    method: 'POST',
+    path: '/files/:fileKey/copy',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    pathParams: z.object({
+      fileKey: z.string(),
+    }),
+    body: z.object({
+      destinationKey: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        sourceKey: z.string(),
+        destinationKey: z.string(),
+        success: z.boolean(),
+      }),
+    },
+    summary: 'Copy a file',
+  },
+
+  renameFile: {
+    method: 'POST',
+    path: '/files/:fileKey/rename',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    pathParams: z.object({
+      fileKey: z.string(),
+    }),
+    body: z.object({
+      newFileName: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        oldKey: z.string(),
+        newKey: z.string(),
+        success: z.boolean(),
+      }),
+    },
+    summary: 'Rename a file',
+  },
+
+  // Authentication
+  login: {
+    method: 'POST',
+    path: '/auth/login',
+    body: LoginRequestSchema,
+    responses: {
+      200: LoginResponseSchema,
+      401: z.object({ error: z.string() }),
+    },
+    summary: 'Login with email and password',
+  },
+
+  me: {
+    method: 'GET',
+    path: '/auth/me',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    responses: {
+      200: z.object({ account: AuthAccountSchema }),
+      404: z.object({ error: z.string() }),
+    },
+    summary: 'Get current authenticated user',
+  },
+
+  refreshToken: {
+    method: 'POST',
+    path: '/auth/refresh',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.undefined(),
+    responses: {
+      200: RefreshTokenResponseSchema,
+    },
+    summary: 'Refresh JWT token',
   },
 });
