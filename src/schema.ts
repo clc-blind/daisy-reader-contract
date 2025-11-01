@@ -5,8 +5,34 @@ export const AccountSchema = z.object({
   id: z.string(),
   name: z.string().min(2).max(50),
   email: z.string().email().nullable(),
+  password: z.string().min(8).optional(), // Optional for responses (never returned)
   lastAccess: z.date(),
   createdAt: z.date(),
+});
+
+// Auth
+export const LoginRequestSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+export const LoginResponseSchema = z.object({
+  token: z.string(),
+  account: z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string().email().nullable(),
+  }),
+});
+
+export const AuthAccountSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email().nullable(),
+});
+
+export const RefreshTokenResponseSchema = z.object({
+  token: z.string(),
 });
 
 // Book
@@ -105,3 +131,7 @@ export type FileInfo = z.infer<typeof FileInfoSchema>;
 export type FileContent = z.infer<typeof FileContentSchema>;
 export type S3UploadUrlRequest = z.infer<typeof S3UploadUrlRequestSchema>;
 export type S3UploadUrlResponse = z.infer<typeof S3UploadUrlResponseSchema>;
+export type LoginRequest = z.infer<typeof LoginRequestSchema>;
+export type LoginResponse = z.infer<typeof LoginResponseSchema>;
+export type AuthAccount = z.infer<typeof AuthAccountSchema>;
+export type RefreshTokenResponse = z.infer<typeof RefreshTokenResponseSchema>;

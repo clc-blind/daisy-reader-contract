@@ -2,11 +2,15 @@ import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 import {
   AccountSchema,
+  AuthAccountSchema,
   BookSchema,
   FileContentSchema,
   FileInfoSchema,
+  LoginRequestSchema,
+  LoginResponseSchema,
   MarkSchema,
   ReadingProgressSchema,
+  RefreshTokenResponseSchema,
   S3UploadUrlRequestSchema,
   S3UploadUrlResponseSchema,
 } from '@/src/schema';
@@ -446,5 +450,43 @@ export const appContract = c.router({
       }),
     },
     summary: 'Rename a file',
+  },
+
+  // Authentication
+  login: {
+    method: 'POST',
+    path: '/auth/login',
+    body: LoginRequestSchema,
+    responses: {
+      200: LoginResponseSchema,
+      401: z.object({ error: z.string() }),
+    },
+    summary: 'Login with email and password',
+  },
+
+  me: {
+    method: 'GET',
+    path: '/auth/me',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    responses: {
+      200: z.object({ account: AuthAccountSchema }),
+      404: z.object({ error: z.string() }),
+    },
+    summary: 'Get current authenticated user',
+  },
+
+  refreshToken: {
+    method: 'POST',
+    path: '/auth/refresh',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: z.undefined(),
+    responses: {
+      200: RefreshTokenResponseSchema,
+    },
+    summary: 'Refresh JWT token',
   },
 });
