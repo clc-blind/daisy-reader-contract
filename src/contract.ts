@@ -1,16 +1,11 @@
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 import {
-  AccountSchema,
-  AuthAccountSchema,
   BookSchema,
   FileContentSchema,
   FileInfoSchema,
-  LoginRequestSchema,
-  LoginResponseSchema,
   MarkSchema,
   ReadingProgressSchema,
-  RefreshTokenResponseSchema,
   S3UploadUrlRequestSchema,
   S3UploadUrlResponseSchema,
 } from '@/src/schema';
@@ -147,40 +142,20 @@ export const appContract = c.router({
     summary: 'Delete a book',
   },
 
-  // Accounts
-  createAccount: {
-    method: 'POST',
-    path: '/accounts',
-    body: AccountSchema.omit({ id: true, createdAt: true }),
-    responses: {
-      201: AccountSchema,
-    },
-    summary: 'Create a new account',
-  },
-
-  getAccountById: {
-    method: 'GET',
-    path: '/accounts/:id',
-    responses: {
-      200: AccountSchema,
-    },
-    summary: 'Get an account by ID',
-  },
-
   // Reading progress
   getRecentlyReadBooks: {
     method: 'GET',
-    path: '/progress/recent/:accountId',
+    path: '/progress/recent/:userId',
     query: z.object({ limit: z.coerce.number().optional() }),
     responses: {
       200: z.array(BookSchema),
     },
-    summary: 'Get recently read books for an account',
+    summary: 'Get recently read books for a user',
   },
 
   getInprogressBooks: {
     method: 'GET',
-    path: '/progress/inprogress/:accountId',
+    path: '/progress/inprogress/:userId',
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),
@@ -188,7 +163,7 @@ export const appContract = c.router({
     responses: {
       200: z.object({ data: z.array(BookSchema), total: z.number() }),
     },
-    summary: 'Get in-progress books for an account',
+    summary: 'Get in-progress books for a user',
   },
 
   updateReadingProgress: {
@@ -230,11 +205,11 @@ export const appContract = c.router({
 
   getMarksByBook: {
     method: 'GET',
-    path: '/marks/:accountId/:bookId',
+    path: '/marks/:userId/:bookId',
     responses: {
       200: z.array(MarkSchema),
     },
-    summary: 'Get all marks for a book by an account',
+    summary: 'Get all marks for a book by a user',
   },
 
   listBookFiles: {
@@ -450,43 +425,5 @@ export const appContract = c.router({
       }),
     },
     summary: 'Rename a file',
-  },
-
-  // Authentication
-  login: {
-    method: 'POST',
-    path: '/auth/login',
-    body: LoginRequestSchema,
-    responses: {
-      200: LoginResponseSchema,
-      401: z.object({ error: z.string() }),
-    },
-    summary: 'Login with email and password',
-  },
-
-  me: {
-    method: 'GET',
-    path: '/auth/me',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    responses: {
-      200: z.object({ account: AuthAccountSchema }),
-      404: z.object({ error: z.string() }),
-    },
-    summary: 'Get current authenticated user',
-  },
-
-  refreshToken: {
-    method: 'POST',
-    path: '/auth/refresh',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: z.undefined(),
-    responses: {
-      200: RefreshTokenResponseSchema,
-    },
-    summary: 'Refresh JWT token',
   },
 });

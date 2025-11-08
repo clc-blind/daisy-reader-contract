@@ -1560,151 +1560,13 @@
         }
       }
     },
-    "/accounts": {
-      "post": {
-        "summary": "Create a new account",
-        "tags": [],
-        "parameters": [],
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 50
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "nullable": true
-                  },
-                  "lastAccess": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-                },
-                "required": [
-                  "name",
-                  "email",
-                  "lastAccess"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "201",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string",
-                      "minLength": 2,
-                      "maxLength": 50
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "nullable": true
-                    },
-                    "lastAccess": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "email",
-                    "lastAccess",
-                    "createdAt"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/accounts/{id}": {
+    "/progress/recent/{userId}": {
       "get": {
-        "summary": "Get an account by ID",
+        "summary": "Get recently read books for a user",
         "tags": [],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string",
-                      "minLength": 2,
-                      "maxLength": 50
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "nullable": true
-                    },
-                    "lastAccess": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "email",
-                    "lastAccess",
-                    "createdAt"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/progress/recent/{accountId}": {
-      "get": {
-        "summary": "Get recently read books for an account",
-        "tags": [],
-        "parameters": [
-          {
-            "name": "accountId",
+            "name": "userId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1845,13 +1707,13 @@
         }
       }
     },
-    "/progress/inprogress/{accountId}": {
+    "/progress/inprogress/{userId}": {
       "get": {
-        "summary": "Get in-progress books for an account",
+        "summary": "Get in-progress books for a user",
         "tags": [],
         "parameters": [
           {
-            "name": "accountId",
+            "name": "userId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2041,7 +1903,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "accountId": {
+                  "userId": {
                     "type": "string"
                   },
                   "bookId": {
@@ -2057,6 +1919,10 @@
                   "isCompleted": {
                     "type": "boolean"
                   },
+                  "lastReadAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
                   "createdAt": {
                     "type": "string",
                     "format": "date-time"
@@ -2067,8 +1933,9 @@
                   }
                 },
                 "required": [
-                  "accountId",
-                  "bookId"
+                  "userId",
+                  "bookId",
+                  "lastReadAt"
                 ]
               }
             }
@@ -2085,7 +1952,7 @@
                     "id": {
                       "type": "string"
                     },
-                    "accountId": {
+                    "userId": {
                       "type": "string"
                     },
                     "bookId": {
@@ -2101,6 +1968,10 @@
                     "isCompleted": {
                       "type": "boolean"
                     },
+                    "lastReadAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -2112,10 +1983,11 @@
                   },
                   "required": [
                     "id",
-                    "accountId",
+                    "userId",
                     "bookId",
                     "currentTimeSeconds",
                     "isCompleted",
+                    "lastReadAt",
                     "createdAt",
                     "updatedAt"
                   ]
@@ -2150,7 +2022,7 @@
                   "id": {
                     "type": "string"
                   },
-                  "accountId": {
+                  "userId": {
                     "type": "string"
                   },
                   "bookId": {
@@ -2207,7 +2079,7 @@
                 },
                 "required": [
                   "id",
-                  "accountId",
+                  "userId",
                   "bookId",
                   "type",
                   "title",
@@ -2235,7 +2107,7 @@
                     "id": {
                       "type": "string"
                     },
-                    "accountId": {
+                    "userId": {
                       "type": "string"
                     },
                     "bookId": {
@@ -2300,7 +2172,7 @@
                   },
                   "required": [
                     "id",
-                    "accountId",
+                    "userId",
                     "bookId",
                     "type",
                     "title",
@@ -2322,13 +2194,13 @@
         }
       }
     },
-    "/marks/{accountId}/{bookId}": {
+    "/marks/{userId}/{bookId}": {
       "get": {
-        "summary": "Get all marks for a book by an account",
+        "summary": "Get all marks for a book by a user",
         "tags": [],
         "parameters": [
           {
-            "name": "accountId",
+            "name": "userId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2357,7 +2229,7 @@
                       "id": {
                         "type": "string"
                       },
-                      "accountId": {
+                      "userId": {
                         "type": "string"
                       },
                       "bookId": {
@@ -2422,7 +2294,7 @@
                     },
                     "required": [
                       "id",
-                      "accountId",
+                      "userId",
                       "bookId",
                       "type",
                       "title",

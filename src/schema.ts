@@ -1,38 +1,43 @@
 import { z } from 'zod';
 
-// Account
-export const AccountSchema = z.object({
-  id: z.string(),
-  name: z.string().min(2).max(50),
-  email: z.string().email().nullable(),
-  password: z.string().min(8).optional(), // Optional for responses (never returned)
-  lastAccess: z.date(),
-  createdAt: z.date(),
-});
-
-// Auth
-export const LoginRequestSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
-
-export const LoginResponseSchema = z.object({
-  token: z.string(),
-  account: z.object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string().email().nullable(),
-  }),
-});
-
-export const AuthAccountSchema = z.object({
+// User (Better Auth)
+export const UserSchema = z.object({
   id: z.string(),
   name: z.string(),
-  email: z.string().email().nullable(),
+  email: z.string().email(),
+  emailVerified: z.boolean().default(false),
+  image: z.string().nullable().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
-export const RefreshTokenResponseSchema = z.object({
+// Account (Better Auth)
+export const AccountSchema = z.object({
+  id: z.string(),
+  accountId: z.string(),
+  providerId: z.string(),
+  userId: z.string(),
+  accessToken: z.string().nullable().optional(),
+  refreshToken: z.string().nullable().optional(),
+  idToken: z.string().nullable().optional(),
+  accessTokenExpiresAt: z.date().nullable().optional(),
+  refreshTokenExpiresAt: z.date().nullable().optional(),
+  scope: z.string().nullable().optional(),
+  password: z.string().nullable().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+// Session (Better Auth)
+export const SessionSchema = z.object({
+  id: z.string(),
+  expiresAt: z.date(),
   token: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  ipAddress: z.string().nullable().optional(),
+  userAgent: z.string().nullable().optional(),
+  userId: z.string(),
 });
 
 // Book
@@ -63,11 +68,12 @@ export const BookSchema = z.object({
 // ReadingProgress
 export const ReadingProgressSchema = z.object({
   id: z.string(),
-  accountId: z.string(),
+  userId: z.string(), // Changed from accountId to userId
   bookId: z.string(),
   currentTimeSeconds: z.number(),
   currentPosition: z.string().nullable(),
   isCompleted: z.boolean(),
+  lastReadAt: z.date(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -75,7 +81,7 @@ export const ReadingProgressSchema = z.object({
 // Mark
 export const MarkSchema = z.object({
   id: z.string(),
-  accountId: z.string(),
+  userId: z.string(), // Changed from accountId to userId
   bookId: z.string(),
   type: z.enum(['highlight', 'note', 'bookmark']),
   title: z.string(),
@@ -92,6 +98,16 @@ export const MarkSchema = z.object({
   content: z.string().nullable(),
   isOrphan: z.boolean().default(false),
   createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+// AccountPreferences
+export const AccountPreferencesSchema = z.object({
+  userId: z.string(),
+  theme: z.string(),
+  fontSize: z.number().default(16),
+  defaultSpeed: z.number().default(1.0),
+  autoBookmark: z.boolean().default(true),
   updatedAt: z.date(),
 });
 
@@ -123,15 +139,14 @@ export const S3UploadUrlResponseSchema = z.object({
   expiresIn: z.number().int(),
 });
 
+export type User = z.infer<typeof UserSchema>;
 export type Account = z.infer<typeof AccountSchema>;
+export type Session = z.infer<typeof SessionSchema>;
 export type Book = z.infer<typeof BookSchema>;
 export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
 export type Mark = z.infer<typeof MarkSchema>;
+export type AccountPreferences = z.infer<typeof AccountPreferencesSchema>;
 export type FileInfo = z.infer<typeof FileInfoSchema>;
 export type FileContent = z.infer<typeof FileContentSchema>;
 export type S3UploadUrlRequest = z.infer<typeof S3UploadUrlRequestSchema>;
 export type S3UploadUrlResponse = z.infer<typeof S3UploadUrlResponseSchema>;
-export type LoginRequest = z.infer<typeof LoginRequestSchema>;
-export type LoginResponse = z.infer<typeof LoginResponseSchema>;
-export type AuthAccount = z.infer<typeof AuthAccountSchema>;
-export type RefreshTokenResponse = z.infer<typeof RefreshTokenResponseSchema>;
