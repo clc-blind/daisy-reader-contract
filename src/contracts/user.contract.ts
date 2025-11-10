@@ -1,22 +1,25 @@
 import { z } from 'zod';
-import { UserSchema } from '@/src/schema';
+import { UserPreferencesSchema, UserSchema } from '@/src/schema';
 
 export const userRoutes = {
-  getUserById: {
+  // Current User (Web & Admin)
+  getCurrentUser: {
     method: 'GET',
-    path: '/users/:id',
+    path: '/users/me',
     headers: z.object({
       authorization: z.string(),
     }),
     responses: {
-      200: UserSchema,
+      200: UserSchema.extend({
+        role: z.enum(['user', 'admin']).optional(),
+      }),
     },
-    summary: 'Get a user by ID',
+    summary: 'Get current authenticated user with role',
   },
 
-  updateUser: {
+  updateUserProfile: {
     method: 'PATCH',
-    path: '/users/:id',
+    path: '/users/me',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -24,6 +27,36 @@ export const userRoutes = {
     responses: {
       200: UserSchema,
     },
-    summary: 'Update user profile',
+    summary: 'Update current user profile (name, image)',
+  },
+
+  // User Preferences (Web only)
+  getUserPreferences: {
+    method: 'GET',
+    path: '/users/me/preferences',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    responses: {
+      200: UserPreferencesSchema,
+    },
+    summary: 'Get current user preferences',
+  },
+
+  updateUserPreferences: {
+    method: 'PATCH',
+    path: '/users/me/preferences',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: UserPreferencesSchema.omit({
+      userId: true,
+      updatedAt: true,
+    }).partial(),
+    responses: {
+      200: UserPreferencesSchema,
+    },
+    summary:
+      'Update user preferences (theme, fontSize, defaultSpeed, autoBookmark)',
   },
 } as const;
