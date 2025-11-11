@@ -52,7 +52,7 @@ export const bookRoutes = {
 
   getBookById: {
     method: 'GET',
-    path: '/books/:id',
+    path: '/books/:bookId',
     responses: {
       200: BookSchema,
     },
@@ -102,7 +102,7 @@ export const bookRoutes = {
 
   editBook: {
     method: 'PATCH',
-    path: '/books/:id',
+    path: '/books/:bookId',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -119,7 +119,7 @@ export const bookRoutes = {
 
   deleteBook: {
     method: 'DELETE',
-    path: '/books/:id',
+    path: '/books/:bookId',
     headers: z.object({
       authorization: z.string(),
     }),
