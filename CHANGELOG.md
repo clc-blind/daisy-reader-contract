@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.6](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.5...v1.0.6) (2025-11-11)
+
+
+### Bug Fixes
+
+* **contract, book:** update params name ([1c33bd2](https://github.com/clc-blind/daisy-reader-contract/commit/1c33bd2b11f8f9536cf4a51d3462ea2736851dee))
+* **contract:** prefix /api ([3cd1375](https://github.com/clc-blind/daisy-reader-contract/commit/3cd137571a9394b7a91340cc4e9bbb879f00fced))
+* **contract:** update user handlers ([e3871aa](https://github.com/clc-blind/daisy-reader-contract/commit/e3871aa1db8598a596b277a5dcdd213c0ec15250))
+* migrate to better-auth ([3fb8297](https://github.com/clc-blind/daisy-reader-contract/commit/3fb8297a074492277aa5cfa9d4aefdda5caa2166))
+* migrate to better-auth ([6181503](https://github.com/clc-blind/daisy-reader-contract/commit/6181503f46b7a75c9320b0798a399aca0005bd76))
+* migrate to structured folder ([03d033e](https://github.com/clc-blind/daisy-reader-contract/commit/03d033ee9d77fec241c00b861bd84d79c17ac688))
+* **openapi:** add better-auth routes ([6693f4b](https://github.com/clc-blind/daisy-reader-contract/commit/6693f4b1896aabda9903264bea0bac4765b7f139))
+
 ## [1.0.5](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.4...v1.0.5) (2025-11-01)
 
 
