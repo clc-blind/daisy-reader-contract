@@ -1,79 +1,114 @@
 {
   "openapi": "3.0.2",
   "paths": {
-    "/books": {
+    "/api/books": {
       "get": {
         "summary": "Get all books with optional filtering and pagination",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "offset",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "subject",
             "in": "query",
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {
             "name": "author",
             "in": "query",
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {
             "name": "search",
             "in": "query",
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {
             "name": "sortBy",
             "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "name",
-                "date"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "name",
+                    "date"
+                  ]
+                }
+              }
             }
           },
           {
             "name": "sortOrder",
             "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              }
             }
           },
           {
             "name": "featured",
             "in": "query",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "getAllBooks",
         "responses": {
           "200": {
             "description": "200",
@@ -212,7 +247,9 @@
       },
       "post": {
         "summary": "Upload a new book",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -223,6 +260,7 @@
             }
           }
         ],
+        "operationId": "uploadBook",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -446,53 +484,77 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/books/featured": {
+    "/api/books/featured": {
       "get": {
         "summary": "Get featured books",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "offset",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "sortBy",
             "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "name",
-                "date"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "name",
+                    "date"
+                  ]
+                }
+              }
             }
           },
           {
             "name": "sortOrder",
             "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              }
             }
           }
         ],
+        "operationId": "getFeaturedBooks",
         "responses": {
           "200": {
             "description": "200",
@@ -630,37 +692,52 @@
         }
       }
     },
-    "/books/search": {
+    "/api/books/search": {
       "get": {
         "summary": "Search books by query string",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "q",
             "in": "query",
             "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
             }
           },
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "offset",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "searchBooks",
         "responses": {
           "200": {
             "description": "200",
@@ -798,10 +875,12 @@
         }
       }
     },
-    "/books/{bookId}": {
+    "/api/books/{bookId}": {
       "get": {
         "summary": "Get a book by ID",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "bookId",
@@ -812,6 +891,7 @@
             }
           }
         ],
+        "operationId": "getBookById",
         "responses": {
           "200": {
             "description": "200",
@@ -935,7 +1015,9 @@
       },
       "patch": {
         "summary": "Edit a book",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "bookId",
@@ -954,6 +1036,7 @@
             }
           }
         ],
+        "operationId": "editBook",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -1161,11 +1244,18 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "summary": "Delete a book",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "bookId",
@@ -1184,6 +1274,7 @@
             }
           }
         ],
+        "operationId": "deleteBook",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -1201,13 +1292,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/books/language/{language}": {
+    "/api/books/language/{language}": {
       "get": {
         "summary": "Get books by language",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "language",
@@ -1220,20 +1318,29 @@
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "offset",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "getBooksByLanguage",
         "responses": {
           "200": {
             "description": "200",
@@ -1371,10 +1478,12 @@
         }
       }
     },
-    "/books/subject/{subjectSlug}": {
+    "/api/books/subject/{subjectSlug}": {
       "get": {
         "summary": "Get books by subject",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "subjectSlug",
@@ -1387,42 +1496,59 @@
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "offset",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "sortBy",
             "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "name",
-                "date"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "name",
+                    "date"
+                  ]
+                }
+              }
             }
           },
           {
             "name": "sortOrder",
             "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              }
             }
           }
         ],
+        "operationId": "getBookBySubject",
         "responses": {
           "200": {
             "description": "200",
@@ -1560,10 +1686,12 @@
         }
       }
     },
-    "/books/{bookId}/files": {
+    "/api/books/{bookId}/files": {
       "get": {
         "summary": "List all files for a book",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "bookId",
@@ -1574,6 +1702,7 @@
             }
           }
         ],
+        "operationId": "listBookFiles",
         "responses": {
           "200": {
             "description": "200",
@@ -1635,10 +1764,12 @@
         }
       }
     },
-    "/books/{bookId}/files/{fileName}": {
+    "/api/books/{bookId}/files/{fileName}": {
       "get": {
         "summary": "Get file content for a book",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "bookId",
@@ -1659,16 +1790,21 @@
           {
             "name": "encoding",
             "in": "query",
-            "schema": {
-              "default": "utf-8",
-              "type": "string",
-              "enum": [
-                "utf-8",
-                "base64"
-              ]
+            "content": {
+              "application/json": {
+                "schema": {
+                  "default": "utf-8",
+                  "type": "string",
+                  "enum": [
+                    "utf-8",
+                    "base64"
+                  ]
+                }
+              }
             }
           }
         ],
+        "operationId": "getBookFileContent",
         "responses": {
           "200": {
             "description": "200",
@@ -1715,10 +1851,12 @@
         }
       }
     },
-    "/books/{bookId}/audio/{fileName}/signed-url": {
+    "/api/books/{bookId}/audio/{fileName}/signed-url": {
       "get": {
         "summary": "Get presigned URL for book audio file",
-        "tags": [],
+        "tags": [
+          "Books"
+        ],
         "parameters": [
           {
             "name": "bookId",
@@ -1739,12 +1877,17 @@
           {
             "name": "expiresIn",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "getBookAudioSignedUrl",
         "responses": {
           "200": {
             "description": "200",
@@ -1768,10 +1911,12 @@
         }
       }
     },
-    "/users/me": {
+    "/api/users/me": {
       "get": {
         "summary": "Get current authenticated user with role",
-        "tags": [],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -1782,6 +1927,7 @@
             }
           }
         ],
+        "operationId": "getCurrentUser",
         "responses": {
           "200": {
             "description": "200",
@@ -1839,7 +1985,9 @@
       },
       "patch": {
         "summary": "Update current user profile (name, image)",
-        "tags": [],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -1850,6 +1998,7 @@
             }
           }
         ],
+        "operationId": "updateUserProfile",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -1915,13 +2064,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/users/me/preferences": {
+    "/api/users/me/preferences": {
       "get": {
         "summary": "Get current user preferences",
-        "tags": [],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -1932,6 +2088,7 @@
             }
           }
         ],
+        "operationId": "getUserPreferences",
         "responses": {
           "200": {
             "description": "200",
@@ -1976,7 +2133,9 @@
       },
       "patch": {
         "summary": "Update user preferences (theme, fontSize, defaultSpeed, autoBookmark)",
-        "tags": [],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -1987,6 +2146,7 @@
             }
           }
         ],
+        "operationId": "updateUserPreferences",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -2054,13 +2214,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/progress/recent/{userId}": {
+    "/api/progress/recent/{userId}": {
       "get": {
         "summary": "Get recently read books for a user",
-        "tags": [],
+        "tags": [
+          "Reading Progress"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2073,12 +2240,17 @@
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "getRecentlyReadBooks",
         "responses": {
           "200": {
             "description": "200",
@@ -2204,10 +2376,12 @@
         }
       }
     },
-    "/progress/inprogress/{userId}": {
+    "/api/progress/inprogress/{userId}": {
       "get": {
         "summary": "Get in-progress books for a user",
-        "tags": [],
+        "tags": [
+          "Reading Progress"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2220,20 +2394,29 @@
           {
             "name": "limit",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           },
           {
             "name": "offset",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "getInprogressBooks",
         "responses": {
           "200": {
             "description": "200",
@@ -2371,10 +2554,12 @@
         }
       }
     },
-    "/progress/{id}": {
+    "/api/progress/{id}": {
       "patch": {
         "summary": "Update reading progress",
-        "tags": [],
+        "tags": [
+          "Reading Progress"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2393,6 +2578,7 @@
             }
           }
         ],
+        "operationId": "updateReadingProgress",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -2492,13 +2678,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/marks": {
+    "/api/marks": {
       "post": {
         "summary": "Create a new mark (highlight, note, bookmark)",
-        "tags": [],
+        "tags": [
+          "Marks"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -2509,6 +2702,7 @@
             }
           }
         ],
+        "operationId": "createMark",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -2688,13 +2882,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/marks/{userId}/{bookId}": {
+    "/api/marks/{userId}/{bookId}": {
       "get": {
         "summary": "Get all marks for a book by a user",
-        "tags": [],
+        "tags": [
+          "Marks"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -2713,6 +2914,7 @@
             }
           }
         ],
+        "operationId": "getMarksByBook",
         "responses": {
           "200": {
             "description": "200",
@@ -2814,28 +3016,39 @@
         }
       }
     },
-    "/files/signed-url": {
+    "/api/files/signed-url": {
       "get": {
         "summary": "Get presigned URL for downloading a file",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "fileKey",
             "in": "query",
             "required": true,
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {
             "name": "expiresIn",
             "in": "query",
-            "schema": {
-              "type": "number",
-              "nullable": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
             }
           }
         ],
+        "operationId": "getSignedGetUrl",
         "responses": {
           "200": {
             "description": "200",
@@ -2859,10 +3072,12 @@
         }
       }
     },
-    "/files/upload-url": {
+    "/api/files/upload-url": {
       "post": {
         "summary": "Get a presigned URL for uploading a file",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -2873,6 +3088,7 @@
             }
           }
         ],
+        "operationId": "requestFileUploadUrl",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -2926,13 +3142,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/multipart/initiate": {
+    "/api/files/multipart/initiate": {
       "post": {
         "summary": "Initiate multipart upload for large files",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -2943,6 +3166,7 @@
             }
           }
         ],
+        "operationId": "initiateMultipartUpload",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -2992,13 +3216,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/multipart/part-url": {
+    "/api/files/multipart/part-url": {
       "post": {
         "summary": "Get presigned URL for uploading a part",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -3009,6 +3240,7 @@
             }
           }
         ],
+        "operationId": "getUploadPartUrl",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -3061,13 +3293,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/multipart/complete": {
+    "/api/files/multipart/complete": {
       "post": {
         "summary": "Complete multipart upload",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -3078,6 +3317,7 @@
             }
           }
         ],
+        "operationId": "completeMultipartUpload",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -3142,13 +3382,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/multipart/abort": {
+    "/api/files/multipart/abort": {
       "post": {
         "summary": "Abort multipart upload",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "authorization",
@@ -3159,6 +3406,7 @@
             }
           }
         ],
+        "operationId": "abortMultipartUpload",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -3200,13 +3448,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/{fileKey}": {
+    "/api/files/{fileKey}": {
       "delete": {
         "summary": "Delete a file",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "fileKey",
@@ -3225,6 +3480,7 @@
             }
           }
         ],
+        "operationId": "deleteFile",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -3242,13 +3498,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/{fileKey}/copy": {
+    "/api/files/{fileKey}/copy": {
       "post": {
         "summary": "Copy a file",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "fileKey",
@@ -3267,6 +3530,7 @@
             }
           }
         ],
+        "operationId": "copyFile",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -3312,13 +3576,20 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/files/{fileKey}/rename": {
+    "/api/files/{fileKey}/rename": {
       "post": {
         "summary": "Rename a file",
-        "tags": [],
+        "tags": [
+          "Files"
+        ],
         "parameters": [
           {
             "name": "fileKey",
@@ -3337,6 +3608,7 @@
             }
           }
         ],
+        "operationId": "renameFile",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -3382,13 +3654,18 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/sign-in/social": {
+    "/api/auth/sign-in/social": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Sign in with a social provider",
         "operationId": "socialSignIn",
@@ -3652,10 +3929,10 @@
         }
       }
     },
-    "/get-session": {
+    "/api/auth/get-session": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Get the current session",
         "security": [
@@ -3786,10 +4063,10 @@
         }
       }
     },
-    "/sign-out": {
+    "/api/auth/sign-out": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Sign out the current user",
         "security": [
@@ -3923,10 +4200,10 @@
         }
       }
     },
-    "/sign-up/email": {
+    "/api/auth/sign-up/email": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Sign up a user using email and password",
         "security": [
@@ -4156,10 +4433,10 @@
         }
       }
     },
-    "/sign-in/email": {
+    "/api/auth/sign-in/email": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Sign in with email and password",
         "security": [
@@ -4370,10 +4647,10 @@
         }
       }
     },
-    "/forget-password": {
+    "/api/auth/forget-password": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Send a password reset email to the user",
         "security": [
@@ -4524,10 +4801,10 @@
         }
       }
     },
-    "/reset-password": {
+    "/api/auth/reset-password": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Reset the password for a user",
         "security": [
@@ -4675,10 +4952,10 @@
         }
       }
     },
-    "/verify-email": {
+    "/api/auth/verify-email": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Verify the email of the user",
         "security": [
@@ -4868,10 +5145,10 @@
         }
       }
     },
-    "/send-verification-email": {
+    "/api/auth/send-verification-email": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Send a verification email to the user",
         "security": [
@@ -5021,10 +5298,10 @@
         }
       }
     },
-    "/change-email": {
+    "/api/auth/change-email": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "security": [
           {
@@ -5199,10 +5476,10 @@
         }
       }
     },
-    "/change-password": {
+    "/api/auth/change-password": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Change the password of the user",
         "security": [
@@ -5406,10 +5683,10 @@
         }
       }
     },
-    "/update-user": {
+    "/api/auth/update-user": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Update the current user",
         "security": [
@@ -5553,10 +5830,10 @@
         }
       }
     },
-    "/delete-user": {
+    "/api/auth/delete-user": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Delete the user",
         "security": [
@@ -5721,10 +5998,10 @@
         }
       }
     },
-    "/reset-password/{token}": {
+    "/api/auth/reset-password/{token}": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Redirects the user to the callback URL with the token",
         "security": [
@@ -5857,10 +6134,10 @@
         }
       }
     },
-    "/request-password-reset": {
+    "/api/auth/request-password-reset": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Send a password reset email to the user",
         "security": [
@@ -6011,10 +6288,10 @@
         }
       }
     },
-    "/list-sessions": {
+    "/api/auth/list-sessions": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "List all active sessions for the user",
         "security": [
@@ -6136,10 +6413,10 @@
         }
       }
     },
-    "/revoke-session": {
+    "/api/auth/revoke-session": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Revoke a single session",
         "security": [
@@ -6285,10 +6562,10 @@
         }
       }
     },
-    "/revoke-sessions": {
+    "/api/auth/revoke-sessions": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Revoke all sessions for the user",
         "security": [
@@ -6426,10 +6703,10 @@
         }
       }
     },
-    "/revoke-other-sessions": {
+    "/api/auth/revoke-other-sessions": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Revoke all other sessions for the user except the current one",
         "security": [
@@ -6567,10 +6844,10 @@
         }
       }
     },
-    "/link-social": {
+    "/api/auth/link-social": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Link a social account to the user",
         "security": [
@@ -6775,10 +7052,10 @@
         }
       }
     },
-    "/list-accounts": {
+    "/api/auth/list-accounts": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "List all accounts linked to the user",
         "security": [
@@ -6933,10 +7210,10 @@
         }
       }
     },
-    "/delete-user/callback": {
+    "/api/auth/delete-user/callback": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Callback to complete user deletion with verification token",
         "security": [
@@ -7090,10 +7367,10 @@
         }
       }
     },
-    "/unlink-account": {
+    "/api/auth/unlink-account": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Unlink an account",
         "security": [
@@ -7239,10 +7516,10 @@
         }
       }
     },
-    "/refresh-token": {
+    "/api/auth/refresh-token": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Refresh the access token using a refresh token",
         "security": [
@@ -7397,10 +7674,10 @@
         }
       }
     },
-    "/get-access-token": {
+    "/api/auth/get-access-token": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Get a valid access token, doing a refresh if needed",
         "security": [
@@ -7555,10 +7832,10 @@
         }
       }
     },
-    "/account-info": {
+    "/api/auth/account-info": {
       "post": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Get the account info provided by the provider",
         "security": [
@@ -7732,10 +8009,10 @@
         }
       }
     },
-    "/ok": {
+    "/api/auth/ok": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Check if the API is working",
         "security": [
@@ -7863,10 +8140,10 @@
         }
       }
     },
-    "/error": {
+    "/api/auth/error": {
       "get": {
         "tags": [
-          "Default"
+          "Auth"
         ],
         "description": "Displays an error page",
         "security": [
@@ -7989,6 +8266,595 @@
   },
   "info": {
     "title": "DAISY API",
+    "description": "REST API for DAISY Reader application - accessible books for visually impaired users",
     "version": "1.0.0"
-  }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean",
+            "default": false,
+            "readOnly": true
+          },
+          "image": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "default": "Generated at runtime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "default": "Generated at runtime"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "default": "Generated at runtime"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "ipAddress": {
+            "type": "string"
+          },
+          "userAgent": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "expiresAt",
+          "token",
+          "createdAt",
+          "updatedAt",
+          "userId"
+        ]
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "providerId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "idToken": {
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "default": "Generated at runtime"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountId",
+          "providerId",
+          "userId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Verification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "identifier": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "default": "Generated at runtime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "default": "Generated at runtime"
+          }
+        },
+        "required": [
+          "identifier",
+          "value",
+          "expiresAt",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "creator": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "subjectCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "publisher": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "DAISY_V3",
+              "EPUB3"
+            ]
+          },
+          "storagePath": {
+            "type": "string"
+          },
+          "coverImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "durationSeconds": {
+            "type": "number",
+            "nullable": true
+          },
+          "contentHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "featured": {
+            "type": "boolean",
+            "default": false
+          },
+          "hidden": {
+            "type": "boolean",
+            "default": false
+          },
+          "views": {
+            "type": "number",
+            "default": 0
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "creator",
+          "subject",
+          "subjectCode",
+          "description",
+          "publisher",
+          "date",
+          "source",
+          "language",
+          "format",
+          "storagePath",
+          "coverImage",
+          "durationSeconds",
+          "contentHash",
+          "createdAt",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "ReadingProgress": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "bookId": {
+            "type": "string"
+          },
+          "currentTimeSeconds": {
+            "type": "number"
+          },
+          "currentPosition": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCompleted": {
+            "type": "boolean"
+          },
+          "lastReadAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "bookId",
+          "currentTimeSeconds",
+          "currentPosition",
+          "isCompleted",
+          "lastReadAt",
+          "createdAt",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "Mark": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "bookId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "highlight",
+              "note",
+              "bookmark"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "selectedText": {
+            "type": "string",
+            "nullable": true
+          },
+          "contextBefore": {
+            "type": "string",
+            "nullable": true
+          },
+          "contextAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "chapterId": {
+            "type": "string",
+            "nullable": true
+          },
+          "audioTimeSeconds": {
+            "type": "number",
+            "nullable": true
+          },
+          "textPosition": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "isOrphan": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "bookId",
+          "type",
+          "title",
+          "selectedText",
+          "contextBefore",
+          "contextAfter",
+          "chapterId",
+          "audioTimeSeconds",
+          "textPosition",
+          "color",
+          "content",
+          "createdAt",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "UserPreferences": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "theme": {
+            "type": "string"
+          },
+          "fontSize": {
+            "type": "number",
+            "default": 16
+          },
+          "defaultSpeed": {
+            "type": "number",
+            "default": 1
+          },
+          "autoBookmark": {
+            "type": "boolean",
+            "default": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "userId",
+          "theme",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "FileInfo": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "fileName",
+          "extension",
+          "contentType"
+        ],
+        "additionalProperties": false
+      },
+      "FileContent": {
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "encoding": {
+            "type": "string",
+            "enum": [
+              "utf-8",
+              "base64"
+            ]
+          },
+          "size": {
+            "type": "integer"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bookId",
+          "fileName",
+          "contentType",
+          "encoding",
+          "size",
+          "content"
+        ],
+        "additionalProperties": false
+      },
+      "S3UploadUrlRequest": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "fileName",
+          "contentType"
+        ],
+        "additionalProperties": false
+      },
+      "S3UploadUrlResponse": {
+        "type": "object",
+        "properties": {
+          "uploadUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "fileKey": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "uploadUrl",
+          "fileKey",
+          "expiresIn"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "apiKeyCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "apiKeyCookie",
+        "description": "API Key authentication via cookie"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Better-auth session token"
+      }
+    }
+  },
+  "security": {
+    "0": {
+      "apiKeyCookie": [],
+      "bearerAuth": []
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication and authorization endpoints"
+    },
+    {
+      "name": "Books",
+      "description": "Book catalog and content management"
+    },
+    {
+      "name": "Users",
+      "description": "User profile and preferences"
+    },
+    {
+      "name": "Reading Progress",
+      "description": "Track reading progress and history"
+    },
+    {
+      "name": "Marks",
+      "description": "Bookmarks, highlights, and notes"
+    },
+    {
+      "name": "Files",
+      "description": "File storage and management"
+    }
+  ]
 }

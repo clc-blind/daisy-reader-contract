@@ -25,7 +25,7 @@
   },
   "scripts": {
     "lint": "tsc",
-    "build": "tsup",
+    "build": "npm run openapi:generate && tsup",
     "test": "vitest run",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "prepublish": "pnpm run build && pnpm run check-exports && pnpm run lint",
@@ -62,6 +62,7 @@
     "tsup": "8.5.0",
     "tsx": "4.20.6",
     "typescript": "5.9.2",
-    "vitest": "3.2.4"
+    "vitest": "3.2.4",
+    "zod-to-json-schema": "3.24.6"
   }
 }
