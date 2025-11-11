@@ -7,7 +7,7 @@ import {
 export const fileRoutes = {
   getSignedGetUrl: {
     method: 'GET',
-    path: '/files/signed-url',
+    path: '/api/files/signed-url',
     query: z.object({
       fileKey: z.string(),
       expiresIn: z.coerce.number().optional(),
@@ -20,7 +20,7 @@ export const fileRoutes = {
 
   requestFileUploadUrl: {
     method: 'POST',
-    path: '/files/upload-url',
+    path: '/api/files/upload-url',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -33,7 +33,7 @@ export const fileRoutes = {
 
   initiateMultipartUpload: {
     method: 'POST',
-    path: '/files/multipart/initiate',
+    path: '/api/files/multipart/initiate',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -53,7 +53,7 @@ export const fileRoutes = {
 
   getUploadPartUrl: {
     method: 'POST',
-    path: '/files/multipart/part-url',
+    path: '/api/files/multipart/part-url',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -73,7 +73,7 @@ export const fileRoutes = {
 
   completeMultipartUpload: {
     method: 'POST',
-    path: '/files/multipart/complete',
+    path: '/api/files/multipart/complete',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -98,7 +98,7 @@ export const fileRoutes = {
 
   abortMultipartUpload: {
     method: 'POST',
-    path: '/files/multipart/abort',
+    path: '/api/files/multipart/abort',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -116,7 +116,7 @@ export const fileRoutes = {
 
   deleteFile: {
     method: 'DELETE',
-    path: '/files/:fileKey',
+    path: '/api/files/:fileKey',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -132,7 +132,7 @@ export const fileRoutes = {
 
   copyFile: {
     method: 'POST',
-    path: '/files/:fileKey/copy',
+    path: '/api/files/:fileKey/copy',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -154,7 +154,7 @@ export const fileRoutes = {
 
   renameFile: {
     method: 'POST',
-    path: '/files/:fileKey/rename',
+    path: '/api/files/:fileKey/rename',
     headers: z.object({
       authorization: z.string(),
     }),

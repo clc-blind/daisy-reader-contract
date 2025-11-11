@@ -4,7 +4,7 @@ import { BookSchema, ReadingProgressSchema } from '@/src/schema';
 export const readingRoutes = {
   getRecentlyReadBooks: {
     method: 'GET',
-    path: '/progress/recent/:userId',
+    path: '/api/progress/recent/:userId',
     query: z.object({ limit: z.coerce.number().optional() }),
     responses: {
       200: z.array(BookSchema),
@@ -14,7 +14,7 @@ export const readingRoutes = {
 
   getInprogressBooks: {
     method: 'GET',
-    path: '/progress/inprogress/:userId',
+    path: '/api/progress/inprogress/:userId',
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),
@@ -27,7 +27,7 @@ export const readingRoutes = {
 
   updateReadingProgress: {
     method: 'PATCH',
-    path: '/progress/:id',
+    path: '/api/progress/:id',
     headers: z.object({
       authorization: z.string(),
     }),

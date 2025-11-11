@@ -4,7 +4,7 @@ import { BookSchema } from '@/src/schema';
 export const bookRoutes = {
   getAllBooks: {
     method: 'GET',
-    path: '/books',
+    path: '/api/books',
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),
@@ -23,7 +23,7 @@ export const bookRoutes = {
 
   getFeaturedBooks: {
     method: 'GET',
-    path: '/books/featured',
+    path: '/api/books/featured',
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),
@@ -38,7 +38,7 @@ export const bookRoutes = {
 
   searchBooks: {
     method: 'GET',
-    path: '/books/search',
+    path: '/api/books/search',
     query: z.object({
       q: z.string().min(1),
       limit: z.coerce.number().optional(),
@@ -52,7 +52,7 @@ export const bookRoutes = {
 
   getBookById: {
     method: 'GET',
-    path: '/books/:bookId',
+    path: '/api/books/:bookId',
     responses: {
       200: BookSchema,
     },
@@ -61,7 +61,7 @@ export const bookRoutes = {
 
   getBooksByLanguage: {
     method: 'GET',
-    path: '/books/language/:language',
+    path: '/api/books/language/:language',
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),
@@ -74,7 +74,7 @@ export const bookRoutes = {
 
   getBookBySubject: {
     method: 'GET',
-    path: '/books/subject/:subjectSlug',
+    path: '/api/books/subject/:subjectSlug',
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),
@@ -89,7 +89,7 @@ export const bookRoutes = {
 
   uploadBook: {
     method: 'POST',
-    path: '/books',
+    path: '/api/books',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -102,7 +102,7 @@ export const bookRoutes = {
 
   editBook: {
     method: 'PATCH',
-    path: '/books/:bookId',
+    path: '/api/books/:bookId',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -119,7 +119,7 @@ export const bookRoutes = {
 
   deleteBook: {
     method: 'DELETE',
-    path: '/books/:bookId',
+    path: '/api/books/:bookId',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -132,7 +132,7 @@ export const bookRoutes = {
 
   listBookFiles: {
     method: 'GET',
-    path: '/books/:bookId/files',
+    path: '/api/books/:bookId/files',
     pathParams: z.object({ bookId: z.string() }),
     responses: {
       200: z.object({
@@ -155,7 +155,7 @@ export const bookRoutes = {
 
   getBookFileContent: {
     method: 'GET',
-    path: '/books/:bookId/files/:fileName',
+    path: '/api/books/:bookId/files/:fileName',
     pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
     query: z.object({
       encoding: z.enum(['utf-8', 'base64']).default('utf-8'),
@@ -175,7 +175,7 @@ export const bookRoutes = {
 
   getBookAudioSignedUrl: {
     method: 'GET',
-    path: '/books/:bookId/audio/:fileName/signed-url',
+    path: '/api/books/:bookId/audio/:fileName/signed-url',
     pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
     query: z.object({
       expiresIn: z.coerce.number().optional(),

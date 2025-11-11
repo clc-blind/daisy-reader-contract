@@ -5,7 +5,7 @@ export const userRoutes = {
   // Current User (Web & Admin)
   getCurrentUser: {
     method: 'GET',
-    path: '/users/me',
+    path: '/api/users/me',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -19,7 +19,7 @@ export const userRoutes = {
 
   updateUserProfile: {
     method: 'PATCH',
-    path: '/users/me',
+    path: '/api/users/me',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -33,7 +33,7 @@ export const userRoutes = {
   // User Preferences (Web only)
   getUserPreferences: {
     method: 'GET',
-    path: '/users/me/preferences',
+    path: '/api/users/me/preferences',
     headers: z.object({
       authorization: z.string(),
     }),
@@ -45,7 +45,7 @@ export const userRoutes = {
 
   updateUserPreferences: {
     method: 'PATCH',
-    path: '/users/me/preferences',
+    path: '/api/users/me/preferences',
     headers: z.object({
       authorization: z.string(),
     }),
