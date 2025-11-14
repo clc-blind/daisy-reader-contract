@@ -3,7 +3,7 @@ import { generateOpenApi } from '@ts-rest/open-api';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { betterAuth } from 'better-auth';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { openAPI } from 'better-auth/plugins';
+import { admin, bearer, openAPI } from 'better-auth/plugins';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { appContract } from '@/src/contract';
@@ -76,8 +76,10 @@ const generateOpenApiDocument = async () => {
   const betterAuthOpenApiDocument = await betterAuth({
     emailAndPassword: {
       enabled: true,
+      // NOTE: Disable signup via email/password
+      disableSignUp: true,
     },
-    plugins: [openAPI()],
+    plugins: [admin(), bearer(), openAPI()],
   }).api.generateOpenAPISchema();
 
   // Prefix Better Auth paths with /api/auth and update tags
