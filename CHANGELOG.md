@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.7](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.6...v1.0.7) (2025-11-14)
+
+
+### Bug Fixes
+
+* update better-auth admin routes ([d422806](https://github.com/clc-blind/daisy-reader-contract/commit/d4228067bbe21f00d9f429315b3db186947eef1f))
+* update better-auth admin routes ([b0048e2](https://github.com/clc-blind/daisy-reader-contract/commit/b0048e2030f220adeec454f9302e1967c79a4384))
+
 ## [1.0.6](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.5...v1.0.6) (2025-11-11)
 
 
