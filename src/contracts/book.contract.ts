@@ -117,6 +117,22 @@ export const bookRoutes = {
     summary: 'Edit a book',
   },
 
+  incrementBookViews: {
+    method: 'POST',
+    path: '/api/books/:bookId/views',
+    pathParams: z.object({
+      bookId: z.string(),
+    }),
+    body: z.undefined(),
+    responses: {
+      200: z.object({
+        bookId: z.string(),
+        views: z.number().int(),
+      }),
+    },
+    summary: 'Increment view count for a book',
+  },
+
   deleteBook: {
     method: 'DELETE',
     path: '/api/books/:bookId',
