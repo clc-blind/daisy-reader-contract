@@ -149,6 +149,26 @@ export const fileRoutes = {
     summary: 'Check whether a file exists',
   },
 
+  checkFolderExists: {
+    method: 'GET',
+    path: '/api/files/folder/exists',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    query: z.object({
+      prefix: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        exists: z.boolean(),
+        keyCount: z.number().int().optional(),
+      }),
+      401: z.object({ message: z.string() }),
+    },
+    summary:
+      'Check whether a folder (prefix) exists and optionally count objects',
+  },
+
   requestFileUploadUrl: {
     method: 'POST',
     path: '/api/files/upload-url',
