@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.8](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.7...v1.0.8) (2025-11-21)
+
+
+### Bug Fixes
+
+* organize contracts ([4aa88c6](https://github.com/clc-blind/daisy-reader-contract/commit/4aa88c6100bca189049419591af745c66e9a68b4))
+* update file operations ([399c0ef](https://github.com/clc-blind/daisy-reader-contract/commit/399c0ef19e6cee324fc8183bfd3b547fc978f525))
+* update file operations ([ec187d6](https://github.com/clc-blind/daisy-reader-contract/commit/ec187d63dadcb71e9e90716eddfe0d444729595a))
+
 ## [1.0.7](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.6...v1.0.7) (2025-11-14)
 
 
