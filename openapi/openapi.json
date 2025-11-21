@@ -1686,231 +1686,6 @@
         }
       }
     },
-    "/api/books/{bookId}/files": {
-      "get": {
-        "summary": "List all files for a book",
-        "tags": [
-          "Books"
-        ],
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "listBookFiles",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "bookId": {
-                      "type": "string"
-                    },
-                    "bookTitle": {
-                      "type": "string"
-                    },
-                    "storagePath": {
-                      "type": "string"
-                    },
-                    "totalFiles": {
-                      "type": "integer"
-                    },
-                    "files": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "key": {
-                            "type": "string"
-                          },
-                          "fileName": {
-                            "type": "string"
-                          },
-                          "extension": {
-                            "type": "string"
-                          },
-                          "contentType": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "key",
-                          "fileName",
-                          "extension",
-                          "contentType"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "bookId",
-                    "bookTitle",
-                    "storagePath",
-                    "totalFiles",
-                    "files"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/books/{bookId}/files/{fileName}": {
-      "get": {
-        "summary": "Get file content for a book",
-        "tags": [
-          "Books"
-        ],
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fileName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "encoding",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "default": "utf-8",
-                  "type": "string",
-                  "enum": [
-                    "utf-8",
-                    "base64"
-                  ]
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "getBookFileContent",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "bookId": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "contentType": {
-                      "type": "string"
-                    },
-                    "encoding": {
-                      "type": "string",
-                      "enum": [
-                        "utf-8",
-                        "base64"
-                      ]
-                    },
-                    "size": {
-                      "type": "integer"
-                    },
-                    "content": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "bookId",
-                    "fileName",
-                    "contentType",
-                    "encoding",
-                    "size",
-                    "content"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/books/{bookId}/audio/{fileName}/signed-url": {
-      "get": {
-        "summary": "Get presigned URL for book audio file",
-        "tags": [
-          "Books"
-        ],
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fileName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "expiresIn",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number",
-                  "nullable": true
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "getBookAudioSignedUrl",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  },
-                  "required": [
-                    "url"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/users/me": {
       "get": {
         "summary": "Get current authenticated user with role",
@@ -3016,6 +2791,373 @@
         }
       }
     },
+    "/api/books/{bookId}/files": {
+      "get": {
+        "summary": "List all files for a book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "listBookFiles",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "bookTitle": {
+                      "type": "string"
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "totalFiles": {
+                      "type": "integer"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          },
+                          "extension": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "fileName",
+                          "extension",
+                          "contentType"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "bookTitle",
+                    "storagePath",
+                    "totalFiles",
+                    "files"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/files/{fileName}": {
+      "get": {
+        "summary": "Get file content for a book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "default": "utf-8",
+                  "type": "string",
+                  "enum": [
+                    "utf-8",
+                    "base64"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getBookFileContent",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "contentType": {
+                      "type": "string"
+                    },
+                    "encoding": {
+                      "type": "string",
+                      "enum": [
+                        "utf-8",
+                        "base64"
+                      ]
+                    },
+                    "size": {
+                      "type": "integer"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "fileName",
+                    "contentType",
+                    "encoding",
+                    "size",
+                    "content"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/audio/{fileName}/signed-url": {
+      "get": {
+        "summary": "Get presigned URL for book audio file",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiresIn",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getBookAudioSignedUrl",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/files/list": {
+      "get": {
+        "summary": "List files in a storage path with pagination support",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "storagePath",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "prefix",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "continuationToken",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "maxKeys",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "listFiles",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "lastModified": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "eTag": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer"
+                          },
+                          "storageClass": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "lastModified",
+                          "eTag",
+                          "size"
+                        ]
+                      }
+                    },
+                    "isTruncated": {
+                      "type": "boolean"
+                    },
+                    "nextContinuationToken": {
+                      "type": "string"
+                    },
+                    "keyCount": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "contents",
+                    "isTruncated",
+                    "keyCount"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/files/signed-url": {
       "get": {
         "summary": "Get presigned URL for downloading a file",
@@ -3141,6 +3283,137 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/files/upload": {
+      "put": {
+        "summary": "Upload a file directly using S3 PutObject",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "content-type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "uploadFile",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "storagePath": {
+                    "type": "string"
+                  },
+                  "contentType": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileName",
+                  "storagePath",
+                  "contentType",
+                  "content"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fileKey": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "size": {
+                      "type": "integer"
+                    },
+                    "etag": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "fileKey",
+                    "url",
+                    "size",
+                    "etag"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3211,6 +3484,24 @@
                   "required": [
                     "uploadId",
                     "fileKey"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
                   ]
                 }
               }
@@ -3288,6 +3579,24 @@
                   "required": [
                     "url",
                     "partNumber"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
                   ]
                 }
               }
@@ -3381,6 +3690,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3447,6 +3774,284 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/files/multipart/list": {
+      "get": {
+        "summary": "List in-progress multipart uploads",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prefix",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "keyMarker",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "uploadIdMarker",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "maxUploads",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "listMultipartUploads",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploads": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "uploadId": {
+                            "type": "string"
+                          },
+                          "initiated": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "storageClass": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "uploadId",
+                          "initiated"
+                        ]
+                      }
+                    },
+                    "isTruncated": {
+                      "type": "boolean"
+                    },
+                    "nextKeyMarker": {
+                      "type": "string"
+                    },
+                    "nextUploadIdMarker": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "uploads",
+                    "isTruncated"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/files/batch-delete": {
+      "post": {
+        "summary": "Delete multiple files in a single request",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "deleteFiles",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keys": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "maxItems": 1000
+                  },
+                  "quiet": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "keys"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "versionId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key"
+                        ]
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "code",
+                          "message"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3495,6 +4100,24 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
               }
             }
           }
@@ -3575,6 +4198,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3649,6 +4290,120 @@
                     "oldKey",
                     "newKey",
                     "success"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/files/{fileKey}/move": {
+      "post": {
+        "summary": "Move a file (copy to destination and delete source)",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "fileKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "moveFile",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destinationKey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "destinationKey"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sourceKey": {
+                      "type": "string"
+                    },
+                    "destinationKey": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "sourceKey",
+                    "destinationKey",
+                    "success"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
                   ]
                 }
               }
