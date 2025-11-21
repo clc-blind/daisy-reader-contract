@@ -5,6 +5,14 @@ import { betterAuth } from 'better-auth';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { admin, bearer, openAPI } from 'better-auth/plugins';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { createAccessControl } from 'better-auth/plugins/access';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  adminAc,
+  defaultStatements,
+  userAc,
+} from 'better-auth/plugins/admin/access';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { appContract } from '@/src/contract';
 import {
@@ -17,6 +25,24 @@ import {
   S3UploadUrlResponseSchema,
   UserPreferencesSchema,
 } from '@/src/schema';
+
+const statement = {
+  ...defaultStatements,
+} as const;
+
+const ac = createAccessControl(statement);
+
+const userRole = ac.newRole({
+  ...userAc.statements,
+});
+
+const adminRole = ac.newRole({
+  ...adminAc.statements,
+});
+
+const editorRole = ac.newRole({
+  ...userAc.statements,
+});
 
 const generateOpenApiDocument = async () => {
   const baseOpenApiDocument = generateOpenApi(
@@ -79,7 +105,18 @@ const generateOpenApiDocument = async () => {
       // NOTE: Disable signup via email/password
       disableSignUp: true,
     },
-    plugins: [admin(), bearer(), openAPI()],
+    plugins: [
+      admin({
+        ac,
+        roles: {
+          user: userRole,
+          admin: adminRole,
+          editor: editorRole,
+        },
+      }),
+      bearer(),
+      openAPI(),
+    ],
   }).api.generateOpenAPISchema();
 
   // Prefix Better Auth paths with /api/auth and update tags
