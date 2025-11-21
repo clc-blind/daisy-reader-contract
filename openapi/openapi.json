@@ -1686,231 +1686,6 @@
         }
       }
     },
-    "/api/books/{bookId}/files": {
-      "get": {
-        "summary": "List all files for a book",
-        "tags": [
-          "Books"
-        ],
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "listBookFiles",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "bookId": {
-                      "type": "string"
-                    },
-                    "bookTitle": {
-                      "type": "string"
-                    },
-                    "storagePath": {
-                      "type": "string"
-                    },
-                    "totalFiles": {
-                      "type": "integer"
-                    },
-                    "files": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "key": {
-                            "type": "string"
-                          },
-                          "fileName": {
-                            "type": "string"
-                          },
-                          "extension": {
-                            "type": "string"
-                          },
-                          "contentType": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "key",
-                          "fileName",
-                          "extension",
-                          "contentType"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "bookId",
-                    "bookTitle",
-                    "storagePath",
-                    "totalFiles",
-                    "files"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/books/{bookId}/files/{fileName}": {
-      "get": {
-        "summary": "Get file content for a book",
-        "tags": [
-          "Books"
-        ],
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fileName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "encoding",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "default": "utf-8",
-                  "type": "string",
-                  "enum": [
-                    "utf-8",
-                    "base64"
-                  ]
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "getBookFileContent",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "bookId": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "contentType": {
-                      "type": "string"
-                    },
-                    "encoding": {
-                      "type": "string",
-                      "enum": [
-                        "utf-8",
-                        "base64"
-                      ]
-                    },
-                    "size": {
-                      "type": "integer"
-                    },
-                    "content": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "bookId",
-                    "fileName",
-                    "contentType",
-                    "encoding",
-                    "size",
-                    "content"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/books/{bookId}/audio/{fileName}/signed-url": {
-      "get": {
-        "summary": "Get presigned URL for book audio file",
-        "tags": [
-          "Books"
-        ],
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fileName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "expiresIn",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number",
-                  "nullable": true
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "getBookAudioSignedUrl",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  },
-                  "required": [
-                    "url"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/users/me": {
       "get": {
         "summary": "Get current authenticated user with role",
@@ -3009,6 +2784,231 @@
                       "updatedAt"
                     ]
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/files": {
+      "get": {
+        "summary": "List all files for a book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "listBookFiles",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "bookTitle": {
+                      "type": "string"
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "totalFiles": {
+                      "type": "integer"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          },
+                          "extension": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "fileName",
+                          "extension",
+                          "contentType"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "bookTitle",
+                    "storagePath",
+                    "totalFiles",
+                    "files"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/files/{fileName}": {
+      "get": {
+        "summary": "Get file content for a book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "default": "utf-8",
+                  "type": "string",
+                  "enum": [
+                    "utf-8",
+                    "base64"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getBookFileContent",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "contentType": {
+                      "type": "string"
+                    },
+                    "encoding": {
+                      "type": "string",
+                      "enum": [
+                        "utf-8",
+                        "base64"
+                      ]
+                    },
+                    "size": {
+                      "type": "integer"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "fileName",
+                    "contentType",
+                    "encoding",
+                    "size",
+                    "content"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/audio/{fileName}/signed-url": {
+      "get": {
+        "summary": "Get presigned URL for book audio file",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiresIn",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getBookAudioSignedUrl",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ]
                 }
               }
             }
