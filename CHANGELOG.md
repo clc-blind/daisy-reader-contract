@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.11](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.10...v1.0.11) (2025-11-21)
+
+
+### Bug Fixes
+
+* update file handler params ([29e4dc9](https://github.com/clc-blind/daisy-reader-contract/commit/29e4dc91cbe475312191ecaf4d88a3b828aa6a61))
+* update file handler params ([1bac21e](https://github.com/clc-blind/daisy-reader-contract/commit/1bac21e5a382471f5ce541b2b6d6eb9f13973f98))
+
 ## [1.0.10](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.9...v1.0.10) (2025-11-21)
 
 
