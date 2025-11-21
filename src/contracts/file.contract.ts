@@ -108,6 +108,47 @@ export const fileRoutes = {
     summary: 'Get presigned URL for downloading a file',
   },
 
+  getFileMetadata: {
+    method: 'GET',
+    path: '/api/files/:fileKey/metadata',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    pathParams: z.object({
+      fileKey: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        contentLength: z.number().int(),
+        contentType: z.string().optional(),
+        lastModified: z.string().datetime().optional(),
+        eTag: z.string().optional(),
+        metadata: z.record(z.string()).optional(),
+        storageClass: z.string().optional(),
+      }),
+      401: z.object({ message: z.string() }),
+      404: z.object({ message: z.string() }),
+    },
+    summary: 'Get object metadata for a file',
+  },
+
+  checkFileExists: {
+    method: 'GET',
+    path: '/api/files/:fileKey/exists',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    pathParams: z.object({
+      fileKey: z.string(),
+    }),
+    responses: {
+      200: z.object({ exists: z.boolean() }),
+      401: z.object({ message: z.string() }),
+      404: z.object({ message: z.string() }),
+    },
+    summary: 'Check whether a file exists',
+  },
+
   requestFileUploadUrl: {
     method: 'POST',
     path: '/api/files/upload-url',
