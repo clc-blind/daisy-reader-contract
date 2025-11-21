@@ -110,11 +110,11 @@ export const fileRoutes = {
 
   getFileMetadata: {
     method: 'GET',
-    path: '/api/files/:fileKey/metadata',
+    path: '/api/files/metadata',
     headers: z.object({
       authorization: z.string(),
     }),
-    pathParams: z.object({
+    query: z.object({
       fileKey: z.string(),
     }),
     responses: {
@@ -134,11 +134,11 @@ export const fileRoutes = {
 
   checkFileExists: {
     method: 'GET',
-    path: '/api/files/:fileKey/exists',
+    path: '/api/files/exists',
     headers: z.object({
       authorization: z.string(),
     }),
-    pathParams: z.object({
+    query: z.object({
       fileKey: z.string(),
     }),
     responses: {
@@ -156,7 +156,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
-      prefix: z.string(),
+      folderKey: z.string(),
     }),
     responses: {
       200: z.object({
@@ -377,11 +377,11 @@ export const fileRoutes = {
 
   deleteFile: {
     method: 'DELETE',
-    path: '/api/files/:fileKey',
+    path: '/api/files/delete',
     headers: z.object({
       authorization: z.string(),
     }),
-    pathParams: z.object({
+    query: z.object({
       fileKey: z.string(),
     }),
     body: z.undefined(),
@@ -396,14 +396,12 @@ export const fileRoutes = {
 
   copyFile: {
     method: 'POST',
-    path: '/api/files/:fileKey/copy',
+    path: '/api/files/copy',
     headers: z.object({
       authorization: z.string(),
     }),
-    pathParams: z.object({
-      fileKey: z.string(),
-    }),
     body: z.object({
+      sourceKey: z.string(),
       destinationKey: z.string(),
     }),
     responses: {
@@ -421,14 +419,12 @@ export const fileRoutes = {
 
   renameFile: {
     method: 'POST',
-    path: '/api/files/:fileKey/rename',
+    path: '/api/files/rename',
     headers: z.object({
       authorization: z.string(),
     }),
-    pathParams: z.object({
-      fileKey: z.string(),
-    }),
     body: z.object({
+      fileKey: z.string(),
       newFileName: z.string(),
     }),
     responses: {
@@ -446,14 +442,12 @@ export const fileRoutes = {
 
   moveFile: {
     method: 'POST',
-    path: '/api/files/:fileKey/move',
+    path: '/api/files/move',
     headers: z.object({
       authorization: z.string(),
     }),
-    pathParams: z.object({
-      fileKey: z.string(),
-    }),
     body: z.object({
+      sourceKey: z.string(),
       destinationKey: z.string(),
     }),
     responses: {
