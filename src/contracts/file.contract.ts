@@ -193,8 +193,7 @@ export const fileRoutes = {
       'content-type': z.string(),
     }),
     body: z.object({
-      fileName: z.string(),
-      storagePath: z.string(),
+      fileKey: z.string(),
       contentType: z.string(),
       content: z.string(), // Base64 encoded file content
     }),
@@ -219,7 +218,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     body: z.object({
-      fileName: z.string(),
+      fileKey: z.string(),
       contentType: z.string(),
       fileSize: z.number().int(),
     }),
