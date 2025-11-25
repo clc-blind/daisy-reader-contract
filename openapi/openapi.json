@@ -1686,6 +1686,62 @@
         }
       }
     },
+    "/api/books/{bookId}/views": {
+      "post": {
+        "summary": "Increment view count for a book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "incrementBookViews",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookId": {
+                      "type": "string"
+                    },
+                    "views": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bookId",
+                    "views"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/users/me": {
       "get": {
         "summary": "Get current authenticated user with role",
@@ -3214,6 +3270,271 @@
         }
       }
     },
+    "/api/files/metadata": {
+      "get": {
+        "summary": "Get object metadata for a file",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileKey",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getFileMetadata",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contentLength": {
+                      "type": "integer"
+                    },
+                    "contentType": {
+                      "type": "string"
+                    },
+                    "lastModified": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "eTag": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "storageClass": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "contentLength"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/files/exists": {
+      "get": {
+        "summary": "Check whether a file exists",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileKey",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "checkFileExists",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exists": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "exists"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/files/folder/exists": {
+      "get": {
+        "summary": "Check whether a folder (prefix) exists and optionally count objects",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "folderKey",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "checkFolderExists",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exists": {
+                      "type": "boolean"
+                    },
+                    "keyCount": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "exists"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/files/upload-url": {
       "post": {
         "summary": "Get a presigned URL for uploading a file",
@@ -3342,10 +3663,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "fileName": {
-                    "type": "string"
-                  },
-                  "storagePath": {
+                  "fileKey": {
                     "type": "string"
                   },
                   "contentType": {
@@ -3356,8 +3674,7 @@
                   }
                 },
                 "required": [
-                  "fileName",
-                  "storagePath",
+                  "fileKey",
                   "contentType",
                   "content"
                 ]
@@ -3447,7 +3764,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "fileName": {
+                  "fileKey": {
                     "type": "string"
                   },
                   "contentType": {
@@ -3458,7 +3775,7 @@
                   }
                 },
                 "required": [
-                  "fileName",
+                  "fileKey",
                   "contentType",
                   "fileSize"
                 ]
@@ -4061,7 +4378,7 @@
         ]
       }
     },
-    "/api/files/{fileKey}": {
+    "/api/files/delete": {
       "delete": {
         "summary": "Delete a file",
         "tags": [
@@ -4069,19 +4386,23 @@
         ],
         "parameters": [
           {
-            "name": "fileKey",
-            "in": "path",
+            "name": "authorization",
+            "in": "header",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "authorization",
-            "in": "header",
+            "name": "fileKey",
+            "in": "query",
             "required": true,
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -4129,21 +4450,13 @@
         ]
       }
     },
-    "/api/files/{fileKey}/copy": {
+    "/api/files/copy": {
       "post": {
         "summary": "Copy a file",
         "tags": [
           "Files"
         ],
         "parameters": [
-          {
-            "name": "fileKey",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "authorization",
             "in": "header",
@@ -4161,11 +4474,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "sourceKey": {
+                    "type": "string"
+                  },
                   "destinationKey": {
                     "type": "string"
                   }
                 },
                 "required": [
+                  "sourceKey",
                   "destinationKey"
                 ]
               }
@@ -4225,21 +4542,13 @@
         ]
       }
     },
-    "/api/files/{fileKey}/rename": {
+    "/api/files/rename": {
       "post": {
         "summary": "Rename a file",
         "tags": [
           "Files"
         ],
         "parameters": [
-          {
-            "name": "fileKey",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "authorization",
             "in": "header",
@@ -4257,11 +4566,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "fileKey": {
+                    "type": "string"
+                  },
                   "newFileName": {
                     "type": "string"
                   }
                 },
                 "required": [
+                  "fileKey",
                   "newFileName"
                 ]
               }
@@ -4321,21 +4634,13 @@
         ]
       }
     },
-    "/api/files/{fileKey}/move": {
+    "/api/files/move": {
       "post": {
         "summary": "Move a file (copy to destination and delete source)",
         "tags": [
           "Files"
         ],
         "parameters": [
-          {
-            "name": "fileKey",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "authorization",
             "in": "header",
@@ -4353,11 +4658,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "sourceKey": {
+                    "type": "string"
+                  },
                   "destinationKey": {
                     "type": "string"
                   }
                 },
                 "required": [
+                  "sourceKey",
                   "destinationKey"
                 ]
               }
