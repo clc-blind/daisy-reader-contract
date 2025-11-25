@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.12](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.11...v1.0.12) (2025-11-25)
+
+
+### Bug Fixes
+
+* update param names ([cd2faba](https://github.com/clc-blind/daisy-reader-contract/commit/cd2fabacbb71c725fe805d798b443659ea58ef2d))
+* update param names ([088dae7](https://github.com/clc-blind/daisy-reader-contract/commit/088dae78750e66075c137bdc0d56a26820a67688))
+
 ## [1.0.11](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.10...v1.0.11) (2025-11-21)
 
 
