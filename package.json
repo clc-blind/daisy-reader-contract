@@ -1,6 +1,6 @@
 {
   "name": "@clc-blind/daisy-reader-contract",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "author": "clc-blind",
   "description": "ts-rest API contract for DAISY reader",
   "repository": {
