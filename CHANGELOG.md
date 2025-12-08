@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.14](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.13...v1.0.14) (2025-12-08)
+
+
+### Bug Fixes
+
+* extract schema ([bb9fa96](https://github.com/clc-blind/daisy-reader-contract/commit/bb9fa96948c699add6ff6c1ffe981db25665c41a))
+* extract schema ([7b00e80](https://github.com/clc-blind/daisy-reader-contract/commit/7b00e808cffed81ec5c10c690cbc240936d5b168))
+* update openapi schema ([15e7019](https://github.com/clc-blind/daisy-reader-contract/commit/15e70197b38c913d0c7ef92cd0e43c24bfb1f25b))
+
 ## [1.0.13](https://github.com/clc-blind/daisy-reader-contract/compare/v1.0.12...v1.0.13) (2025-12-08)
 
 
