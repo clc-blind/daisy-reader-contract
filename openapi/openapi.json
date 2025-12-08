@@ -66,6 +66,18 @@
             }
           },
           {
+            "name": "featured",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          {
             "name": "sortBy",
             "in": "query",
             "content": {
@@ -91,18 +103,6 @@
                     "asc",
                     "desc"
                   ]
-                }
-              }
-            }
-          },
-          {
-            "name": "featured",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean",
-                  "nullable": true
                 }
               }
             }
@@ -3164,6 +3164,9 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "fileName": {
+                            "type": "string"
+                          },
                           "fileKey": {
                             "type": "string"
                           },
@@ -3185,6 +3188,7 @@
                           }
                         },
                         "required": [
+                          "fileName",
                           "fileKey"
                         ]
                       }
@@ -4872,6 +4876,10 @@
                     "type": "string",
                     "description": "The login hint to use for the authorization code request",
                     "nullable": true
+                  },
+                  "additionalData": {
+                    "type": "string",
+                    "nullable": true
                   }
                 },
                 "required": [
@@ -4890,56 +4898,21 @@
                   "type": "object",
                   "description": "Session response when idToken is provided",
                   "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
                     "redirect": {
                       "type": "boolean",
                       "enum": [
                         false
                       ]
-                    },
-                    "token": {
-                      "type": "string",
-                      "description": "Session token",
-                      "url": {
-                        "type": "null",
-                        "nullable": true
-                      },
-                      "user": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "email": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "image": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "emailVerified": {
-                            "type": "boolean"
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "updatedAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "email",
-                          "emailVerified",
-                          "createdAt",
-                          "updatedAt"
-                        ]
-                      }
                     }
                   },
                   "required": [
@@ -5056,6 +5029,7 @@
           "Auth"
         ],
         "description": "Get the current session",
+        "operationId": "getSession",
         "security": [
           {
             "bearerAuth": []
@@ -5190,6 +5164,7 @@
           "Auth"
         ],
         "description": "Sign out the current user",
+        "operationId": "signOut",
         "security": [
           {
             "bearerAuth": []
@@ -5327,6 +5302,7 @@
           "Auth"
         ],
         "description": "Sign up a user using email and password",
+        "operationId": "signUpWithEmailAndPassword",
         "security": [
           {
             "bearerAuth": []
@@ -5560,6 +5536,7 @@
           "Auth"
         ],
         "description": "Sign in with email and password",
+        "operationId": "signInEmail",
         "security": [
           {
             "bearerAuth": []
@@ -5619,45 +5596,12 @@
                       "description": "Session token"
                     },
                     "url": {
-                      "type": "null",
+                      "type": "string",
                       "nullable": true
                     },
                     "user": {
                       "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "image": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "emailVerified": {
-                          "type": "boolean"
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "email",
-                        "emailVerified",
-                        "createdAt",
-                        "updatedAt"
-                      ]
+                      "$ref": "#/components/schemas/User"
                     }
                   },
                   "required": [
@@ -5768,166 +5712,13 @@
         }
       }
     },
-    "/api/auth/forget-password": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Send a password reset email to the user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The email address of the user to send a password reset email to"
-                  },
-                  "redirectTo": {
-                    "type": "string",
-                    "description": "The URL to redirect the user to reset their password. If the token isn't valid or expired, it'll be redirected with a query parameter `?error=INVALID_TOKEN`. If the token is valid, it'll be redirected with a query parameter `?token=VALID_TOKEN",
-                    "nullable": true
-                  }
-                },
-                "required": [
-                  "email"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ]
-                }
-              }
-            },
-            "description": "Bad Request. Usually due to missing parameters, or invalid parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Due to missing or invalid authentication."
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Forbidden. You do not have permission to access this resource or to perform this action."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Not Found. The requested resource was not found."
-          },
-          "429": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Too Many Requests. You have exceeded the rate limit. Try again later."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Internal Server Error. This is a problem with the server that you cannot fix."
-          }
-        }
-      }
-    },
     "/api/auth/reset-password": {
       "post": {
         "tags": [
           "Auth"
         ],
         "description": "Reset the password for a user",
+        "operationId": "resetPassword",
         "security": [
           {
             "bearerAuth": []
@@ -6114,45 +5905,7 @@
                   "properties": {
                     "user": {
                       "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "User ID"
-                        },
-                        "email": {
-                          "type": "string",
-                          "description": "User email"
-                        },
-                        "name": {
-                          "type": "string",
-                          "description": "User name"
-                        },
-                        "image": {
-                          "type": "string",
-                          "description": "User image URL"
-                        },
-                        "emailVerified": {
-                          "type": "boolean",
-                          "description": "Indicates if the user email is verified"
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "description": "User creation date"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "description": "User update date"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "email",
-                        "name",
-                        "image",
-                        "emailVerified",
-                        "createdAt",
-                        "updatedAt"
-                      ]
+                      "$ref": "#/components/schemas/User"
                     },
                     "status": {
                       "type": "boolean",
@@ -6272,6 +6025,7 @@
           "Auth"
         ],
         "description": "Send a verification email to the user",
+        "operationId": "sendVerificationEmail",
         "security": [
           {
             "bearerAuth": []
@@ -6424,6 +6178,7 @@
         "tags": [
           "Auth"
         ],
+        "operationId": "changeEmail",
         "security": [
           {
             "bearerAuth": []
@@ -6462,6 +6217,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "user": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
+                    },
                     "status": {
                       "type": "boolean",
                       "description": "Indicates if the request was successful"
@@ -6603,6 +6362,7 @@
           "Auth"
         ],
         "description": "Change the password of the user",
+        "operationId": "changePassword",
         "security": [
           {
             "bearerAuth": []
@@ -6810,6 +6570,7 @@
           "Auth"
         ],
         "description": "Update the current user",
+        "operationId": "updateUser",
         "security": [
           {
             "bearerAuth": []
@@ -6828,7 +6589,8 @@
                   },
                   "image": {
                     "type": "string",
-                    "description": "The image of the user"
+                    "description": "The image of the user",
+                    "nullable": true
                   }
                 }
               }
@@ -6843,9 +6605,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": {
-                      "type": "boolean",
-                      "description": "Indicates if the update was successful"
+                    "user": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
                     }
                   }
                 }
@@ -6957,6 +6719,7 @@
           "Auth"
         ],
         "description": "Delete the user",
+        "operationId": "deleteUser",
         "security": [
           {
             "bearerAuth": []
@@ -6964,7 +6727,6 @@
         ],
         "parameters": [],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -6972,21 +6734,17 @@
                 "properties": {
                   "callbackURL": {
                     "type": "string",
-                    "description": "The callback URL to redirect to after the user is deleted",
-                    "nullable": true
+                    "description": "The callback URL to redirect to after the user is deleted"
                   },
                   "password": {
                     "type": "string",
-                    "description": "The password of the user is required to delete the user",
-                    "nullable": true
+                    "description": "The user's password. Required if session is not fresh"
                   },
                   "token": {
                     "type": "string",
-                    "description": "The token to delete the user is required",
-                    "nullable": true
+                    "description": "The deletion verification token"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -7119,148 +6877,13 @@
         }
       }
     },
-    "/api/auth/reset-password/{token}": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Redirects the user to the callback URL with the token",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "callbackURL",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "description": "The URL to redirect the user to reset their password"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ]
-                }
-              }
-            },
-            "description": "Bad Request. Usually due to missing parameters, or invalid parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Due to missing or invalid authentication."
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Forbidden. You do not have permission to access this resource or to perform this action."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Not Found. The requested resource was not found."
-          },
-          "429": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Too Many Requests. You have exceeded the rate limit. Try again later."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Internal Server Error. This is a problem with the server that you cannot fix."
-          }
-        }
-      }
-    },
     "/api/auth/request-password-reset": {
       "post": {
         "tags": [
           "Auth"
         ],
         "description": "Send a password reset email to the user",
+        "operationId": "requestPasswordReset",
         "security": [
           {
             "bearerAuth": []
@@ -7409,12 +7032,160 @@
         }
       }
     },
+    "/api/auth/reset-password/{token}": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Redirects the user to the callback URL with the token",
+        "operationId": "resetPasswordCallback",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "The token to reset the password",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "callbackURL",
+            "in": "query",
+            "required": true,
+            "description": "The URL to redirect the user to reset their password",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            },
+            "description": "Bad Request. Usually due to missing parameters, or invalid parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Due to missing or invalid authentication."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Forbidden. You do not have permission to access this resource or to perform this action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Not Found. The requested resource was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Too Many Requests. You have exceeded the rate limit. Try again later."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error. This is a problem with the server that you cannot fix."
+          }
+        }
+      }
+    },
     "/api/auth/list-sessions": {
       "get": {
         "tags": [
           "Auth"
         ],
         "description": "List all active sessions for the user",
+        "operationId": "listUserSessions",
         "security": [
           {
             "bearerAuth": []
@@ -7971,6 +7742,7 @@
           "Auth"
         ],
         "description": "Link a social account to the user",
+        "operationId": "linkSocialAccount",
         "security": [
           {
             "bearerAuth": []
@@ -8037,6 +7809,10 @@
                   "disableRedirect": {
                     "type": "boolean",
                     "description": "Disable automatic redirection to the provider. Useful for handling the redirection yourself",
+                    "nullable": true
+                  },
+                  "additionalData": {
+                    "type": "string",
                     "nullable": true
                   }
                 },
@@ -8179,6 +7955,7 @@
           "Auth"
         ],
         "description": "List all accounts linked to the user",
+        "operationId": "listUserAccounts",
         "security": [
           {
             "bearerAuth": []
@@ -8212,6 +7989,9 @@
                       "accountId": {
                         "type": "string"
                       },
+                      "userId": {
+                        "type": "string"
+                      },
                       "scopes": {
                         "type": "array",
                         "items": {
@@ -8225,6 +8005,7 @@
                       "createdAt",
                       "updatedAt",
                       "accountId",
+                      "userId",
                       "scopes"
                     ]
                   }
@@ -8954,7 +8735,7 @@
       }
     },
     "/api/auth/account-info": {
-      "post": {
+      "get": {
         "tags": [
           "Auth"
         ],
@@ -8965,25 +8746,6 @@
           }
         ],
         "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "accountId": {
-                    "type": "string",
-                    "description": "The provider given account id for which to get the account info"
-                  }
-                },
-                "required": [
-                  "accountId"
-                ]
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
@@ -9390,7 +9152,7 @@
           "Auth"
         ],
         "description": "Set the role of a user",
-        "operationId": "setRole",
+        "operationId": "setUserRole",
         "security": [
           {
             "bearerAuth": []
@@ -11715,10 +11477,12 @@
           },
           "createdAt": {
             "type": "string",
+            "format": "date-time",
             "default": "Generated at runtime"
           },
           "updatedAt": {
             "type": "string",
+            "format": "date-time",
             "default": "Generated at runtime"
           },
           "role": {
@@ -11736,6 +11500,7 @@
           },
           "banExpires": {
             "type": "string",
+            "format": "date-time",
             "readOnly": true
           }
         },
@@ -11753,17 +11518,20 @@
             "type": "string"
           },
           "expiresAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "token": {
             "type": "string"
           },
           "createdAt": {
             "type": "string",
+            "format": "date-time",
             "default": "Generated at runtime"
           },
           "updatedAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "ipAddress": {
             "type": "string"
@@ -11811,10 +11579,12 @@
             "type": "string"
           },
           "accessTokenExpiresAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "refreshTokenExpiresAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "scope": {
             "type": "string"
@@ -11824,10 +11594,12 @@
           },
           "createdAt": {
             "type": "string",
+            "format": "date-time",
             "default": "Generated at runtime"
           },
           "updatedAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           }
         },
         "required": [
@@ -11851,14 +11623,17 @@
             "type": "string"
           },
           "expiresAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "createdAt": {
             "type": "string",
+            "format": "date-time",
             "default": "Generated at runtime"
           },
           "updatedAt": {
             "type": "string",
+            "format": "date-time",
             "default": "Generated at runtime"
           }
         },
@@ -12151,31 +11926,35 @@
         ],
         "additionalProperties": false
       },
-      "FileInfo": {
+      "FileMetadata": {
         "type": "object",
         "properties": {
-          "key": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "extension": {
+          "fileKey": {
             "type": "string"
           },
           "contentType": {
             "type": "string"
+          },
+          "contentEncoding": {
+            "type": "string"
+          },
+          "contentLength": {
+            "type": "integer"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eTag": {
+            "type": "string"
           }
         },
         "required": [
-          "key",
-          "fileName",
-          "extension",
-          "contentType"
+          "fileKey"
         ],
         "additionalProperties": false
       },
-      "FileContent": {
+      "FileContentResponse": {
         "type": "object",
         "properties": {
           "bookId": {
@@ -12184,29 +11963,37 @@
           "fileName": {
             "type": "string"
           },
+          "storagePath": {
+            "type": "string"
+          },
+          "fileKey": {
+            "type": "string"
+          },
           "contentType": {
             "type": "string"
           },
-          "encoding": {
-            "type": "string",
-            "enum": [
-              "utf-8",
-              "base64"
-            ]
+          "contentEncoding": {
+            "type": "string"
           },
-          "size": {
+          "contentLength": {
             "type": "integer"
           },
           "content": {
+            "type": "string"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eTag": {
             "type": "string"
           }
         },
         "required": [
           "bookId",
           "fileName",
-          "contentType",
-          "encoding",
-          "size",
+          "storagePath",
+          "fileKey",
           "content"
         ],
         "additionalProperties": false
