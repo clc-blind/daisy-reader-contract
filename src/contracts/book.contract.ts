@@ -1,22 +1,21 @@
 import { z } from 'zod';
-import { BookSchema } from '@/src/schema';
+import {
+  BookFilterQuerySchema,
+  BookListResponseSchema,
+  BookSchema,
+  BookViewsResponseSchema,
+  PaginationQuerySchema,
+  SearchQuerySchema,
+  SortQuerySchema,
+} from '@/src/schema';
 
 export const bookRoutes = {
   getAllBooks: {
     method: 'GET',
     path: '/api/books',
-    query: z.object({
-      limit: z.coerce.number().optional(),
-      offset: z.coerce.number().optional(),
-      subject: z.string().optional(),
-      author: z.string().optional(),
-      search: z.string().optional(),
-      sortBy: z.enum(['name', 'date']).optional(),
-      sortOrder: z.enum(['asc', 'desc']).optional(),
-      featured: z.coerce.boolean().optional(),
-    }),
+    query: BookFilterQuerySchema,
     responses: {
-      200: z.object({ data: z.array(BookSchema), total: z.number() }),
+      200: BookListResponseSchema,
     },
     summary: 'Get all books with optional filtering and pagination',
   },
@@ -24,14 +23,9 @@ export const bookRoutes = {
   getFeaturedBooks: {
     method: 'GET',
     path: '/api/books/featured',
-    query: z.object({
-      limit: z.coerce.number().optional(),
-      offset: z.coerce.number().optional(),
-      sortBy: z.enum(['name', 'date']).optional(),
-      sortOrder: z.enum(['asc', 'desc']).optional(),
-    }),
+    query: PaginationQuerySchema.merge(SortQuerySchema),
     responses: {
-      200: z.object({ data: z.array(BookSchema), total: z.number() }),
+      200: BookListResponseSchema,
     },
     summary: 'Get featured books',
   },
@@ -39,13 +33,9 @@ export const bookRoutes = {
   searchBooks: {
     method: 'GET',
     path: '/api/books/search',
-    query: z.object({
-      q: z.string().min(1),
-      limit: z.coerce.number().optional(),
-      offset: z.coerce.number().optional(),
-    }),
+    query: SearchQuerySchema,
     responses: {
-      200: z.object({ data: z.array(BookSchema), total: z.number() }),
+      200: BookListResponseSchema,
     },
     summary: 'Search books by query string',
   },
@@ -62,12 +52,9 @@ export const bookRoutes = {
   getBooksByLanguage: {
     method: 'GET',
     path: '/api/books/language/:language',
-    query: z.object({
-      limit: z.coerce.number().optional(),
-      offset: z.coerce.number().optional(),
-    }),
+    query: PaginationQuerySchema,
     responses: {
-      200: z.object({ data: z.array(BookSchema), total: z.number() }),
+      200: BookListResponseSchema,
     },
     summary: 'Get books by language',
   },
@@ -75,14 +62,9 @@ export const bookRoutes = {
   getBookBySubject: {
     method: 'GET',
     path: '/api/books/subject/:subjectSlug',
-    query: z.object({
-      limit: z.coerce.number().optional(),
-      offset: z.coerce.number().optional(),
-      sortBy: z.enum(['name', 'date']).optional(),
-      sortOrder: z.enum(['asc', 'desc']).optional(),
-    }),
+    query: PaginationQuerySchema.merge(SortQuerySchema),
     responses: {
-      200: z.object({ data: z.array(BookSchema), total: z.number() }),
+      200: BookListResponseSchema,
     },
     summary: 'Get books by subject',
   },
@@ -125,10 +107,7 @@ export const bookRoutes = {
     }),
     body: z.undefined(),
     responses: {
-      200: z.object({
-        bookId: z.string(),
-        views: z.number().int(),
-      }),
+      200: BookViewsResponseSchema,
     },
     summary: 'Increment view count for a book',
   },

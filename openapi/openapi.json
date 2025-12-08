@@ -66,6 +66,18 @@
             }
           },
           {
+            "name": "featured",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          {
             "name": "sortBy",
             "in": "query",
             "content": {
@@ -91,18 +103,6 @@
                     "asc",
                     "desc"
                   ]
-                }
-              }
-            }
-          },
-          {
-            "name": "featured",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean",
-                  "nullable": true
                 }
               }
             }
@@ -3164,6 +3164,9 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "fileName": {
+                            "type": "string"
+                          },
                           "fileKey": {
                             "type": "string"
                           },
@@ -3185,6 +3188,7 @@
                           }
                         },
                         "required": [
+                          "fileName",
                           "fileKey"
                         ]
                       }
@@ -11922,31 +11926,35 @@
         ],
         "additionalProperties": false
       },
-      "FileInfo": {
+      "FileMetadata": {
         "type": "object",
         "properties": {
-          "key": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "extension": {
+          "fileKey": {
             "type": "string"
           },
           "contentType": {
             "type": "string"
+          },
+          "contentEncoding": {
+            "type": "string"
+          },
+          "contentLength": {
+            "type": "integer"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eTag": {
+            "type": "string"
           }
         },
         "required": [
-          "key",
-          "fileName",
-          "extension",
-          "contentType"
+          "fileKey"
         ],
         "additionalProperties": false
       },
-      "FileContent": {
+      "FileContentResponse": {
         "type": "object",
         "properties": {
           "bookId": {
@@ -11955,29 +11963,37 @@
           "fileName": {
             "type": "string"
           },
+          "storagePath": {
+            "type": "string"
+          },
+          "fileKey": {
+            "type": "string"
+          },
           "contentType": {
             "type": "string"
           },
-          "encoding": {
-            "type": "string",
-            "enum": [
-              "utf-8",
-              "base64"
-            ]
+          "contentEncoding": {
+            "type": "string"
           },
-          "size": {
+          "contentLength": {
             "type": "integer"
           },
           "content": {
+            "type": "string"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eTag": {
             "type": "string"
           }
         },
         "required": [
           "bookId",
           "fileName",
-          "contentType",
-          "encoding",
-          "size",
+          "storagePath",
+          "fileKey",
           "content"
         ],
         "additionalProperties": false

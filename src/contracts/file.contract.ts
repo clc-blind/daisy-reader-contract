@@ -1,4 +1,34 @@
 import { z } from 'zod';
+import {
+  AbortMultipartRequestSchema,
+  BatchDeleteRequestSchema,
+  BatchDeleteResponseSchema,
+  BookFilesListResponseSchema,
+  CompleteMultipartRequestSchema,
+  CompleteMultipartResponseSchema,
+  CopyFileRequestSchema,
+  CopyFileResponseSchema,
+  DeleteFileResponseSchema,
+  DirectUploadRequestSchema,
+  DirectUploadResponseSchema,
+  FileContentResponseSchema,
+  FileErrorResponseSchema,
+  FileExistsResponseSchema,
+  FileMetadataSchema,
+  FolderExistsResponseSchema,
+  InitiateMultipartRequestSchema,
+  InitiateMultipartResponseSchema,
+  ListFilesResponseSchema,
+  ListMultipartUploadsResponseSchema,
+  MoveFileRequestSchema,
+  MoveFileResponseSchema,
+  RenameFileRequestSchema,
+  SignedUrlResponseSchema,
+  UploadPartRequestSchema,
+  UploadPartResponseSchema,
+  UploadUrlRequestSchema,
+  UploadUrlResponseSchema,
+} from '@/src/schema';
 
 export const fileRoutes = {
   listBookFiles: {
@@ -6,23 +36,7 @@ export const fileRoutes = {
     path: '/api/books/:bookId/files',
     pathParams: z.object({ bookId: z.string() }),
     responses: {
-      200: z.object({
-        bookId: z.string(),
-        bookTitle: z.string(),
-        storagePath: z.string(),
-        totalFiles: z.number().int(),
-        files: z.array(
-          z.object({
-            fileName: z.string(),
-            fileKey: z.string(),
-            contentType: z.string().optional(),
-            contentEncoding: z.string().optional(),
-            contentLength: z.number().int().optional(),
-            lastModified: z.date().optional(),
-            eTag: z.string().optional(),
-          }),
-        ),
-      }),
+      200: BookFilesListResponseSchema,
     },
     summary: 'List all files for a book',
   },
@@ -35,18 +49,7 @@ export const fileRoutes = {
       expiresIn: z.coerce.number().optional(),
     }),
     responses: {
-      200: z.object({
-        bookId: z.string(),
-        fileName: z.string(),
-        storagePath: z.string(),
-        fileKey: z.string(),
-        contentType: z.string().optional(),
-        contentEncoding: z.string().optional(),
-        contentLength: z.number().int().optional(),
-        content: z.string(),
-        lastModified: z.date().optional(),
-        eTag: z.string().optional(),
-      }),
+      200: FileContentResponseSchema,
     },
     summary: 'Get file content for a book',
   },
@@ -59,10 +62,7 @@ export const fileRoutes = {
       expiresIn: z.coerce.number().optional(),
     }),
     responses: {
-      200: z.object({
-        fileKey: z.string(),
-        url: z.string().url(),
-      }),
+      200: SignedUrlResponseSchema,
     },
     summary: 'Get presigned URL for book audio file',
   },
@@ -80,26 +80,8 @@ export const fileRoutes = {
       maxKeys: z.coerce.number().int().min(1).optional(),
     }),
     responses: {
-      200: z.object({
-        contents: z.array(
-          z.object({
-            fileKey: z.string(),
-            contentType: z.string().optional(),
-            contentEncoding: z.string().optional(),
-            contentLength: z.number().int().optional(),
-            lastModified: z.date().optional(),
-            eTag: z.string().optional(),
-          }),
-        ),
-        isTruncated: z.boolean().optional(),
-        nextContinuationToken: z.string().optional(),
-        keyCount: z.number().int().optional(),
-        prefix: z.string().optional(),
-        maxKeys: z.number().int().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: ListFilesResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'List files in a storage path with pagination support',
   },
@@ -112,10 +94,7 @@ export const fileRoutes = {
       expiresIn: z.coerce.number().optional(),
     }),
     responses: {
-      200: z.object({
-        fileKey: z.string(),
-        url: z.string().url(),
-      }),
+      200: SignedUrlResponseSchema,
     },
     summary: 'Get presigned URL for downloading a file',
   },
@@ -130,16 +109,9 @@ export const fileRoutes = {
       fileKey: z.string(),
     }),
     responses: {
-      200: z.object({
-        fileKey: z.string(),
-        contentType: z.string().optional(),
-        contentEncoding: z.string().optional(),
-        contentLength: z.number().int().optional(),
-        lastModified: z.date().optional(),
-        eTag: z.string().optional(),
-      }),
-      401: z.object({ message: z.string() }),
-      404: z.object({ message: z.string() }),
+      200: FileMetadataSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
     },
     summary: 'Get object metadata for a file',
   },
@@ -154,12 +126,9 @@ export const fileRoutes = {
       fileKey: z.string(),
     }),
     responses: {
-      200: z.object({
-        fileKey: z.string(),
-        exists: z.boolean(),
-      }),
-      401: z.object({ message: z.string() }),
-      404: z.object({ message: z.string() }),
+      200: FileExistsResponseSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
     },
     summary: 'Check whether a file exists',
   },
@@ -174,11 +143,8 @@ export const fileRoutes = {
       folderKey: z.string(),
     }),
     responses: {
-      200: z.object({
-        exists: z.boolean(),
-        keyCount: z.number().int().optional(),
-      }),
-      401: z.object({ message: z.string() }),
+      200: FolderExistsResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary:
       'Check whether a folder (prefix) exists and optionally count objects',
@@ -190,20 +156,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      fileName: z.string(),
-      contentType: z.string().optional(),
-      fileSize: z.number().int().optional(),
-    }),
+    body: UploadUrlRequestSchema,
     responses: {
-      200: z.object({
-        uploadUrl: z.string().url(),
-        fileKey: z.string(),
-        expiresIn: z.number().int(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: UploadUrlResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Get a presigned URL for uploading a file',
   },
@@ -215,22 +171,10 @@ export const fileRoutes = {
       authorization: z.string(),
       'content-type': z.string(),
     }),
-    body: z.object({
-      fileKey: z.string(),
-      contentType: z.string().optional(),
-      content: z.string(), // Base64 encoded file content
-    }),
+    body: DirectUploadRequestSchema,
     responses: {
-      200: z.object({
-        url: z.string().url(),
-        contentLength: z.number().int().optional(),
-        fileKey: z.string(),
-        expiresIn: z.number().int(),
-        eTag: z.string().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: DirectUploadResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Upload a file directly using S3 PutObject',
   },
@@ -241,20 +185,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      fileKey: z.string(),
-      contentType: z.string().optional(),
-      fileSize: z.number().int(),
-    }),
+    body: InitiateMultipartRequestSchema,
     responses: {
-      200: z.object({
-        uploadId: z.string().optional(),
-        fileKey: z.string(),
-        bucket: z.string(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: InitiateMultipartResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Initiate multipart upload for large files',
   },
@@ -265,20 +199,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      uploadId: z.string(),
-      fileKey: z.string(),
-      partNumber: z.number().int().min(1).max(10000),
-    }),
+    body: UploadPartRequestSchema,
     responses: {
-      200: z.object({
-        fileKey: z.string(),
-        url: z.string().url(),
-        partNumber: z.number().int(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: UploadPartResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Get presigned URL for uploading a part',
   },
@@ -289,26 +213,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      uploadId: z.string(),
-      fileKey: z.string(),
-      parts: z.array(
-        z.object({
-          fileKey: z.string(),
-          partNumber: z.number().int(),
-          eTag: z.string().optional(),
-        }),
-      ),
-    }),
+    body: CompleteMultipartRequestSchema,
     responses: {
-      200: z.object({
-        bucket: z.string(),
-        fileKey: z.string(),
-        eTag: z.string().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: CompleteMultipartResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Complete multipart upload',
   },
@@ -319,15 +227,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      uploadId: z.string(),
-      fileKey: z.string(),
-    }),
+    body: AbortMultipartRequestSchema,
     responses: {
       200: z.object({}),
-      401: z.object({
-        message: z.string(),
-      }),
+      401: FileErrorResponseSchema,
     },
     summary: 'Abort multipart upload',
   },
@@ -345,23 +248,8 @@ export const fileRoutes = {
       maxUploads: z.coerce.number().int().min(1).max(1000).optional(),
     }),
     responses: {
-      200: z.object({
-        uploads: z.array(
-          z.object({
-            fileKey: z.string(),
-            uploadId: z.string().optional(),
-            initiated: z.date().optional(),
-            storageClass: z.string().optional(),
-          }),
-        ),
-        isTruncated: z.boolean().optional(),
-        nextKeyMarker: z.string().optional(),
-        nextUploadIdMarker: z.string().optional(),
-        prefix: z.string().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: ListMultipartUploadsResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'List in-progress multipart uploads',
   },
@@ -372,31 +260,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      fileKeys: z.array(z.string()).min(1).max(1000),
-      quiet: z.boolean().optional(),
-    }),
+    body: BatchDeleteRequestSchema,
     responses: {
-      200: z.object({
-        deleted: z.array(
-          z.object({
-            fileKey: z.string(),
-            deleteMarker: z.boolean().optional(),
-          }),
-        ),
-        errors: z
-          .array(
-            z.object({
-              fileKey: z.string().optional(),
-              code: z.string().optional(),
-              message: z.string().optional(),
-            }),
-          )
-          .optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: BatchDeleteResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Delete multiple files in a single request',
   },
@@ -412,12 +279,8 @@ export const fileRoutes = {
     }),
     body: z.undefined(),
     responses: {
-      200: z.object({
-        deleteMarker: z.boolean().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: DeleteFileResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Delete a file',
   },
@@ -428,21 +291,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      sourceFileKey: z.string(),
-      destinationFileKey: z.string(),
-    }),
+    body: CopyFileRequestSchema,
     responses: {
-      200: z.object({
-        copyObjectResult: z.object({
-          eTag: z.string().optional(),
-          lastModified: z.date().optional(),
-        }),
-        copySourceVersionId: z.string().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: CopyFileResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Copy a file',
   },
@@ -453,21 +305,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      fileKey: z.string(),
-      newFileName: z.string(),
-    }),
+    body: RenameFileRequestSchema,
     responses: {
-      200: z.object({
-        copyObjectResult: z.object({
-          eTag: z.string().optional(),
-          lastModified: z.date().optional(),
-        }),
-        copySourceVersionId: z.string().optional(),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: CopyFileResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Rename a file',
   },
@@ -478,28 +319,10 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.object({
-      sourceFileKey: z.string(),
-      destinationFileKey: z.string(),
-    }),
+    body: MoveFileRequestSchema,
     responses: {
-      200: z.object({
-        copyResponse: z.object({
-          copyObjectResult: z
-            .object({
-              eTag: z.string().optional().optional(),
-              lastModified: z.date().optional().optional(),
-            })
-            .optional(),
-          copySourceVersionId: z.string().optional(),
-        }),
-        deleteResponse: z.object({
-          deleteMarker: z.boolean().optional(),
-        }),
-      }),
-      401: z.object({
-        message: z.string(),
-      }),
+      200: MoveFileResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Move a file (copy to destination and delete source)',
   },

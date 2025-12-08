@@ -17,8 +17,8 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { appContract } from '@/src/contract';
 import {
   BookSchema,
-  FileContentSchema,
-  FileInfoSchema,
+  FileContentResponseSchema,
+  FileMetadataSchema,
   MarkSchema,
   ReadingProgressSchema,
   UserPreferencesSchema,
@@ -171,14 +171,14 @@ const generateOpenApiDocument = async () => {
           name: 'UserPreferences',
           target: 'openApi3',
         }).definitions!.UserPreferences,
-        FileInfo: zodToJsonSchema(FileInfoSchema, {
-          name: 'FileInfo',
+        FileMetadata: zodToJsonSchema(FileMetadataSchema, {
+          name: 'FileMetadata',
           target: 'openApi3',
-        }).definitions!.FileInfo,
-        FileContent: zodToJsonSchema(FileContentSchema, {
-          name: 'FileContent',
+        }).definitions!.FileMetadata,
+        FileContentResponse: zodToJsonSchema(FileContentResponseSchema, {
+          name: 'FileContentResponse',
           target: 'openApi3',
-        }).definitions!.FileContent,
+        }).definitions!.FileContentResponse,
       },
       securitySchemes: {
         ...betterAuthOpenApiDocument.components?.securitySchemes,
