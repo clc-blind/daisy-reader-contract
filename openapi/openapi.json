@@ -2889,24 +2889,32 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "key": {
-                            "type": "string"
-                          },
                           "fileName": {
                             "type": "string"
                           },
-                          "extension": {
+                          "fileKey": {
                             "type": "string"
                           },
                           "contentType": {
                             "type": "string"
+                          },
+                          "contentEncoding": {
+                            "type": "string"
+                          },
+                          "contentLength": {
+                            "type": "integer"
+                          },
+                          "lastModified": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "eTag": {
+                            "type": "string"
                           }
                         },
                         "required": [
-                          "key",
                           "fileName",
-                          "extension",
-                          "contentType"
+                          "fileKey"
                         ]
                       }
                     }
@@ -2949,17 +2957,13 @@
             }
           },
           {
-            "name": "encoding",
+            "name": "expiresIn",
             "in": "query",
             "content": {
               "application/json": {
                 "schema": {
-                  "default": "utf-8",
-                  "type": "string",
-                  "enum": [
-                    "utf-8",
-                    "base64"
-                  ]
+                  "type": "number",
+                  "nullable": true
                 }
               }
             }
@@ -2980,29 +2984,37 @@
                     "fileName": {
                       "type": "string"
                     },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "fileKey": {
+                      "type": "string"
+                    },
                     "contentType": {
                       "type": "string"
                     },
-                    "encoding": {
-                      "type": "string",
-                      "enum": [
-                        "utf-8",
-                        "base64"
-                      ]
+                    "contentEncoding": {
+                      "type": "string"
                     },
-                    "size": {
+                    "contentLength": {
                       "type": "integer"
                     },
                     "content": {
+                      "type": "string"
+                    },
+                    "lastModified": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "eTag": {
                       "type": "string"
                     }
                   },
                   "required": [
                     "bookId",
                     "fileName",
-                    "contentType",
-                    "encoding",
-                    "size",
+                    "storagePath",
+                    "fileKey",
                     "content"
                   ]
                 }
@@ -3057,12 +3069,16 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "fileKey": {
+                      "type": "string"
+                    },
                     "url": {
                       "type": "string",
                       "format": "uri"
                     }
                   },
                   "required": [
+                    "fileKey",
                     "url"
                   ]
                 }
@@ -3128,8 +3144,7 @@
               "application/json": {
                 "schema": {
                   "type": "integer",
-                  "minimum": 1,
-                  "maximum": 1000
+                  "minimum": 1
                 }
               }
             }
@@ -3149,8 +3164,17 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "key": {
+                          "fileKey": {
                             "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string"
+                          },
+                          "contentEncoding": {
+                            "type": "string"
+                          },
+                          "contentLength": {
+                            "type": "integer"
                           },
                           "lastModified": {
                             "type": "string",
@@ -3158,19 +3182,10 @@
                           },
                           "eTag": {
                             "type": "string"
-                          },
-                          "size": {
-                            "type": "integer"
-                          },
-                          "storageClass": {
-                            "type": "string"
                           }
                         },
                         "required": [
-                          "key",
-                          "lastModified",
-                          "eTag",
-                          "size"
+                          "fileKey"
                         ]
                       }
                     },
@@ -3182,12 +3197,16 @@
                     },
                     "keyCount": {
                       "type": "integer"
+                    },
+                    "prefix": {
+                      "type": "string"
+                    },
+                    "maxKeys": {
+                      "type": "integer"
                     }
                   },
                   "required": [
-                    "contents",
-                    "isTruncated",
-                    "keyCount"
+                    "contents"
                   ]
                 }
               }
@@ -3255,12 +3274,16 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "fileKey": {
+                      "type": "string"
+                    },
                     "url": {
                       "type": "string",
                       "format": "uri"
                     }
                   },
                   "required": [
+                    "fileKey",
                     "url"
                   ]
                 }
@@ -3307,11 +3330,17 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "contentLength": {
-                      "type": "integer"
+                    "fileKey": {
+                      "type": "string"
                     },
                     "contentType": {
                       "type": "string"
+                    },
+                    "contentEncoding": {
+                      "type": "string"
+                    },
+                    "contentLength": {
+                      "type": "integer"
                     },
                     "lastModified": {
                       "type": "string",
@@ -3319,19 +3348,10 @@
                     },
                     "eTag": {
                       "type": "string"
-                    },
-                    "metadata": {
-                      "type": "object",
-                      "additionalProperties": {
-                        "type": "string"
-                      }
-                    },
-                    "storageClass": {
-                      "type": "string"
                     }
                   },
                   "required": [
-                    "contentLength"
+                    "fileKey"
                   ]
                 }
               }
@@ -3413,11 +3433,15 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "fileKey": {
+                      "type": "string"
+                    },
                     "exists": {
                       "type": "boolean"
                     }
                   },
                   "required": [
+                    "fileKey",
                     "exists"
                   ]
                 }
@@ -3570,8 +3594,7 @@
                   }
                 },
                 "required": [
-                  "fileName",
-                  "contentType"
+                  "fileName"
                 ]
               }
             }
@@ -3675,7 +3698,6 @@
                 },
                 "required": [
                   "fileKey",
-                  "contentType",
                   "content"
                 ]
               }
@@ -3690,25 +3712,27 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "fileKey": {
-                      "type": "string"
-                    },
                     "url": {
                       "type": "string",
                       "format": "uri"
                     },
-                    "size": {
+                    "contentLength": {
                       "type": "integer"
                     },
-                    "etag": {
+                    "fileKey": {
+                      "type": "string"
+                    },
+                    "expiresIn": {
+                      "type": "integer"
+                    },
+                    "eTag": {
                       "type": "string"
                     }
                   },
                   "required": [
-                    "fileKey",
                     "url",
-                    "size",
-                    "etag"
+                    "fileKey",
+                    "expiresIn"
                   ]
                 }
               }
@@ -3776,7 +3800,6 @@
                 },
                 "required": [
                   "fileKey",
-                  "contentType",
                   "fileSize"
                 ]
               }
@@ -3796,11 +3819,14 @@
                     },
                     "fileKey": {
                       "type": "string"
+                    },
+                    "bucket": {
+                      "type": "string"
                     }
                   },
                   "required": [
-                    "uploadId",
-                    "fileKey"
+                    "fileKey",
+                    "bucket"
                   ]
                 }
               }
@@ -3885,6 +3911,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "fileKey": {
+                      "type": "string"
+                    },
                     "url": {
                       "type": "string",
                       "format": "uri"
@@ -3894,6 +3923,7 @@
                     }
                   },
                   "required": [
+                    "fileKey",
                     "url",
                     "partNumber"
                   ]
@@ -3962,16 +3992,19 @@
                     "items": {
                       "type": "object",
                       "properties": {
+                        "fileKey": {
+                          "type": "string"
+                        },
                         "partNumber": {
                           "type": "integer"
                         },
-                        "etag": {
+                        "eTag": {
                           "type": "string"
                         }
                       },
                       "required": [
-                        "partNumber",
-                        "etag"
+                        "fileKey",
+                        "partNumber"
                       ]
                     }
                   }
@@ -3993,16 +4026,19 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "bucket": {
+                      "type": "string"
+                    },
                     "fileKey": {
                       "type": "string"
                     },
-                    "success": {
-                      "type": "boolean"
+                    "eTag": {
+                      "type": "string"
                     }
                   },
                   "required": [
-                    "fileKey",
-                    "success"
+                    "bucket",
+                    "fileKey"
                   ]
                 }
               }
@@ -4080,14 +4116,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "success"
-                  ]
+                  "properties": {}
                 }
               }
             }
@@ -4194,7 +4223,7 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "key": {
+                          "fileKey": {
                             "type": "string"
                           },
                           "uploadId": {
@@ -4209,9 +4238,7 @@
                           }
                         },
                         "required": [
-                          "key",
-                          "uploadId",
-                          "initiated"
+                          "fileKey"
                         ]
                       }
                     },
@@ -4223,11 +4250,13 @@
                     },
                     "nextUploadIdMarker": {
                       "type": "string"
+                    },
+                    "prefix": {
+                      "type": "string"
                     }
                   },
                   "required": [
-                    "uploads",
-                    "isTruncated"
+                    "uploads"
                   ]
                 }
               }
@@ -4278,7 +4307,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "keys": {
+                  "fileKeys": {
                     "type": "array",
                     "items": {
                       "type": "string"
@@ -4291,7 +4320,7 @@
                   }
                 },
                 "required": [
-                  "keys"
+                  "fileKeys"
                 ]
               }
             }
@@ -4310,15 +4339,15 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "key": {
+                          "fileKey": {
                             "type": "string"
                           },
-                          "versionId": {
-                            "type": "string"
+                          "deleteMarker": {
+                            "type": "boolean"
                           }
                         },
                         "required": [
-                          "key"
+                          "fileKey"
                         ]
                       }
                     },
@@ -4327,7 +4356,7 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "key": {
+                          "fileKey": {
                             "type": "string"
                           },
                           "code": {
@@ -4336,12 +4365,7 @@
                           "message": {
                             "type": "string"
                           }
-                        },
-                        "required": [
-                          "key",
-                          "code",
-                          "message"
-                        ]
+                        }
                       }
                     }
                   },
@@ -4416,11 +4440,18 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "204",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleteMarker": {
+                      "type": "boolean"
+                    }
+                  }
+                }
               }
             }
           },
@@ -4474,16 +4505,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "sourceKey": {
+                  "sourceFileKey": {
                     "type": "string"
                   },
-                  "destinationKey": {
+                  "destinationFileKey": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "sourceKey",
-                  "destinationKey"
+                  "sourceFileKey",
+                  "destinationFileKey"
                 ]
               }
             }
@@ -4497,20 +4528,24 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "sourceKey": {
-                      "type": "string"
+                    "copyObjectResult": {
+                      "type": "object",
+                      "properties": {
+                        "eTag": {
+                          "type": "string"
+                        },
+                        "lastModified": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
                     },
-                    "destinationKey": {
+                    "copySourceVersionId": {
                       "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
                     }
                   },
                   "required": [
-                    "sourceKey",
-                    "destinationKey",
-                    "success"
+                    "copyObjectResult"
                   ]
                 }
               }
@@ -4589,20 +4624,24 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "oldKey": {
-                      "type": "string"
+                    "copyObjectResult": {
+                      "type": "object",
+                      "properties": {
+                        "eTag": {
+                          "type": "string"
+                        },
+                        "lastModified": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
                     },
-                    "newKey": {
+                    "copySourceVersionId": {
                       "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
                     }
                   },
                   "required": [
-                    "oldKey",
-                    "newKey",
-                    "success"
+                    "copyObjectResult"
                   ]
                 }
               }
@@ -4658,16 +4697,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "sourceKey": {
+                  "sourceFileKey": {
                     "type": "string"
                   },
-                  "destinationKey": {
+                  "destinationFileKey": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "sourceKey",
-                  "destinationKey"
+                  "sourceFileKey",
+                  "destinationFileKey"
                 ]
               }
             }
@@ -4681,20 +4720,38 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "sourceKey": {
-                      "type": "string"
+                    "copyResponse": {
+                      "type": "object",
+                      "properties": {
+                        "copyObjectResult": {
+                          "type": "object",
+                          "properties": {
+                            "eTag": {
+                              "type": "string"
+                            },
+                            "lastModified": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        },
+                        "copySourceVersionId": {
+                          "type": "string"
+                        }
+                      }
                     },
-                    "destinationKey": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
+                    "deleteResponse": {
+                      "type": "object",
+                      "properties": {
+                        "deleteMarker": {
+                          "type": "boolean"
+                        }
+                      }
                     }
                   },
                   "required": [
-                    "sourceKey",
-                    "destinationKey",
-                    "success"
+                    "copyResponse",
+                    "deleteResponse"
                   ]
                 }
               }
@@ -12151,46 +12208,6 @@
           "encoding",
           "size",
           "content"
-        ],
-        "additionalProperties": false
-      },
-      "S3UploadUrlRequest": {
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string"
-          },
-          "contentType": {
-            "type": "string"
-          },
-          "fileSize": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "fileName",
-          "contentType"
-        ],
-        "additionalProperties": false
-      },
-      "S3UploadUrlResponse": {
-        "type": "object",
-        "properties": {
-          "uploadUrl": {
-            "type": "string",
-            "format": "uri"
-          },
-          "fileKey": {
-            "type": "string"
-          },
-          "expiresIn": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "uploadUrl",
-          "fileKey",
-          "expiresIn"
         ],
         "additionalProperties": false
       }

@@ -1,8 +1,4 @@
 import { z } from 'zod';
-import {
-  S3UploadUrlRequestSchema,
-  S3UploadUrlResponseSchema,
-} from '@/src/schema';
 
 export const fileRoutes = {
   listBookFiles: {
@@ -17,10 +13,13 @@ export const fileRoutes = {
         totalFiles: z.number().int(),
         files: z.array(
           z.object({
-            key: z.string(),
             fileName: z.string(),
-            extension: z.string(),
-            contentType: z.string(),
+            fileKey: z.string(),
+            contentType: z.string().optional(),
+            contentEncoding: z.string().optional(),
+            contentLength: z.number().int().optional(),
+            lastModified: z.date().optional(),
+            eTag: z.string().optional(),
           }),
         ),
       }),
@@ -33,16 +32,20 @@ export const fileRoutes = {
     path: '/api/books/:bookId/files/:fileName',
     pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
     query: z.object({
-      encoding: z.enum(['utf-8', 'base64']).default('utf-8'),
+      expiresIn: z.coerce.number().optional(),
     }),
     responses: {
       200: z.object({
         bookId: z.string(),
         fileName: z.string(),
-        contentType: z.string(),
-        encoding: z.enum(['utf-8', 'base64']),
-        size: z.number().int(),
+        storagePath: z.string(),
+        fileKey: z.string(),
+        contentType: z.string().optional(),
+        contentEncoding: z.string().optional(),
+        contentLength: z.number().int().optional(),
         content: z.string(),
+        lastModified: z.date().optional(),
+        eTag: z.string().optional(),
       }),
     },
     summary: 'Get file content for a book',
@@ -56,7 +59,10 @@ export const fileRoutes = {
       expiresIn: z.coerce.number().optional(),
     }),
     responses: {
-      200: z.object({ url: z.string().url() }),
+      200: z.object({
+        fileKey: z.string(),
+        url: z.string().url(),
+      }),
     },
     summary: 'Get presigned URL for book audio file',
   },
@@ -71,22 +77,25 @@ export const fileRoutes = {
       storagePath: z.string(),
       prefix: z.string().optional(),
       continuationToken: z.string().optional(),
-      maxKeys: z.coerce.number().int().min(1).max(1000).optional(),
+      maxKeys: z.coerce.number().int().min(1).optional(),
     }),
     responses: {
       200: z.object({
         contents: z.array(
           z.object({
-            key: z.string(),
-            lastModified: z.string().datetime(),
-            eTag: z.string(),
-            size: z.number().int(),
-            storageClass: z.string().optional(),
+            fileKey: z.string(),
+            contentType: z.string().optional(),
+            contentEncoding: z.string().optional(),
+            contentLength: z.number().int().optional(),
+            lastModified: z.date().optional(),
+            eTag: z.string().optional(),
           }),
         ),
-        isTruncated: z.boolean(),
+        isTruncated: z.boolean().optional(),
         nextContinuationToken: z.string().optional(),
-        keyCount: z.number().int(),
+        keyCount: z.number().int().optional(),
+        prefix: z.string().optional(),
+        maxKeys: z.number().int().optional(),
       }),
       401: z.object({
         message: z.string(),
@@ -103,7 +112,10 @@ export const fileRoutes = {
       expiresIn: z.coerce.number().optional(),
     }),
     responses: {
-      200: z.object({ url: z.string().url() }),
+      200: z.object({
+        fileKey: z.string(),
+        url: z.string().url(),
+      }),
     },
     summary: 'Get presigned URL for downloading a file',
   },
@@ -119,12 +131,12 @@ export const fileRoutes = {
     }),
     responses: {
       200: z.object({
-        contentLength: z.number().int(),
+        fileKey: z.string(),
         contentType: z.string().optional(),
-        lastModified: z.string().datetime().optional(),
+        contentEncoding: z.string().optional(),
+        contentLength: z.number().int().optional(),
+        lastModified: z.date().optional(),
         eTag: z.string().optional(),
-        metadata: z.record(z.string()).optional(),
-        storageClass: z.string().optional(),
       }),
       401: z.object({ message: z.string() }),
       404: z.object({ message: z.string() }),
@@ -142,7 +154,10 @@ export const fileRoutes = {
       fileKey: z.string(),
     }),
     responses: {
-      200: z.object({ exists: z.boolean() }),
+      200: z.object({
+        fileKey: z.string(),
+        exists: z.boolean(),
+      }),
       401: z.object({ message: z.string() }),
       404: z.object({ message: z.string() }),
     },
@@ -175,9 +190,17 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: S3UploadUrlRequestSchema,
+    body: z.object({
+      fileName: z.string(),
+      contentType: z.string().optional(),
+      fileSize: z.number().int().optional(),
+    }),
     responses: {
-      200: S3UploadUrlResponseSchema,
+      200: z.object({
+        uploadUrl: z.string().url(),
+        fileKey: z.string(),
+        expiresIn: z.number().int(),
+      }),
       401: z.object({
         message: z.string(),
       }),
@@ -194,15 +217,16 @@ export const fileRoutes = {
     }),
     body: z.object({
       fileKey: z.string(),
-      contentType: z.string(),
+      contentType: z.string().optional(),
       content: z.string(), // Base64 encoded file content
     }),
     responses: {
       200: z.object({
-        fileKey: z.string(),
         url: z.string().url(),
-        size: z.number().int(),
-        etag: z.string(),
+        contentLength: z.number().int().optional(),
+        fileKey: z.string(),
+        expiresIn: z.number().int(),
+        eTag: z.string().optional(),
       }),
       401: z.object({
         message: z.string(),
@@ -219,13 +243,14 @@ export const fileRoutes = {
     }),
     body: z.object({
       fileKey: z.string(),
-      contentType: z.string(),
+      contentType: z.string().optional(),
       fileSize: z.number().int(),
     }),
     responses: {
       200: z.object({
-        uploadId: z.string(),
+        uploadId: z.string().optional(),
         fileKey: z.string(),
+        bucket: z.string(),
       }),
       401: z.object({
         message: z.string(),
@@ -247,6 +272,7 @@ export const fileRoutes = {
     }),
     responses: {
       200: z.object({
+        fileKey: z.string(),
         url: z.string().url(),
         partNumber: z.number().int(),
       }),
@@ -268,15 +294,17 @@ export const fileRoutes = {
       fileKey: z.string(),
       parts: z.array(
         z.object({
+          fileKey: z.string(),
           partNumber: z.number().int(),
-          etag: z.string(),
+          eTag: z.string().optional(),
         }),
       ),
     }),
     responses: {
       200: z.object({
+        bucket: z.string(),
         fileKey: z.string(),
-        success: z.boolean(),
+        eTag: z.string().optional(),
       }),
       401: z.object({
         message: z.string(),
@@ -296,9 +324,7 @@ export const fileRoutes = {
       fileKey: z.string(),
     }),
     responses: {
-      200: z.object({
-        success: z.boolean(),
-      }),
+      200: z.object({}),
       401: z.object({
         message: z.string(),
       }),
@@ -322,15 +348,16 @@ export const fileRoutes = {
       200: z.object({
         uploads: z.array(
           z.object({
-            key: z.string(),
-            uploadId: z.string(),
-            initiated: z.string().datetime(),
+            fileKey: z.string(),
+            uploadId: z.string().optional(),
+            initiated: z.date().optional(),
             storageClass: z.string().optional(),
           }),
         ),
-        isTruncated: z.boolean(),
+        isTruncated: z.boolean().optional(),
         nextKeyMarker: z.string().optional(),
         nextUploadIdMarker: z.string().optional(),
+        prefix: z.string().optional(),
       }),
       401: z.object({
         message: z.string(),
@@ -346,23 +373,23 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     body: z.object({
-      keys: z.array(z.string()).min(1).max(1000),
+      fileKeys: z.array(z.string()).min(1).max(1000),
       quiet: z.boolean().optional(),
     }),
     responses: {
       200: z.object({
         deleted: z.array(
           z.object({
-            key: z.string(),
-            versionId: z.string().optional(),
+            fileKey: z.string(),
+            deleteMarker: z.boolean().optional(),
           }),
         ),
         errors: z
           .array(
             z.object({
-              key: z.string(),
-              code: z.string(),
-              message: z.string(),
+              fileKey: z.string().optional(),
+              code: z.string().optional(),
+              message: z.string().optional(),
             }),
           )
           .optional(),
@@ -385,7 +412,9 @@ export const fileRoutes = {
     }),
     body: z.undefined(),
     responses: {
-      204: z.undefined(),
+      200: z.object({
+        deleteMarker: z.boolean().optional(),
+      }),
       401: z.object({
         message: z.string(),
       }),
@@ -400,14 +429,16 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     body: z.object({
-      sourceKey: z.string(),
-      destinationKey: z.string(),
+      sourceFileKey: z.string(),
+      destinationFileKey: z.string(),
     }),
     responses: {
       200: z.object({
-        sourceKey: z.string(),
-        destinationKey: z.string(),
-        success: z.boolean(),
+        copyObjectResult: z.object({
+          eTag: z.string().optional(),
+          lastModified: z.date().optional(),
+        }),
+        copySourceVersionId: z.string().optional(),
       }),
       401: z.object({
         message: z.string(),
@@ -428,9 +459,11 @@ export const fileRoutes = {
     }),
     responses: {
       200: z.object({
-        oldKey: z.string(),
-        newKey: z.string(),
-        success: z.boolean(),
+        copyObjectResult: z.object({
+          eTag: z.string().optional(),
+          lastModified: z.date().optional(),
+        }),
+        copySourceVersionId: z.string().optional(),
       }),
       401: z.object({
         message: z.string(),
@@ -446,14 +479,23 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     body: z.object({
-      sourceKey: z.string(),
-      destinationKey: z.string(),
+      sourceFileKey: z.string(),
+      destinationFileKey: z.string(),
     }),
     responses: {
       200: z.object({
-        sourceKey: z.string(),
-        destinationKey: z.string(),
-        success: z.boolean(),
+        copyResponse: z.object({
+          copyObjectResult: z
+            .object({
+              eTag: z.string().optional().optional(),
+              lastModified: z.date().optional().optional(),
+            })
+            .optional(),
+          copySourceVersionId: z.string().optional(),
+        }),
+        deleteResponse: z.object({
+          deleteMarker: z.boolean().optional(),
+        }),
       }),
       401: z.object({
         message: z.string(),

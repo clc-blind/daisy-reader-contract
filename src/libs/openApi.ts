@@ -21,8 +21,6 @@ import {
   FileInfoSchema,
   MarkSchema,
   ReadingProgressSchema,
-  S3UploadUrlRequestSchema,
-  S3UploadUrlResponseSchema,
   UserPreferencesSchema,
 } from '@/src/schema';
 
@@ -181,14 +179,6 @@ const generateOpenApiDocument = async () => {
           name: 'FileContent',
           target: 'openApi3',
         }).definitions!.FileContent,
-        S3UploadUrlRequest: zodToJsonSchema(S3UploadUrlRequestSchema, {
-          name: 'S3UploadUrlRequest',
-          target: 'openApi3',
-        }).definitions!.S3UploadUrlRequest,
-        S3UploadUrlResponse: zodToJsonSchema(S3UploadUrlResponseSchema, {
-          name: 'S3UploadUrlResponse',
-          target: 'openApi3',
-        }).definitions!.S3UploadUrlResponse,
       },
       securitySchemes: {
         ...betterAuthOpenApiDocument.components?.securitySchemes,

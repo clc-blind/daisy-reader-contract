@@ -16,19 +16,5 @@ export const FileContentSchema = z.object({
   content: z.string(), // text (utf-8) or base64 string
 });
 
-export const S3UploadUrlRequestSchema = z.object({
-  fileName: z.string(),
-  contentType: z.string(),
-  fileSize: z.number().int().optional(),
-});
-
-export const S3UploadUrlResponseSchema = z.object({
-  uploadUrl: z.string().url(),
-  fileKey: z.string(),
-  expiresIn: z.number().int(),
-});
-
 export type FileInfo = z.infer<typeof FileInfoSchema>;
 export type FileContent = z.infer<typeof FileContentSchema>;
-export type S3UploadUrlRequest = z.infer<typeof S3UploadUrlRequestSchema>;
-export type S3UploadUrlResponse = z.infer<typeof S3UploadUrlResponseSchema>;
