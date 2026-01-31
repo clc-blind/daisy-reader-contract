@@ -17,7 +17,6 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { appContract } from '@/src/contract';
 import {
   BookSchema,
-  FileContentResponseSchema,
   FileMetadataSchema,
   MarkSchema,
   ReadingProgressSchema,
@@ -175,10 +174,6 @@ const generateOpenApiDocument = async () => {
           name: 'FileMetadata',
           target: 'openApi3',
         }).definitions!.FileMetadata,
-        FileContentResponse: zodToJsonSchema(FileContentResponseSchema, {
-          name: 'FileContentResponse',
-          target: 'openApi3',
-        }).definitions!.FileContentResponse,
       },
       securitySchemes: {
         ...betterAuthOpenApiDocument.components?.securitySchemes,

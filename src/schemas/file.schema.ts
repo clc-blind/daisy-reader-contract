@@ -1,85 +1,120 @@
 import { z } from 'zod';
 
 // Base file metadata schema
-export const FileMetadataSchema = z.object({
-  fileKey: z.string(),
-  contentType: z.string().optional(),
-  contentEncoding: z.string().optional(),
-  contentLength: z.number().int().optional(),
-  lastModified: z.date().optional(),
-  eTag: z.string().optional(),
-});
+export const FileMetadataSchema = z
+  .object({
+    fileKey: z.string().describe('Unique file key'),
+    contentType: z.string().optional().describe('MIME content type'),
+    contentEncoding: z.string().optional().describe('Content encoding'),
+    contentLength: z.number().int().optional().describe('File size in bytes'),
+    lastModified: z.date().optional().describe('Last modification timestamp'),
+    eTag: z.string().optional().describe('Entity tag for cache validation'),
+  })
+  .describe('File metadata');
 
 // List files response item
-export const FileListItemSchema = z.object({
-  fileName: z.string(),
-  fileKey: z.string(),
-  contentType: z.string().optional(),
-  contentEncoding: z.string().optional(),
-  contentLength: z.number().int().optional(),
-  lastModified: z.date().optional(),
-  eTag: z.string().optional(),
-});
-
-// File content response
-export const FileContentResponseSchema = z.object({
-  bookId: z.string(),
-  fileName: z.string(),
-  storagePath: z.string(),
-  fileKey: z.string(),
-  contentType: z.string().optional(),
-  contentEncoding: z.string().optional(),
-  contentLength: z.number().int().optional(),
-  content: z.string(),
-  lastModified: z.date().optional(),
-  eTag: z.string().optional(),
-});
+export const FileListItemSchema = z
+  .object({
+    fileName: z.string().describe('File name'),
+    fileKey: z.string().describe('Unique file key'),
+    isFolder: z.boolean().describe('Whether item is a folder'),
+    contentType: z.string().optional().describe('MIME content type'),
+    contentEncoding: z.string().optional().describe('Content encoding'),
+    contentLength: z.number().int().optional().describe('File size in bytes'),
+    lastModified: z.date().optional().describe('Last modification timestamp'),
+    eTag: z.string().optional().describe('Entity tag for cache validation'),
+  })
+  .describe('File list item');
 
 // Signed URL response
-export const SignedUrlResponseSchema = z.object({
-  fileKey: z.string(),
-  url: z.string().url(),
-});
+export const SignedUrlResponseSchema = z
+  .object({
+    fileKey: z.string().describe('File key'),
+    url: z.string().url().describe('Pre-signed URL'),
+  })
+  .describe('Signed URL response');
+
+// File content response
+export const FileContentResponseSchema = z
+  .object({
+    bookId: z.string(),
+    fileName: z.string(),
+    storagePath: z.string(),
+    fileKey: z.string(),
+    contentType: z.string().optional(),
+    contentEncoding: z.string().optional(),
+    contentLength: z.number().int().optional(),
+    content: z.string(),
+    lastModified: z.date().optional(),
+    eTag: z.string().optional(),
+  })
+  .describe('File content response');
 
 // File exists response
-export const FileExistsResponseSchema = z.object({
-  fileKey: z.string(),
-  exists: z.boolean(),
-});
+export const FileExistsResponseSchema = z
+  .object({
+    fileKey: z.string().describe('File key'),
+    exists: z.boolean().describe('Whether file exists'),
+  })
+  .describe('File existence check response');
 
 // Folder exists response
-export const FolderExistsResponseSchema = z.object({
-  exists: z.boolean(),
-  keyCount: z.number().int().optional(),
-});
+export const FolderExistsResponseSchema = z
+  .object({
+    exists: z.boolean().describe('Whether folder exists'),
+    keyCount: z.number().int().optional().describe('Number of items in folder'),
+  })
+  .describe('Folder existence check response');
+
+// Create folder request/response
+export const CreateFolderRequestSchema = z
+  .object({
+    folderKey: z.string().describe('Folder key/path'),
+  })
+  .describe('Create folder request');
+
+export const CreateFolderResponseSchema = z
+  .object({
+    folderKey: z.string().describe('Created folder key'),
+    created: z.boolean().describe('Whether folder was created'),
+  })
+  .describe('Create folder response');
 
 // Upload URL request/response
-export const UploadUrlRequestSchema = z.object({
-  fileName: z.string(),
-  contentType: z.string().optional(),
-  fileSize: z.number().int().optional(),
-});
+export const UploadUrlRequestSchema = z
+  .object({
+    fileName: z.string().describe('File name'),
+    contentType: z.string().optional().describe('MIME content type'),
+    fileSize: z.number().int().optional().describe('File size in bytes'),
+  })
+  .describe('Upload URL request');
 
-export const UploadUrlResponseSchema = z.object({
-  uploadUrl: z.string().url(),
-  fileKey: z.string(),
-  expiresIn: z.number().int(),
-});
+export const UploadUrlResponseSchema = z
+  .object({
+    uploadUrl: z.string().url().describe('Pre-signed upload URL'),
+    fileKey: z.string().describe('File key for uploaded file'),
+    expiresIn: z.number().int().describe('URL expiration time in seconds'),
+  })
+  .describe('Upload URL response');
 
 // Direct upload request/response
-export const DirectUploadRequestSchema = z.object({
-  fileKey: z.string(),
-  contentType: z.string().optional(),
-  content: z.string(),
-});
+export const DirectUploadRequestSchema = z
+  .object({
+    fileKey: z.string().describe('Target file key'),
+    contentType: z.string().optional().describe('MIME content type'),
+    content: z.string().describe('File content (base64 for binary)'),
+  })
+  .describe('Direct upload request');
 
-export const DirectUploadResponseSchema = z.object({
-  url: z.string().url(),
-  contentLength: z.number().int().optional(),
-  fileKey: z.string(),
-  expiresIn: z.number().int(),
-  eTag: z.string().optional(),
-});
+export const DirectUploadResponseSchema = z
+  .object({
+    url: z.string().url().describe('File access URL'),
+    contentLength: z.number().int().optional().describe('Uploaded file size'),
+    fileKey: z.string().describe('Uploaded file key'),
+    expiresIn: z.number().int().describe('URL expiration time in seconds'),
+    eTag: z.string().optional().describe('Entity tag'),
+  })
+  .describe('Direct upload response');
 
 // Multipart upload schemas
 export const InitiateMultipartRequestSchema = z.object({
@@ -209,21 +244,25 @@ export const MoveFileResponseSchema = z.object({
 // List files response
 export const ListFilesResponseSchema = z.object({
   contents: z.array(FileListItemSchema),
+  commonPrefixes: z.array(z.string()).optional(),
   isTruncated: z.boolean().optional(),
   nextContinuationToken: z.string().optional(),
   keyCount: z.number().int().optional(),
   prefix: z.string().optional(),
   maxKeys: z.number().int().optional(),
+  delimiter: z.string().optional(),
 });
 
 // Book files list response
-export const BookFilesListResponseSchema = z.object({
-  bookId: z.string(),
-  bookTitle: z.string(),
-  storagePath: z.string(),
-  totalFiles: z.number().int(),
-  files: z.array(FileListItemSchema),
-});
+export const BookFilesListResponseSchema = z
+  .object({
+    bookId: z.string(),
+    bookTitle: z.string(),
+    storagePath: z.string(),
+    totalFiles: z.number().int(),
+    files: z.array(FileListItemSchema),
+  })
+  .describe('List of files associated with a book');
 
 // Error response
 export const FileErrorResponseSchema = z.object({
@@ -237,6 +276,8 @@ export type FileContentResponse = z.infer<typeof FileContentResponseSchema>;
 export type SignedUrlResponse = z.infer<typeof SignedUrlResponseSchema>;
 export type FileExistsResponse = z.infer<typeof FileExistsResponseSchema>;
 export type FolderExistsResponse = z.infer<typeof FolderExistsResponseSchema>;
+export type CreateFolderRequest = z.infer<typeof CreateFolderRequestSchema>;
+export type CreateFolderResponse = z.infer<typeof CreateFolderResponseSchema>;
 export type UploadUrlRequest = z.infer<typeof UploadUrlRequestSchema>;
 export type UploadUrlResponse = z.infer<typeof UploadUrlResponseSchema>;
 export type DirectUploadRequest = z.infer<typeof DirectUploadRequestSchema>;

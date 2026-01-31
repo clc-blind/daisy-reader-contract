@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { MarkSchema } from '@/src/schema';
+import { CreateMarkSchema, MarkSchema } from '@/src/schema';
 
 export const markRoutes = {
   createMark: {
@@ -8,7 +8,7 @@ export const markRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: MarkSchema.omit({ createdAt: true, updatedAt: true }),
+    body: CreateMarkSchema,
     responses: {
       201: MarkSchema,
     },

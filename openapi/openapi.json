@@ -11,6 +11,7 @@
           {
             "name": "limit",
             "in": "query",
+            "description": "Maximum number of items to return",
             "content": {
               "application/json": {
                 "schema": {
@@ -23,6 +24,7 @@
           {
             "name": "offset",
             "in": "query",
+            "description": "Number of items to skip",
             "content": {
               "application/json": {
                 "schema": {
@@ -33,53 +35,9 @@
             }
           },
           {
-            "name": "subject",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          {
-            "name": "author",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          {
-            "name": "featured",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean",
-                  "nullable": true
-                }
-              }
-            }
-          },
-          {
             "name": "sortBy",
             "in": "query",
+            "description": "Field to sort by",
             "content": {
               "application/json": {
                 "schema": {
@@ -95,6 +53,7 @@
           {
             "name": "sortOrder",
             "in": "query",
+            "description": "Sort order",
             "content": {
               "application/json": {
                 "schema": {
@@ -106,12 +65,61 @@
                 }
               }
             }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "description": "Filter by subject",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "description": "Filter by author",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "featured",
+            "in": "query",
+            "description": "Filter by featured status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "nullable": true
+                }
+              }
+            }
           }
         ],
         "operationId": "getAllBooks",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Paginated book list response",
             "content": {
               "application/json": {
                 "schema": {
@@ -123,41 +131,51 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique book identifier"
                           },
                           "title": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Book title"
                           },
                           "creator": {
                             "type": "string",
+                            "description": "Book author/creator",
                             "nullable": true
                           },
                           "subject": {
                             "type": "string",
+                            "description": "Book subject",
                             "nullable": true
                           },
                           "subjectCode": {
                             "type": "string",
+                            "description": "Book subject code",
                             "nullable": true
                           },
                           "description": {
                             "type": "string",
+                            "description": "Book description",
                             "nullable": true
                           },
                           "publisher": {
                             "type": "string",
+                            "description": "Publisher name",
                             "nullable": true
                           },
                           "date": {
                             "type": "string",
+                            "description": "Publication date",
                             "nullable": true
                           },
                           "source": {
                             "type": "string",
+                            "description": "Book source",
                             "nullable": true
                           },
                           "language": {
                             "type": "string",
+                            "description": "Book language code",
                             "nullable": true
                           },
                           "format": {
@@ -165,49 +183,60 @@
                             "enum": [
                               "DAISY_V3",
                               "EPUB3"
-                            ]
+                            ],
+                            "description": "Book format"
                           },
                           "storagePath": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File storage path"
                           },
                           "coverImage": {
                             "type": "string",
+                            "description": "Cover image URL",
                             "nullable": true
                           },
                           "durationSeconds": {
                             "type": "number",
+                            "description": "Audio duration in seconds",
                             "nullable": true
                           },
                           "contentHash": {
                             "type": "string",
+                            "description": "Content hash for integrity",
                             "nullable": true
                           },
                           "featured": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is featured"
                           },
                           "hidden": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is hidden"
                           },
                           "views": {
                             "default": 0,
-                            "type": "number"
+                            "type": "number",
+                            "description": "Number of views"
                           },
                           "tags": {
                             "default": [],
                             "type": "array",
                             "items": {
                               "type": "string"
-                            }
+                            },
+                            "description": "Book tags"
                           },
                           "createdAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Creation timestamp"
                           },
                           "updatedAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last update timestamp"
                           }
                         },
                         "required": [
@@ -228,17 +257,21 @@
                           "contentHash",
                           "createdAt",
                           "updatedAt"
-                        ]
-                      }
+                        ],
+                        "description": "Book entity"
+                      },
+                      "description": "List of books"
                     },
                     "total": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Total number of books"
                     }
                   },
                   "required": [
                     "data",
                     "total"
-                  ]
+                  ],
+                  "description": "Paginated book list response"
                 }
               }
             }
@@ -269,38 +302,47 @@
                 "type": "object",
                 "properties": {
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Book title"
                   },
                   "creator": {
                     "type": "string",
+                    "description": "Book author/creator",
                     "nullable": true
                   },
                   "subject": {
                     "type": "string",
+                    "description": "Book subject",
                     "nullable": true
                   },
                   "subjectCode": {
                     "type": "string",
+                    "description": "Book subject code",
                     "nullable": true
                   },
                   "description": {
                     "type": "string",
+                    "description": "Book description",
                     "nullable": true
                   },
                   "publisher": {
                     "type": "string",
+                    "description": "Publisher name",
                     "nullable": true
                   },
                   "date": {
                     "type": "string",
+                    "description": "Publication date",
                     "nullable": true
                   },
                   "source": {
                     "type": "string",
+                    "description": "Book source",
                     "nullable": true
                   },
                   "language": {
                     "type": "string",
+                    "description": "Book language code",
                     "nullable": true
                   },
                   "format": {
@@ -308,41 +350,50 @@
                     "enum": [
                       "DAISY_V3",
                       "EPUB3"
-                    ]
+                    ],
+                    "description": "Book format"
                   },
                   "storagePath": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "File storage path"
                   },
                   "coverImage": {
                     "type": "string",
+                    "description": "Cover image URL",
                     "nullable": true
                   },
                   "durationSeconds": {
                     "type": "number",
+                    "description": "Audio duration in seconds",
                     "nullable": true
                   },
                   "contentHash": {
                     "type": "string",
+                    "description": "Content hash for integrity",
                     "nullable": true
                   },
                   "featured": {
                     "default": false,
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether book is featured"
                   },
                   "hidden": {
                     "default": false,
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether book is hidden"
                   },
                   "views": {
                     "default": 0,
-                    "type": "number"
+                    "type": "number",
+                    "description": "Number of views"
                   },
                   "tags": {
                     "default": [],
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Book tags"
                   }
                 },
                 "required": [
@@ -360,55 +411,66 @@
                   "coverImage",
                   "durationSeconds",
                   "contentHash"
-                ]
+                ],
+                "description": "Create book request body"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "201",
+            "description": "Book entity",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique book identifier"
                     },
                     "title": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Book title"
                     },
                     "creator": {
                       "type": "string",
+                      "description": "Book author/creator",
                       "nullable": true
                     },
                     "subject": {
                       "type": "string",
+                      "description": "Book subject",
                       "nullable": true
                     },
                     "subjectCode": {
                       "type": "string",
+                      "description": "Book subject code",
                       "nullable": true
                     },
                     "description": {
                       "type": "string",
+                      "description": "Book description",
                       "nullable": true
                     },
                     "publisher": {
                       "type": "string",
+                      "description": "Publisher name",
                       "nullable": true
                     },
                     "date": {
                       "type": "string",
+                      "description": "Publication date",
                       "nullable": true
                     },
                     "source": {
                       "type": "string",
+                      "description": "Book source",
                       "nullable": true
                     },
                     "language": {
                       "type": "string",
+                      "description": "Book language code",
                       "nullable": true
                     },
                     "format": {
@@ -416,49 +478,60 @@
                       "enum": [
                         "DAISY_V3",
                         "EPUB3"
-                      ]
+                      ],
+                      "description": "Book format"
                     },
                     "storagePath": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File storage path"
                     },
                     "coverImage": {
                       "type": "string",
+                      "description": "Cover image URL",
                       "nullable": true
                     },
                     "durationSeconds": {
                       "type": "number",
+                      "description": "Audio duration in seconds",
                       "nullable": true
                     },
                     "contentHash": {
                       "type": "string",
+                      "description": "Content hash for integrity",
                       "nullable": true
                     },
                     "featured": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is featured"
                     },
                     "hidden": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is hidden"
                     },
                     "views": {
                       "default": 0,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Number of views"
                     },
                     "tags": {
                       "default": [],
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Book tags"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -479,7 +552,8 @@
                     "contentHash",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "Book entity"
                 }
               }
             }
@@ -502,6 +576,7 @@
           {
             "name": "limit",
             "in": "query",
+            "description": "Maximum number of items to return",
             "content": {
               "application/json": {
                 "schema": {
@@ -514,6 +589,7 @@
           {
             "name": "offset",
             "in": "query",
+            "description": "Number of items to skip",
             "content": {
               "application/json": {
                 "schema": {
@@ -526,6 +602,7 @@
           {
             "name": "sortBy",
             "in": "query",
+            "description": "Field to sort by",
             "content": {
               "application/json": {
                 "schema": {
@@ -541,6 +618,7 @@
           {
             "name": "sortOrder",
             "in": "query",
+            "description": "Sort order",
             "content": {
               "application/json": {
                 "schema": {
@@ -557,7 +635,7 @@
         "operationId": "getFeaturedBooks",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Paginated book list response",
             "content": {
               "application/json": {
                 "schema": {
@@ -569,41 +647,51 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique book identifier"
                           },
                           "title": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Book title"
                           },
                           "creator": {
                             "type": "string",
+                            "description": "Book author/creator",
                             "nullable": true
                           },
                           "subject": {
                             "type": "string",
+                            "description": "Book subject",
                             "nullable": true
                           },
                           "subjectCode": {
                             "type": "string",
+                            "description": "Book subject code",
                             "nullable": true
                           },
                           "description": {
                             "type": "string",
+                            "description": "Book description",
                             "nullable": true
                           },
                           "publisher": {
                             "type": "string",
+                            "description": "Publisher name",
                             "nullable": true
                           },
                           "date": {
                             "type": "string",
+                            "description": "Publication date",
                             "nullable": true
                           },
                           "source": {
                             "type": "string",
+                            "description": "Book source",
                             "nullable": true
                           },
                           "language": {
                             "type": "string",
+                            "description": "Book language code",
                             "nullable": true
                           },
                           "format": {
@@ -611,49 +699,60 @@
                             "enum": [
                               "DAISY_V3",
                               "EPUB3"
-                            ]
+                            ],
+                            "description": "Book format"
                           },
                           "storagePath": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File storage path"
                           },
                           "coverImage": {
                             "type": "string",
+                            "description": "Cover image URL",
                             "nullable": true
                           },
                           "durationSeconds": {
                             "type": "number",
+                            "description": "Audio duration in seconds",
                             "nullable": true
                           },
                           "contentHash": {
                             "type": "string",
+                            "description": "Content hash for integrity",
                             "nullable": true
                           },
                           "featured": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is featured"
                           },
                           "hidden": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is hidden"
                           },
                           "views": {
                             "default": 0,
-                            "type": "number"
+                            "type": "number",
+                            "description": "Number of views"
                           },
                           "tags": {
                             "default": [],
                             "type": "array",
                             "items": {
                               "type": "string"
-                            }
+                            },
+                            "description": "Book tags"
                           },
                           "createdAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Creation timestamp"
                           },
                           "updatedAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last update timestamp"
                           }
                         },
                         "required": [
@@ -674,17 +773,21 @@
                           "contentHash",
                           "createdAt",
                           "updatedAt"
-                        ]
-                      }
+                        ],
+                        "description": "Book entity"
+                      },
+                      "description": "List of books"
                     },
                     "total": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Total number of books"
                     }
                   },
                   "required": [
                     "data",
                     "total"
-                  ]
+                  ],
+                  "description": "Paginated book list response"
                 }
               }
             }
@@ -702,6 +805,7 @@
           {
             "name": "q",
             "in": "query",
+            "description": "Search query string",
             "required": true,
             "content": {
               "application/json": {
@@ -715,6 +819,7 @@
           {
             "name": "limit",
             "in": "query",
+            "description": "Maximum number of items to return",
             "content": {
               "application/json": {
                 "schema": {
@@ -727,6 +832,7 @@
           {
             "name": "offset",
             "in": "query",
+            "description": "Number of items to skip",
             "content": {
               "application/json": {
                 "schema": {
@@ -740,7 +846,7 @@
         "operationId": "searchBooks",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Paginated book list response",
             "content": {
               "application/json": {
                 "schema": {
@@ -752,41 +858,51 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique book identifier"
                           },
                           "title": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Book title"
                           },
                           "creator": {
                             "type": "string",
+                            "description": "Book author/creator",
                             "nullable": true
                           },
                           "subject": {
                             "type": "string",
+                            "description": "Book subject",
                             "nullable": true
                           },
                           "subjectCode": {
                             "type": "string",
+                            "description": "Book subject code",
                             "nullable": true
                           },
                           "description": {
                             "type": "string",
+                            "description": "Book description",
                             "nullable": true
                           },
                           "publisher": {
                             "type": "string",
+                            "description": "Publisher name",
                             "nullable": true
                           },
                           "date": {
                             "type": "string",
+                            "description": "Publication date",
                             "nullable": true
                           },
                           "source": {
                             "type": "string",
+                            "description": "Book source",
                             "nullable": true
                           },
                           "language": {
                             "type": "string",
+                            "description": "Book language code",
                             "nullable": true
                           },
                           "format": {
@@ -794,49 +910,60 @@
                             "enum": [
                               "DAISY_V3",
                               "EPUB3"
-                            ]
+                            ],
+                            "description": "Book format"
                           },
                           "storagePath": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File storage path"
                           },
                           "coverImage": {
                             "type": "string",
+                            "description": "Cover image URL",
                             "nullable": true
                           },
                           "durationSeconds": {
                             "type": "number",
+                            "description": "Audio duration in seconds",
                             "nullable": true
                           },
                           "contentHash": {
                             "type": "string",
+                            "description": "Content hash for integrity",
                             "nullable": true
                           },
                           "featured": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is featured"
                           },
                           "hidden": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is hidden"
                           },
                           "views": {
                             "default": 0,
-                            "type": "number"
+                            "type": "number",
+                            "description": "Number of views"
                           },
                           "tags": {
                             "default": [],
                             "type": "array",
                             "items": {
                               "type": "string"
-                            }
+                            },
+                            "description": "Book tags"
                           },
                           "createdAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Creation timestamp"
                           },
                           "updatedAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last update timestamp"
                           }
                         },
                         "required": [
@@ -857,17 +984,21 @@
                           "contentHash",
                           "createdAt",
                           "updatedAt"
-                        ]
-                      }
+                        ],
+                        "description": "Book entity"
+                      },
+                      "description": "List of books"
                     },
                     "total": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Total number of books"
                     }
                   },
                   "required": [
                     "data",
                     "total"
-                  ]
+                  ],
+                  "description": "Paginated book list response"
                 }
               }
             }
@@ -894,48 +1025,58 @@
         "operationId": "getBookById",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Book entity",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique book identifier"
                     },
                     "title": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Book title"
                     },
                     "creator": {
                       "type": "string",
+                      "description": "Book author/creator",
                       "nullable": true
                     },
                     "subject": {
                       "type": "string",
+                      "description": "Book subject",
                       "nullable": true
                     },
                     "subjectCode": {
                       "type": "string",
+                      "description": "Book subject code",
                       "nullable": true
                     },
                     "description": {
                       "type": "string",
+                      "description": "Book description",
                       "nullable": true
                     },
                     "publisher": {
                       "type": "string",
+                      "description": "Publisher name",
                       "nullable": true
                     },
                     "date": {
                       "type": "string",
+                      "description": "Publication date",
                       "nullable": true
                     },
                     "source": {
                       "type": "string",
+                      "description": "Book source",
                       "nullable": true
                     },
                     "language": {
                       "type": "string",
+                      "description": "Book language code",
                       "nullable": true
                     },
                     "format": {
@@ -943,49 +1084,60 @@
                       "enum": [
                         "DAISY_V3",
                         "EPUB3"
-                      ]
+                      ],
+                      "description": "Book format"
                     },
                     "storagePath": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File storage path"
                     },
                     "coverImage": {
                       "type": "string",
+                      "description": "Cover image URL",
                       "nullable": true
                     },
                     "durationSeconds": {
                       "type": "number",
+                      "description": "Audio duration in seconds",
                       "nullable": true
                     },
                     "contentHash": {
                       "type": "string",
+                      "description": "Content hash for integrity",
                       "nullable": true
                     },
                     "featured": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is featured"
                     },
                     "hidden": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is hidden"
                     },
                     "views": {
                       "default": 0,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Number of views"
                     },
                     "tags": {
                       "default": [],
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Book tags"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -1006,7 +1158,8 @@
                     "contentHash",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "Book entity"
                 }
               }
             }
@@ -1045,38 +1198,47 @@
                 "type": "object",
                 "properties": {
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Book title"
                   },
                   "creator": {
                     "type": "string",
+                    "description": "Book author/creator",
                     "nullable": true
                   },
                   "subject": {
                     "type": "string",
+                    "description": "Book subject",
                     "nullable": true
                   },
                   "subjectCode": {
                     "type": "string",
+                    "description": "Book subject code",
                     "nullable": true
                   },
                   "description": {
                     "type": "string",
+                    "description": "Book description",
                     "nullable": true
                   },
                   "publisher": {
                     "type": "string",
+                    "description": "Publisher name",
                     "nullable": true
                   },
                   "date": {
                     "type": "string",
+                    "description": "Publication date",
                     "nullable": true
                   },
                   "source": {
                     "type": "string",
+                    "description": "Book source",
                     "nullable": true
                   },
                   "language": {
                     "type": "string",
+                    "description": "Book language code",
                     "nullable": true
                   },
                   "format": {
@@ -1084,91 +1246,111 @@
                     "enum": [
                       "DAISY_V3",
                       "EPUB3"
-                    ]
+                    ],
+                    "description": "Book format"
                   },
                   "storagePath": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "File storage path"
                   },
                   "coverImage": {
                     "type": "string",
+                    "description": "Cover image URL",
                     "nullable": true
                   },
                   "durationSeconds": {
                     "type": "number",
+                    "description": "Audio duration in seconds",
                     "nullable": true
                   },
                   "contentHash": {
                     "type": "string",
+                    "description": "Content hash for integrity",
                     "nullable": true
                   },
                   "featured": {
                     "default": false,
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether book is featured"
                   },
                   "hidden": {
                     "default": false,
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether book is hidden"
                   },
                   "views": {
                     "default": 0,
-                    "type": "number"
+                    "type": "number",
+                    "description": "Number of views"
                   },
                   "tags": {
                     "default": [],
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Book tags"
                   }
-                }
+                },
+                "description": "Update book request body"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Book entity",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique book identifier"
                     },
                     "title": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Book title"
                     },
                     "creator": {
                       "type": "string",
+                      "description": "Book author/creator",
                       "nullable": true
                     },
                     "subject": {
                       "type": "string",
+                      "description": "Book subject",
                       "nullable": true
                     },
                     "subjectCode": {
                       "type": "string",
+                      "description": "Book subject code",
                       "nullable": true
                     },
                     "description": {
                       "type": "string",
+                      "description": "Book description",
                       "nullable": true
                     },
                     "publisher": {
                       "type": "string",
+                      "description": "Publisher name",
                       "nullable": true
                     },
                     "date": {
                       "type": "string",
+                      "description": "Publication date",
                       "nullable": true
                     },
                     "source": {
                       "type": "string",
+                      "description": "Book source",
                       "nullable": true
                     },
                     "language": {
                       "type": "string",
+                      "description": "Book language code",
                       "nullable": true
                     },
                     "format": {
@@ -1176,49 +1358,60 @@
                       "enum": [
                         "DAISY_V3",
                         "EPUB3"
-                      ]
+                      ],
+                      "description": "Book format"
                     },
                     "storagePath": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File storage path"
                     },
                     "coverImage": {
                       "type": "string",
+                      "description": "Cover image URL",
                       "nullable": true
                     },
                     "durationSeconds": {
                       "type": "number",
+                      "description": "Audio duration in seconds",
                       "nullable": true
                     },
                     "contentHash": {
                       "type": "string",
+                      "description": "Content hash for integrity",
                       "nullable": true
                     },
                     "featured": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is featured"
                     },
                     "hidden": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is hidden"
                     },
                     "views": {
                       "default": 0,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Number of views"
                     },
                     "tags": {
                       "default": [],
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Book tags"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -1239,7 +1432,8 @@
                     "contentHash",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "Book entity"
                 }
               }
             }
@@ -1318,6 +1512,7 @@
           {
             "name": "limit",
             "in": "query",
+            "description": "Maximum number of items to return",
             "content": {
               "application/json": {
                 "schema": {
@@ -1330,6 +1525,7 @@
           {
             "name": "offset",
             "in": "query",
+            "description": "Number of items to skip",
             "content": {
               "application/json": {
                 "schema": {
@@ -1343,7 +1539,7 @@
         "operationId": "getBooksByLanguage",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Paginated book list response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1355,41 +1551,51 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique book identifier"
                           },
                           "title": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Book title"
                           },
                           "creator": {
                             "type": "string",
+                            "description": "Book author/creator",
                             "nullable": true
                           },
                           "subject": {
                             "type": "string",
+                            "description": "Book subject",
                             "nullable": true
                           },
                           "subjectCode": {
                             "type": "string",
+                            "description": "Book subject code",
                             "nullable": true
                           },
                           "description": {
                             "type": "string",
+                            "description": "Book description",
                             "nullable": true
                           },
                           "publisher": {
                             "type": "string",
+                            "description": "Publisher name",
                             "nullable": true
                           },
                           "date": {
                             "type": "string",
+                            "description": "Publication date",
                             "nullable": true
                           },
                           "source": {
                             "type": "string",
+                            "description": "Book source",
                             "nullable": true
                           },
                           "language": {
                             "type": "string",
+                            "description": "Book language code",
                             "nullable": true
                           },
                           "format": {
@@ -1397,49 +1603,60 @@
                             "enum": [
                               "DAISY_V3",
                               "EPUB3"
-                            ]
+                            ],
+                            "description": "Book format"
                           },
                           "storagePath": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File storage path"
                           },
                           "coverImage": {
                             "type": "string",
+                            "description": "Cover image URL",
                             "nullable": true
                           },
                           "durationSeconds": {
                             "type": "number",
+                            "description": "Audio duration in seconds",
                             "nullable": true
                           },
                           "contentHash": {
                             "type": "string",
+                            "description": "Content hash for integrity",
                             "nullable": true
                           },
                           "featured": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is featured"
                           },
                           "hidden": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is hidden"
                           },
                           "views": {
                             "default": 0,
-                            "type": "number"
+                            "type": "number",
+                            "description": "Number of views"
                           },
                           "tags": {
                             "default": [],
                             "type": "array",
                             "items": {
                               "type": "string"
-                            }
+                            },
+                            "description": "Book tags"
                           },
                           "createdAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Creation timestamp"
                           },
                           "updatedAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last update timestamp"
                           }
                         },
                         "required": [
@@ -1460,17 +1677,21 @@
                           "contentHash",
                           "createdAt",
                           "updatedAt"
-                        ]
-                      }
+                        ],
+                        "description": "Book entity"
+                      },
+                      "description": "List of books"
                     },
                     "total": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Total number of books"
                     }
                   },
                   "required": [
                     "data",
                     "total"
-                  ]
+                  ],
+                  "description": "Paginated book list response"
                 }
               }
             }
@@ -1496,6 +1717,7 @@
           {
             "name": "limit",
             "in": "query",
+            "description": "Maximum number of items to return",
             "content": {
               "application/json": {
                 "schema": {
@@ -1508,6 +1730,7 @@
           {
             "name": "offset",
             "in": "query",
+            "description": "Number of items to skip",
             "content": {
               "application/json": {
                 "schema": {
@@ -1520,6 +1743,7 @@
           {
             "name": "sortBy",
             "in": "query",
+            "description": "Field to sort by",
             "content": {
               "application/json": {
                 "schema": {
@@ -1535,6 +1759,7 @@
           {
             "name": "sortOrder",
             "in": "query",
+            "description": "Sort order",
             "content": {
               "application/json": {
                 "schema": {
@@ -1551,7 +1776,7 @@
         "operationId": "getBookBySubject",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Paginated book list response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1563,41 +1788,51 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique book identifier"
                           },
                           "title": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Book title"
                           },
                           "creator": {
                             "type": "string",
+                            "description": "Book author/creator",
                             "nullable": true
                           },
                           "subject": {
                             "type": "string",
+                            "description": "Book subject",
                             "nullable": true
                           },
                           "subjectCode": {
                             "type": "string",
+                            "description": "Book subject code",
                             "nullable": true
                           },
                           "description": {
                             "type": "string",
+                            "description": "Book description",
                             "nullable": true
                           },
                           "publisher": {
                             "type": "string",
+                            "description": "Publisher name",
                             "nullable": true
                           },
                           "date": {
                             "type": "string",
+                            "description": "Publication date",
                             "nullable": true
                           },
                           "source": {
                             "type": "string",
+                            "description": "Book source",
                             "nullable": true
                           },
                           "language": {
                             "type": "string",
+                            "description": "Book language code",
                             "nullable": true
                           },
                           "format": {
@@ -1605,49 +1840,60 @@
                             "enum": [
                               "DAISY_V3",
                               "EPUB3"
-                            ]
+                            ],
+                            "description": "Book format"
                           },
                           "storagePath": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File storage path"
                           },
                           "coverImage": {
                             "type": "string",
+                            "description": "Cover image URL",
                             "nullable": true
                           },
                           "durationSeconds": {
                             "type": "number",
+                            "description": "Audio duration in seconds",
                             "nullable": true
                           },
                           "contentHash": {
                             "type": "string",
+                            "description": "Content hash for integrity",
                             "nullable": true
                           },
                           "featured": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is featured"
                           },
                           "hidden": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is hidden"
                           },
                           "views": {
                             "default": 0,
-                            "type": "number"
+                            "type": "number",
+                            "description": "Number of views"
                           },
                           "tags": {
                             "default": [],
                             "type": "array",
                             "items": {
                               "type": "string"
-                            }
+                            },
+                            "description": "Book tags"
                           },
                           "createdAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Creation timestamp"
                           },
                           "updatedAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last update timestamp"
                           }
                         },
                         "required": [
@@ -1668,17 +1914,21 @@
                           "contentHash",
                           "createdAt",
                           "updatedAt"
-                        ]
-                      }
+                        ],
+                        "description": "Book entity"
+                      },
+                      "description": "List of books"
                     },
                     "total": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Total number of books"
                     }
                   },
                   "required": [
                     "data",
                     "total"
-                  ]
+                  ],
+                  "description": "Paginated book list response"
                 }
               }
             }
@@ -1713,23 +1963,26 @@
         },
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Book views count response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "bookId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Book ID"
                     },
                     "views": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Number of views"
                     }
                   },
                   "required": [
                     "bookId",
                     "views"
-                  ]
+                  ],
+                  "description": "Book views count response"
                 }
               }
             }
@@ -1761,37 +2014,44 @@
         "operationId": "getCurrentUser",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "User entity",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique user identifier"
                     },
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "User display name"
                     },
                     "email": {
                       "type": "string",
-                      "format": "email"
+                      "format": "email",
+                      "description": "User email address"
                     },
                     "emailVerified": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether email is verified"
                     },
                     "image": {
                       "type": "string",
-                      "nullable": true
+                      "nullable": true,
+                      "description": "User profile image URL"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Account creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     },
                     "role": {
                       "type": "string",
@@ -1807,7 +2067,8 @@
                     "email",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "User entity"
                 }
               }
             }
@@ -1838,50 +2099,60 @@
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "User display name"
                   },
                   "image": {
                     "type": "string",
-                    "nullable": true
+                    "nullable": true,
+                    "description": "User profile image URL"
                   }
-                }
+                },
+                "description": "User entity"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "200",
+            "description": "User entity",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique user identifier"
                     },
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "User display name"
                     },
                     "email": {
                       "type": "string",
-                      "format": "email"
+                      "format": "email",
+                      "description": "User email address"
                     },
                     "emailVerified": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether email is verified"
                     },
                     "image": {
                       "type": "string",
-                      "nullable": true
+                      "nullable": true,
+                      "description": "User profile image URL"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Account creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -1890,7 +2161,8 @@
                     "email",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "User entity"
                 }
               }
             }
@@ -1929,26 +2201,32 @@
                   "type": "object",
                   "properties": {
                     "userId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Associated user ID"
                     },
                     "theme": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "UI theme preference"
                     },
                     "fontSize": {
                       "default": 16,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Font size in pixels"
                     },
                     "defaultSpeed": {
                       "default": 1,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Default playback speed"
                     },
                     "autoBookmark": {
                       "default": true,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Auto-bookmark on close"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -1986,19 +2264,23 @@
                 "type": "object",
                 "properties": {
                   "theme": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "UI theme preference"
                   },
                   "fontSize": {
                     "default": 16,
-                    "type": "number"
+                    "type": "number",
+                    "description": "Font size in pixels"
                   },
                   "defaultSpeed": {
                     "default": 1,
-                    "type": "number"
+                    "type": "number",
+                    "description": "Default playback speed"
                   },
                   "autoBookmark": {
                     "default": true,
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Auto-bookmark on close"
                   }
                 }
               }
@@ -2014,26 +2296,32 @@
                   "type": "object",
                   "properties": {
                     "userId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Associated user ID"
                     },
                     "theme": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "UI theme preference"
                     },
                     "fontSize": {
                       "default": 16,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Font size in pixels"
                     },
                     "defaultSpeed": {
                       "default": 1,
-                      "type": "number"
+                      "type": "number",
+                      "description": "Default playback speed"
                     },
                     "autoBookmark": {
                       "default": true,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Auto-bookmark on close"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -2093,41 +2381,51 @@
                     "type": "object",
                     "properties": {
                       "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Unique book identifier"
                       },
                       "title": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Book title"
                       },
                       "creator": {
                         "type": "string",
+                        "description": "Book author/creator",
                         "nullable": true
                       },
                       "subject": {
                         "type": "string",
+                        "description": "Book subject",
                         "nullable": true
                       },
                       "subjectCode": {
                         "type": "string",
+                        "description": "Book subject code",
                         "nullable": true
                       },
                       "description": {
                         "type": "string",
+                        "description": "Book description",
                         "nullable": true
                       },
                       "publisher": {
                         "type": "string",
+                        "description": "Publisher name",
                         "nullable": true
                       },
                       "date": {
                         "type": "string",
+                        "description": "Publication date",
                         "nullable": true
                       },
                       "source": {
                         "type": "string",
+                        "description": "Book source",
                         "nullable": true
                       },
                       "language": {
                         "type": "string",
+                        "description": "Book language code",
                         "nullable": true
                       },
                       "format": {
@@ -2135,49 +2433,60 @@
                         "enum": [
                           "DAISY_V3",
                           "EPUB3"
-                        ]
+                        ],
+                        "description": "Book format"
                       },
                       "storagePath": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "File storage path"
                       },
                       "coverImage": {
                         "type": "string",
+                        "description": "Cover image URL",
                         "nullable": true
                       },
                       "durationSeconds": {
                         "type": "number",
+                        "description": "Audio duration in seconds",
                         "nullable": true
                       },
                       "contentHash": {
                         "type": "string",
+                        "description": "Content hash for integrity",
                         "nullable": true
                       },
                       "featured": {
                         "default": false,
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "Whether book is featured"
                       },
                       "hidden": {
                         "default": false,
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "Whether book is hidden"
                       },
                       "views": {
                         "default": 0,
-                        "type": "number"
+                        "type": "number",
+                        "description": "Number of views"
                       },
                       "tags": {
                         "default": [],
                         "type": "array",
                         "items": {
                           "type": "string"
-                        }
+                        },
+                        "description": "Book tags"
                       },
                       "createdAt": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "Creation timestamp"
                       },
                       "updatedAt": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "Last update timestamp"
                       }
                     },
                     "required": [
@@ -2198,7 +2507,8 @@
                       "contentHash",
                       "createdAt",
                       "updatedAt"
-                    ]
+                    ],
+                    "description": "Book entity"
                   }
                 }
               }
@@ -2262,41 +2572,51 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique book identifier"
                           },
                           "title": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Book title"
                           },
                           "creator": {
                             "type": "string",
+                            "description": "Book author/creator",
                             "nullable": true
                           },
                           "subject": {
                             "type": "string",
+                            "description": "Book subject",
                             "nullable": true
                           },
                           "subjectCode": {
                             "type": "string",
+                            "description": "Book subject code",
                             "nullable": true
                           },
                           "description": {
                             "type": "string",
+                            "description": "Book description",
                             "nullable": true
                           },
                           "publisher": {
                             "type": "string",
+                            "description": "Publisher name",
                             "nullable": true
                           },
                           "date": {
                             "type": "string",
+                            "description": "Publication date",
                             "nullable": true
                           },
                           "source": {
                             "type": "string",
+                            "description": "Book source",
                             "nullable": true
                           },
                           "language": {
                             "type": "string",
+                            "description": "Book language code",
                             "nullable": true
                           },
                           "format": {
@@ -2304,49 +2624,60 @@
                             "enum": [
                               "DAISY_V3",
                               "EPUB3"
-                            ]
+                            ],
+                            "description": "Book format"
                           },
                           "storagePath": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File storage path"
                           },
                           "coverImage": {
                             "type": "string",
+                            "description": "Cover image URL",
                             "nullable": true
                           },
                           "durationSeconds": {
                             "type": "number",
+                            "description": "Audio duration in seconds",
                             "nullable": true
                           },
                           "contentHash": {
                             "type": "string",
+                            "description": "Content hash for integrity",
                             "nullable": true
                           },
                           "featured": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is featured"
                           },
                           "hidden": {
                             "default": false,
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Whether book is hidden"
                           },
                           "views": {
                             "default": 0,
-                            "type": "number"
+                            "type": "number",
+                            "description": "Number of views"
                           },
                           "tags": {
                             "default": [],
                             "type": "array",
                             "items": {
                               "type": "string"
-                            }
+                            },
+                            "description": "Book tags"
                           },
                           "createdAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Creation timestamp"
                           },
                           "updatedAt": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last update timestamp"
                           }
                         },
                         "required": [
@@ -2367,7 +2698,8 @@
                           "contentHash",
                           "createdAt",
                           "updatedAt"
-                        ]
+                        ],
+                        "description": "Book entity"
                       }
                     },
                     "total": {
@@ -2417,82 +2749,77 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": {
-                    "type": "string"
-                  },
-                  "bookId": {
-                    "type": "string"
-                  },
                   "currentTimeSeconds": {
-                    "type": "number"
+                    "type": "number",
+                    "description": "Current playback time in seconds"
                   },
                   "currentPosition": {
                     "type": "string",
+                    "description": "Current position in book",
                     "nullable": true
                   },
                   "isCompleted": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether book is completed"
                   },
                   "lastReadAt": {
                     "type": "string",
-                    "format": "date-time"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "description": "Last read timestamp"
                   }
                 },
-                "required": [
-                  "userId",
-                  "bookId",
-                  "lastReadAt"
-                ]
+                "description": "Update reading progress request body"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Reading progress entity",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique reading progress identifier"
                     },
                     "userId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Associated user ID"
                     },
                     "bookId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Associated book ID"
                     },
                     "currentTimeSeconds": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Current playback time in seconds"
                     },
                     "currentPosition": {
                       "type": "string",
+                      "description": "Current position in book",
                       "nullable": true
                     },
                     "isCompleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether book is completed"
                     },
                     "lastReadAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last read timestamp"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -2500,11 +2827,13 @@
                     "userId",
                     "bookId",
                     "currentTimeSeconds",
+                    "currentPosition",
                     "isCompleted",
                     "lastReadAt",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "Reading progress entity"
                 }
               }
             }
@@ -2541,14 +2870,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "string"
-                  },
                   "userId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Associated user ID"
                   },
                   "bookId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Associated book ID"
                   },
                   "type": {
                     "type": "string",
@@ -2556,51 +2884,61 @@
                       "highlight",
                       "note",
                       "bookmark"
-                    ]
+                    ],
+                    "description": "Mark type"
                   },
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Mark title"
                   },
                   "selectedText": {
                     "type": "string",
+                    "description": "Selected text content",
                     "nullable": true
                   },
                   "contextBefore": {
                     "type": "string",
+                    "description": "Text before selection",
                     "nullable": true
                   },
                   "contextAfter": {
                     "type": "string",
+                    "description": "Text after selection",
                     "nullable": true
                   },
                   "chapterId": {
                     "type": "string",
+                    "description": "Associated chapter ID",
                     "nullable": true
                   },
                   "audioTimeSeconds": {
                     "type": "number",
+                    "description": "Audio position in seconds",
                     "nullable": true
                   },
                   "textPosition": {
                     "type": "string",
+                    "description": "Text position identifier",
                     "nullable": true
                   },
                   "color": {
                     "type": "string",
                     "pattern": "^#[0-9A-Fa-f]{6}$",
+                    "description": "Highlight color (hex format)",
                     "nullable": true
                   },
                   "content": {
                     "type": "string",
+                    "description": "Note content",
                     "nullable": true
                   },
                   "isOrphan": {
                     "default": false,
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether mark position is lost"
                   }
                 },
                 "required": [
-                  "id",
                   "userId",
                   "bookId",
                   "type",
@@ -2613,27 +2951,31 @@
                   "textPosition",
                   "color",
                   "content"
-                ]
+                ],
+                "description": "Create mark request body"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "201",
+            "description": "Mark entity (highlight/note/bookmark)",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique mark identifier"
                     },
                     "userId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Associated user ID"
                     },
                     "bookId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Associated book ID"
                     },
                     "type": {
                       "type": "string",
@@ -2641,55 +2983,68 @@
                         "highlight",
                         "note",
                         "bookmark"
-                      ]
+                      ],
+                      "description": "Mark type"
                     },
                     "title": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mark title"
                     },
                     "selectedText": {
                       "type": "string",
+                      "description": "Selected text content",
                       "nullable": true
                     },
                     "contextBefore": {
                       "type": "string",
+                      "description": "Text before selection",
                       "nullable": true
                     },
                     "contextAfter": {
                       "type": "string",
+                      "description": "Text after selection",
                       "nullable": true
                     },
                     "chapterId": {
                       "type": "string",
+                      "description": "Associated chapter ID",
                       "nullable": true
                     },
                     "audioTimeSeconds": {
                       "type": "number",
+                      "description": "Audio position in seconds",
                       "nullable": true
                     },
                     "textPosition": {
                       "type": "string",
+                      "description": "Text position identifier",
                       "nullable": true
                     },
                     "color": {
                       "type": "string",
                       "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "description": "Highlight color (hex format)",
                       "nullable": true
                     },
                     "content": {
                       "type": "string",
+                      "description": "Note content",
                       "nullable": true
                     },
                     "isOrphan": {
                       "default": false,
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether mark position is lost"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Creation timestamp"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last update timestamp"
                     }
                   },
                   "required": [
@@ -2708,7 +3063,8 @@
                     "content",
                     "createdAt",
                     "updatedAt"
-                  ]
+                  ],
+                  "description": "Mark entity (highlight/note/bookmark)"
                 }
               }
             }
@@ -2757,13 +3113,16 @@
                     "type": "object",
                     "properties": {
                       "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Unique mark identifier"
                       },
                       "userId": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Associated user ID"
                       },
                       "bookId": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Associated book ID"
                       },
                       "type": {
                         "type": "string",
@@ -2771,55 +3130,68 @@
                           "highlight",
                           "note",
                           "bookmark"
-                        ]
+                        ],
+                        "description": "Mark type"
                       },
                       "title": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Mark title"
                       },
                       "selectedText": {
                         "type": "string",
+                        "description": "Selected text content",
                         "nullable": true
                       },
                       "contextBefore": {
                         "type": "string",
+                        "description": "Text before selection",
                         "nullable": true
                       },
                       "contextAfter": {
                         "type": "string",
+                        "description": "Text after selection",
                         "nullable": true
                       },
                       "chapterId": {
                         "type": "string",
+                        "description": "Associated chapter ID",
                         "nullable": true
                       },
                       "audioTimeSeconds": {
                         "type": "number",
+                        "description": "Audio position in seconds",
                         "nullable": true
                       },
                       "textPosition": {
                         "type": "string",
+                        "description": "Text position identifier",
                         "nullable": true
                       },
                       "color": {
                         "type": "string",
                         "pattern": "^#[0-9A-Fa-f]{6}$",
+                        "description": "Highlight color (hex format)",
                         "nullable": true
                       },
                       "content": {
                         "type": "string",
+                        "description": "Note content",
                         "nullable": true
                       },
                       "isOrphan": {
                         "default": false,
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "Whether mark position is lost"
                       },
                       "createdAt": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "Creation timestamp"
                       },
                       "updatedAt": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "Last update timestamp"
                       }
                     },
                     "required": [
@@ -2838,7 +3210,8 @@
                       "content",
                       "createdAt",
                       "updatedAt"
-                    ]
+                    ],
+                    "description": "Mark entity (highlight/note/bookmark)"
                   }
                 }
               }
@@ -2866,7 +3239,7 @@
         "operationId": "listBookFiles",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "List of files associated with a book",
             "content": {
               "application/json": {
                 "schema": {
@@ -2890,32 +3263,45 @@
                         "type": "object",
                         "properties": {
                           "fileName": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File name"
                           },
                           "fileKey": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique file key"
+                          },
+                          "isFolder": {
+                            "type": "boolean",
+                            "description": "Whether item is a folder"
                           },
                           "contentType": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "MIME content type"
                           },
                           "contentEncoding": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Content encoding"
                           },
                           "contentLength": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "File size in bytes"
                           },
                           "lastModified": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last modification timestamp"
                           },
                           "eTag": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Entity tag for cache validation"
                           }
                         },
                         "required": [
                           "fileName",
-                          "fileKey"
-                        ]
+                          "fileKey",
+                          "isFolder"
+                        ],
+                        "description": "File list item"
                       }
                     }
                   },
@@ -2925,7 +3311,8 @@
                     "storagePath",
                     "totalFiles",
                     "files"
-                  ]
+                  ],
+                  "description": "List of files associated with a book"
                 }
               }
             }
@@ -2972,7 +3359,7 @@
         "operationId": "getBookFileContent",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "File content response",
             "content": {
               "application/json": {
                 "schema": {
@@ -3016,7 +3403,8 @@
                     "storagePath",
                     "fileKey",
                     "content"
-                  ]
+                  ],
+                  "description": "File content response"
                 }
               }
             }
@@ -3063,24 +3451,27 @@
         "operationId": "getBookAudioSignedUrl",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Signed URL response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "fileKey": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File key"
                     },
                     "url": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Pre-signed URL"
                     }
                   },
                   "required": [
                     "fileKey",
                     "url"
-                  ]
+                  ],
+                  "description": "Signed URL response"
                 }
               }
             }
@@ -3090,7 +3481,7 @@
     },
     "/api/files/list": {
       "get": {
-        "summary": "List files in a storage path with pagination support",
+        "summary": "List files and folders in storage with pagination support",
         "tags": [
           "Files"
         ],
@@ -3104,9 +3495,8 @@
             }
           },
           {
-            "name": "storagePath",
+            "name": "prefix",
             "in": "query",
-            "required": true,
             "content": {
               "application/json": {
                 "schema": {
@@ -3116,7 +3506,7 @@
             }
           },
           {
-            "name": "prefix",
+            "name": "delimiter",
             "in": "query",
             "content": {
               "application/json": {
@@ -3165,32 +3555,51 @@
                         "type": "object",
                         "properties": {
                           "fileName": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "File name"
                           },
                           "fileKey": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Unique file key"
+                          },
+                          "isFolder": {
+                            "type": "boolean",
+                            "description": "Whether item is a folder"
                           },
                           "contentType": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "MIME content type"
                           },
                           "contentEncoding": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Content encoding"
                           },
                           "contentLength": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "File size in bytes"
                           },
                           "lastModified": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date-time",
+                            "description": "Last modification timestamp"
                           },
                           "eTag": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Entity tag for cache validation"
                           }
                         },
                         "required": [
                           "fileName",
-                          "fileKey"
-                        ]
+                          "fileKey",
+                          "isFolder"
+                        ],
+                        "description": "File list item"
+                      }
+                    },
+                    "commonPrefixes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
                     "isTruncated": {
@@ -3207,6 +3616,9 @@
                     },
                     "maxKeys": {
                       "type": "integer"
+                    },
+                    "delimiter": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -3245,6 +3657,14 @@
         ],
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "fileKey",
             "in": "query",
             "required": true,
@@ -3272,23 +3692,44 @@
         "operationId": "getSignedGetUrl",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Signed URL response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "fileKey": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File key"
                     },
                     "url": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Pre-signed URL"
                     }
                   },
                   "required": [
                     "fileKey",
                     "url"
+                  ],
+                  "description": "Signed URL response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
                   ]
                 }
               }
@@ -3328,35 +3769,42 @@
         "operationId": "getFileMetadata",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "File metadata",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "fileKey": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Unique file key"
                     },
                     "contentType": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "MIME content type"
                     },
                     "contentEncoding": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Content encoding"
                     },
                     "contentLength": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "File size in bytes"
                     },
                     "lastModified": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "date-time",
+                      "description": "Last modification timestamp"
                     },
                     "eTag": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Entity tag for cache validation"
                     }
                   },
                   "required": [
                     "fileKey"
-                  ]
+                  ],
+                  "description": "File metadata"
                 }
               }
             }
@@ -3431,23 +3879,26 @@
         "operationId": "checkFileExists",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "File existence check response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "fileKey": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File key"
                     },
                     "exists": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether file exists"
                     }
                   },
                   "required": [
                     "fileKey",
                     "exists"
-                  ]
+                  ],
+                  "description": "File existence check response"
                 }
               }
             }
@@ -3522,22 +3973,25 @@
         "operationId": "checkFolderExists",
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Folder existence check response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "exists": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether folder exists"
                     },
                     "keyCount": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Number of items in folder"
                     }
                   },
                   "required": [
                     "exists"
-                  ]
+                  ],
+                  "description": "Folder existence check response"
                 }
               }
             }
@@ -3561,6 +4015,95 @@
             }
           }
         }
+      }
+    },
+    "/api/files/folder/create": {
+      "post": {
+        "summary": "Create a folder by uploading an empty object with trailing slash",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "createFolder",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folderKey": {
+                    "type": "string",
+                    "description": "Folder key/path"
+                  }
+                },
+                "required": [
+                  "folderKey"
+                ],
+                "description": "Create folder request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create folder response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "folderKey": {
+                      "type": "string",
+                      "description": "Created folder key"
+                    },
+                    "created": {
+                      "type": "boolean",
+                      "description": "Whether folder was created"
+                    }
+                  },
+                  "required": [
+                    "folderKey",
+                    "created"
+                  ],
+                  "description": "Create folder response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/files/upload-url": {
@@ -3588,25 +4131,29 @@
                 "type": "object",
                 "properties": {
                   "fileName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "File name"
                   },
                   "contentType": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "MIME content type"
                   },
                   "fileSize": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "File size in bytes"
                   }
                 },
                 "required": [
                   "fileName"
-                ]
+                ],
+                "description": "Upload URL request"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Upload URL response",
             "content": {
               "application/json": {
                 "schema": {
@@ -3614,20 +4161,24 @@
                   "properties": {
                     "uploadUrl": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Pre-signed upload URL"
                     },
                     "fileKey": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "File key for uploaded file"
                     },
                     "expiresIn": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "URL expiration time in seconds"
                     }
                   },
                   "required": [
                     "uploadUrl",
                     "fileKey",
                     "expiresIn"
-                  ]
+                  ],
+                  "description": "Upload URL response"
                 }
               }
             }
@@ -3691,26 +4242,30 @@
                 "type": "object",
                 "properties": {
                   "fileKey": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Target file key"
                   },
                   "contentType": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "MIME content type"
                   },
                   "content": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "File content (base64 for binary)"
                   }
                 },
                 "required": [
                   "fileKey",
                   "content"
-                ]
+                ],
+                "description": "Direct upload request"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Direct upload response",
             "content": {
               "application/json": {
                 "schema": {
@@ -3718,26 +4273,32 @@
                   "properties": {
                     "url": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "File access URL"
                     },
                     "contentLength": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Uploaded file size"
                     },
                     "fileKey": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Uploaded file key"
                     },
                     "expiresIn": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "URL expiration time in seconds"
                     },
                     "eTag": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Entity tag"
                     }
                   },
                   "required": [
                     "url",
                     "fileKey",
                     "expiresIn"
-                  ]
+                  ],
+                  "description": "Direct upload response"
                 }
               }
             }
@@ -11649,91 +12210,112 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique book identifier"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Book title"
           },
           "creator": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Book author/creator"
           },
           "subject": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Book subject"
           },
           "subjectCode": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Book subject code"
           },
           "description": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Book description"
           },
           "publisher": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Publisher name"
           },
           "date": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Publication date"
           },
           "source": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Book source"
           },
           "language": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Book language code"
           },
           "format": {
             "type": "string",
             "enum": [
               "DAISY_V3",
               "EPUB3"
-            ]
+            ],
+            "description": "Book format"
           },
           "storagePath": {
-            "type": "string"
+            "type": "string",
+            "description": "File storage path"
           },
           "coverImage": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Cover image URL"
           },
           "durationSeconds": {
             "type": "number",
-            "nullable": true
+            "nullable": true,
+            "description": "Audio duration in seconds"
           },
           "contentHash": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Content hash for integrity"
           },
           "featured": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "description": "Whether book is featured"
           },
           "hidden": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "description": "Whether book is hidden"
           },
           "views": {
             "type": "number",
-            "default": 0
+            "default": 0,
+            "description": "Number of views"
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "default": []
+            "default": [],
+            "description": "Book tags"
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Creation timestamp"
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last update timestamp"
           }
         },
         "required": [
@@ -11755,41 +12337,51 @@
           "createdAt",
           "updatedAt"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Book entity"
       },
       "ReadingProgress": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique reading progress identifier"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "Associated user ID"
           },
           "bookId": {
-            "type": "string"
+            "type": "string",
+            "description": "Associated book ID"
           },
           "currentTimeSeconds": {
-            "type": "number"
+            "type": "number",
+            "description": "Current playback time in seconds"
           },
           "currentPosition": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Current position in book"
           },
           "isCompleted": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether book is completed"
           },
           "lastReadAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last read timestamp"
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Creation timestamp"
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last update timestamp"
           }
         },
         "required": [
@@ -11803,19 +12395,23 @@
           "createdAt",
           "updatedAt"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Reading progress entity"
       },
       "Mark": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique mark identifier"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "Associated user ID"
           },
           "bookId": {
-            "type": "string"
+            "type": "string",
+            "description": "Associated book ID"
           },
           "type": {
             "type": "string",
@@ -11823,55 +12419,68 @@
               "highlight",
               "note",
               "bookmark"
-            ]
+            ],
+            "description": "Mark type"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Mark title"
           },
           "selectedText": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Selected text content"
           },
           "contextBefore": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Text before selection"
           },
           "contextAfter": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Text after selection"
           },
           "chapterId": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Associated chapter ID"
           },
           "audioTimeSeconds": {
             "type": "number",
-            "nullable": true
+            "nullable": true,
+            "description": "Audio position in seconds"
           },
           "textPosition": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Text position identifier"
           },
           "color": {
             "type": "string",
             "pattern": "^#[0-9A-Fa-f]{6}$",
-            "nullable": true
+            "nullable": true,
+            "description": "Highlight color (hex format)"
           },
           "content": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Note content"
           },
           "isOrphan": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "description": "Whether mark position is lost"
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Creation timestamp"
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last update timestamp"
           }
         },
         "required": [
@@ -11891,32 +12500,39 @@
           "createdAt",
           "updatedAt"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Mark entity (highlight/note/bookmark)"
       },
       "UserPreferences": {
         "type": "object",
         "properties": {
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "Associated user ID"
           },
           "theme": {
-            "type": "string"
+            "type": "string",
+            "description": "UI theme preference"
           },
           "fontSize": {
             "type": "number",
-            "default": 16
+            "default": 16,
+            "description": "Font size in pixels"
           },
           "defaultSpeed": {
             "type": "number",
-            "default": 1
+            "default": 1,
+            "description": "Default playback speed"
           },
           "autoBookmark": {
             "type": "boolean",
-            "default": true
+            "default": true,
+            "description": "Auto-bookmark on close"
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last update timestamp"
           }
         },
         "required": [
@@ -11930,73 +12546,36 @@
         "type": "object",
         "properties": {
           "fileKey": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique file key"
           },
           "contentType": {
-            "type": "string"
+            "type": "string",
+            "description": "MIME content type"
           },
           "contentEncoding": {
-            "type": "string"
+            "type": "string",
+            "description": "Content encoding"
           },
           "contentLength": {
-            "type": "integer"
+            "type": "integer",
+            "description": "File size in bytes"
           },
           "lastModified": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last modification timestamp"
           },
           "eTag": {
-            "type": "string"
+            "type": "string",
+            "description": "Entity tag for cache validation"
           }
         },
         "required": [
           "fileKey"
         ],
-        "additionalProperties": false
-      },
-      "FileContentResponse": {
-        "type": "object",
-        "properties": {
-          "bookId": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "storagePath": {
-            "type": "string"
-          },
-          "fileKey": {
-            "type": "string"
-          },
-          "contentType": {
-            "type": "string"
-          },
-          "contentEncoding": {
-            "type": "string"
-          },
-          "contentLength": {
-            "type": "integer"
-          },
-          "content": {
-            "type": "string"
-          },
-          "lastModified": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "eTag": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "bookId",
-          "fileName",
-          "storagePath",
-          "fileKey",
-          "content"
-        ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "File metadata"
       }
     },
     "securitySchemes": {
