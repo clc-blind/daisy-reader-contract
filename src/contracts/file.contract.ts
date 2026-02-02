@@ -66,7 +66,23 @@ export const fileRoutes = {
     responses: {
       200: SignedUrlResponseSchema,
     },
-    summary: 'Get presigned URL for book audio file',
+    summary:
+      'Get presigned URL for book audio file (deprecated: use getBookFileSignedUrl instead)',
+    deprecated: true,
+  },
+
+  getBookFileSignedUrl: {
+    method: 'GET',
+    path: '/api/books/:bookId/files/:fileName/signed-url',
+    pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
+    query: z.object({
+      expiresIn: z.coerce.number().optional(),
+    }),
+    responses: {
+      200: SignedUrlResponseSchema,
+    },
+    summary:
+      'Get presigned URL for any book file (cover, content, etc.) without authentication',
   },
 
   listFiles: {
