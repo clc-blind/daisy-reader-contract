@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { BookSchema, ReadingProgressSchema } from '@/src/schema';
+import {
+  BookSchema,
+  ReadingProgressSchema,
+  UpdateReadingProgressSchema,
+} from '@/src/schema';
 
 export const readingRoutes = {
   getRecentlyReadBooks: {
@@ -31,19 +35,9 @@ export const readingRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: ReadingProgressSchema.omit({
-      id: true,
-    }).partial({
-      currentPosition: true,
-      currentTimeSeconds: true,
-      isCompleted: true,
-      updatedAt: true,
-      createdAt: true,
-    }),
+    body: UpdateReadingProgressSchema,
     responses: {
-      200: ReadingProgressSchema.partial({
-        currentPosition: true,
-      }),
+      200: ReadingProgressSchema,
     },
     summary: 'Update reading progress',
   },

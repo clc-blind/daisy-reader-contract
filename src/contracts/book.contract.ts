@@ -4,9 +4,11 @@ import {
   BookListResponseSchema,
   BookSchema,
   BookViewsResponseSchema,
+  CreateBookSchema,
   PaginationQuerySchema,
   SearchQuerySchema,
   SortQuerySchema,
+  UpdateBookSchema,
 } from '@/src/schema';
 
 export const bookRoutes = {
@@ -75,7 +77,7 @@ export const bookRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: BookSchema.omit({ id: true, createdAt: true, updatedAt: true }),
+    body: CreateBookSchema,
     responses: {
       201: BookSchema,
     },
@@ -88,11 +90,7 @@ export const bookRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: BookSchema.omit({
-      id: true,
-      createdAt: true,
-      updatedAt: true,
-    }).partial(),
+    body: UpdateBookSchema,
     responses: {
       200: BookSchema,
     },

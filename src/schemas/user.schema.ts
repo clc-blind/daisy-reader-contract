@@ -1,53 +1,82 @@
 import { z } from 'zod';
 
 // User (Better Auth)
-export const UserSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string().email(),
-  emailVerified: z.boolean().default(false),
-  image: z.string().nullable().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-});
+export const UserSchema = z
+  .object({
+    id: z.string().describe('Unique user identifier'),
+    name: z.string().describe('User display name'),
+    email: z.string().email().describe('User email address'),
+    emailVerified: z
+      .boolean()
+      .default(false)
+      .describe('Whether email is verified'),
+    image: z.string().nullable().optional().describe('User profile image URL'),
+    createdAt: z.date().describe('Account creation timestamp'),
+    updatedAt: z.date().describe('Last update timestamp'),
+  })
+  .describe('User entity');
 
 // Account (Better Auth - OAuth providers)
-export const AccountSchema = z.object({
-  id: z.string(),
-  accountId: z.string(),
-  providerId: z.string(),
-  userId: z.string(),
-  accessToken: z.string().nullable().optional(),
-  refreshToken: z.string().nullable().optional(),
-  idToken: z.string().nullable().optional(),
-  accessTokenExpiresAt: z.date().nullable().optional(),
-  refreshTokenExpiresAt: z.date().nullable().optional(),
-  scope: z.string().nullable().optional(),
-  password: z.string().nullable().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-});
+export const AccountSchema = z
+  .object({
+    id: z.string().describe('Unique account identifier'),
+    accountId: z.string().describe('Provider account ID'),
+    providerId: z.string().describe('OAuth provider ID'),
+    userId: z.string().describe('Associated user ID'),
+    accessToken: z
+      .string()
+      .nullable()
+      .optional()
+      .describe('OAuth access token'),
+    refreshToken: z
+      .string()
+      .nullable()
+      .optional()
+      .describe('OAuth refresh token'),
+    idToken: z.string().nullable().optional().describe('OAuth ID token'),
+    accessTokenExpiresAt: z
+      .date()
+      .nullable()
+      .optional()
+      .describe('Access token expiration'),
+    refreshTokenExpiresAt: z
+      .date()
+      .nullable()
+      .optional()
+      .describe('Refresh token expiration'),
+    scope: z.string().nullable().optional().describe('OAuth scope'),
+    password: z
+      .string()
+      .nullable()
+      .optional()
+      .describe('Hashed password for credentials'),
+    createdAt: z.date().describe('Account creation timestamp'),
+    updatedAt: z.date().describe('Last update timestamp'),
+  })
+  .describe('User account entity');
 
 // Session (Better Auth)
-export const SessionSchema = z.object({
-  id: z.string(),
-  expiresAt: z.date(),
-  token: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  ipAddress: z.string().nullable().optional(),
-  userAgent: z.string().nullable().optional(),
-  userId: z.string(),
-});
+export const SessionSchema = z
+  .object({
+    id: z.string().describe('Unique session identifier'),
+    expiresAt: z.date().describe('Session expiration timestamp'),
+    token: z.string().describe('Session token'),
+    createdAt: z.date().describe('Session creation timestamp'),
+    updatedAt: z.date().describe('Last update timestamp'),
+    ipAddress: z.string().nullable().optional().describe('Client IP address'),
+    userAgent: z.string().nullable().optional().describe('Client user agent'),
+    userId: z.string().describe('Associated user ID'),
+  })
+  .describe('User session entity');
 
 // User Preferences
 export const UserPreferencesSchema = z.object({
-  userId: z.string(),
-  theme: z.string(),
-  fontSize: z.number().default(16),
-  defaultSpeed: z.number().default(1.0),
-  autoBookmark: z.boolean().default(true),
-  updatedAt: z.date(),
+  userId: z.string().describe('Associated user ID'),
+  theme: z.string().describe('UI theme preference'),
+  fontSize: z.number().default(16).describe('Font size in pixels'),
+  defaultSpeed: z.number().default(1.0).describe('Default playback speed'),
+  autoBookmark: z.boolean().default(true).describe('Auto-bookmark on close'),
+  updatedAt: z.date().describe('Last update timestamp'),
 });
 
 export type User = z.infer<typeof UserSchema>;

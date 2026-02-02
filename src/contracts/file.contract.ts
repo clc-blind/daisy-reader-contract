@@ -8,6 +8,8 @@ import {
   CompleteMultipartResponseSchema,
   CopyFileRequestSchema,
   CopyFileResponseSchema,
+  CreateFolderRequestSchema,
+  CreateFolderResponseSchema,
   DeleteFileResponseSchema,
   DirectUploadRequestSchema,
   DirectUploadResponseSchema,
@@ -74,8 +76,8 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
-      storagePath: z.string(),
       prefix: z.string().optional(),
+      delimiter: z.string().optional(),
       continuationToken: z.string().optional(),
       maxKeys: z.coerce.number().int().min(1).optional(),
     }),
@@ -83,18 +85,22 @@ export const fileRoutes = {
       200: ListFilesResponseSchema,
       401: FileErrorResponseSchema,
     },
-    summary: 'List files in a storage path with pagination support',
+    summary: 'List files and folders in storage with pagination support',
   },
 
   getSignedGetUrl: {
     method: 'GET',
     path: '/api/files/signed-url',
+    headers: z.object({
+      authorization: z.string(),
+    }),
     query: z.object({
       fileKey: z.string(),
       expiresIn: z.coerce.number().optional(),
     }),
     responses: {
       200: SignedUrlResponseSchema,
+      401: FileErrorResponseSchema,
     },
     summary: 'Get presigned URL for downloading a file',
   },
@@ -148,6 +154,20 @@ export const fileRoutes = {
     },
     summary:
       'Check whether a folder (prefix) exists and optionally count objects',
+  },
+
+  createFolder: {
+    method: 'POST',
+    path: '/api/files/folder/create',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: CreateFolderRequestSchema,
+    responses: {
+      200: CreateFolderResponseSchema,
+      401: FileErrorResponseSchema,
+    },
+    summary: 'Create a folder by uploading an empty object with trailing slash',
   },
 
   requestFileUploadUrl: {
