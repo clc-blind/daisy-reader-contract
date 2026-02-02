@@ -3414,7 +3414,8 @@
     },
     "/api/books/{bookId}/audio/{fileName}/signed-url": {
       "get": {
-        "summary": "Get presigned URL for book audio file",
+        "summary": "Get presigned URL for book audio file (deprecated: use getBookFileSignedUrl instead)",
+        "deprecated": true,
         "tags": [
           "Books"
         ],
@@ -3449,6 +3450,73 @@
           }
         ],
         "operationId": "getBookAudioSignedUrl",
+        "responses": {
+          "200": {
+            "description": "Signed URL response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fileKey": {
+                      "type": "string",
+                      "description": "File key"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Pre-signed URL"
+                    }
+                  },
+                  "required": [
+                    "fileKey",
+                    "url"
+                  ],
+                  "description": "Signed URL response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{bookId}/files/{fileName}/signed-url": {
+      "get": {
+        "summary": "Get presigned URL for any book file (cover, content, etc.) without authentication",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiresIn",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getBookFileSignedUrl",
         "responses": {
           "200": {
             "description": "Signed URL response",
