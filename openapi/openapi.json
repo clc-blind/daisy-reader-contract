@@ -2341,6 +2341,105 @@
         ]
       }
     },
+    "/api/users/{userId}/resources": {
+      "get": {
+        "summary": "Check user-associated resources (marks, reading progress) - Admin only",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "checkUserResources",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string",
+                      "description": "User ID"
+                    },
+                    "marksCount": {
+                      "type": "integer",
+                      "description": "Number of marks created by user"
+                    },
+                    "readingProgressCount": {
+                      "type": "integer",
+                      "description": "Number of reading progress records"
+                    },
+                    "hasResources": {
+                      "type": "boolean",
+                      "description": "Whether user has any associated resources"
+                    }
+                  },
+                  "required": [
+                    "userId",
+                    "marksCount",
+                    "readingProgressCount",
+                    "hasResources"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/progress/recent/{userId}": {
       "get": {
         "summary": "Get recently read books for a user",

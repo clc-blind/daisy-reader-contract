@@ -79,7 +79,21 @@ export const UserPreferencesSchema = z.object({
   updatedAt: z.date().describe('Last update timestamp'),
 });
 
+// User Resources Check
+export const UserResourcesSchema = z.object({
+  userId: z.string().describe('User ID'),
+  marksCount: z.number().int().describe('Number of marks created by user'),
+  readingProgressCount: z
+    .number()
+    .int()
+    .describe('Number of reading progress records'),
+  hasResources: z
+    .boolean()
+    .describe('Whether user has any associated resources'),
+});
+
 export type User = z.infer<typeof UserSchema>;
 export type Account = z.infer<typeof AccountSchema>;
 export type Session = z.infer<typeof SessionSchema>;
 export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
+export type UserResources = z.infer<typeof UserResourcesSchema>;

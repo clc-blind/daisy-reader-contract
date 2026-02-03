@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { UserPreferencesSchema, UserSchema } from '@/src/schema';
+import {
+  UserPreferencesSchema,
+  UserResourcesSchema,
+  UserSchema,
+} from '@/src/schema';
 
 export const userRoutes = {
   // Current User (Web & Admin)
@@ -58,5 +62,24 @@ export const userRoutes = {
     },
     summary:
       'Update user preferences (theme, fontSize, defaultSpeed, autoBookmark)',
+  },
+
+  // Admin: Check user resources (Admin only)
+  checkUserResources: {
+    method: 'GET',
+    path: '/api/users/:userId/resources',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    pathParams: z.object({
+      userId: z.string(),
+    }),
+    responses: {
+      200: UserResourcesSchema,
+      401: z.object({ error: z.string() }),
+      403: z.object({ error: z.string() }),
+    },
+    summary:
+      'Check user-associated resources (marks, reading progress) - Admin only',
   },
 } as const;
