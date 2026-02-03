@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/clc-blind/daisy-reader-contract/compare/v1.1.1...v1.1.2) (2026-02-03)
+
+
+### Bug Fixes
+
+* update check user resource contract ([0c6ce6a](https://github.com/clc-blind/daisy-reader-contract/commit/0c6ce6ab6644f9c05755a16036980f1b5c90d89a))
+
 ## [1.1.1](https://github.com/clc-blind/daisy-reader-contract/compare/v1.1.0...v1.1.1) (2026-02-02)
 
 
