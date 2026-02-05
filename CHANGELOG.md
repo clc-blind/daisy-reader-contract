@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.1...v1.3.2) (2026-02-05)
+
+
+### Bug Fixes
+
+* update system restore data contract ([10373a1](https://github.com/clc-blind/daisy-reader-contract/commit/10373a1350b42f441524a9b9cd0a59fad844153d))
+
 ## [1.3.1](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.0...v1.3.1) (2026-02-05)
 
 
