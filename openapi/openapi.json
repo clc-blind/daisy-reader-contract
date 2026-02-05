@@ -5515,6 +5515,851 @@
         ]
       }
     },
+    "/api/buckets/create": {
+      "post": {
+        "summary": "Create a new storage bucket",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "createBucket",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bucketName": {
+                    "type": "string",
+                    "description": "Name of bucket to create"
+                  }
+                },
+                "required": [
+                  "bucketName"
+                ],
+                "description": "Create bucket request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create bucket response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bucketName": {
+                      "type": "string",
+                      "description": "Created bucket name"
+                    },
+                    "location": {
+                      "type": "string",
+                      "description": "Bucket location/region"
+                    }
+                  },
+                  "required": [
+                    "bucketName"
+                  ],
+                  "description": "Create bucket response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/buckets/delete": {
+      "delete": {
+        "summary": "Delete a storage bucket (must be empty)",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bucketName",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "deleteBucket",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete bucket response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bucketName": {
+                      "type": "string",
+                      "description": "Deleted bucket name"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether deletion was successful"
+                    }
+                  },
+                  "required": [
+                    "bucketName",
+                    "deleted"
+                  ],
+                  "description": "Delete bucket response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/buckets/list": {
+      "get": {
+        "summary": "List all storage buckets",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "listBuckets",
+        "responses": {
+          "200": {
+            "description": "List buckets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "buckets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Bucket name"
+                          },
+                          "creationDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Bucket creation date"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "description": "Bucket information"
+                      },
+                      "description": "List of buckets"
+                    },
+                    "owner": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      },
+                      "description": "Bucket owner information"
+                    }
+                  },
+                  "required": [
+                    "buckets"
+                  ],
+                  "description": "List buckets response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/buckets/exists": {
+      "get": {
+        "summary": "Check if a bucket exists",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bucketName",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "checkBucketExists",
+        "responses": {
+          "200": {
+            "description": "Check bucket exists response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bucketName": {
+                      "type": "string",
+                      "description": "Bucket name"
+                    },
+                    "exists": {
+                      "type": "boolean",
+                      "description": "Whether bucket exists"
+                    }
+                  },
+                  "required": [
+                    "bucketName",
+                    "exists"
+                  ],
+                  "description": "Check bucket exists response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/files/copy-between-buckets": {
+      "post": {
+        "summary": "Copy a file from one bucket to another",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "copyFileBetweenBuckets",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sourceBucket": {
+                    "type": "string",
+                    "description": "Source bucket name"
+                  },
+                  "sourceKey": {
+                    "type": "string",
+                    "description": "Source file key"
+                  },
+                  "destinationBucket": {
+                    "type": "string",
+                    "description": "Destination bucket name"
+                  },
+                  "destinationKey": {
+                    "type": "string",
+                    "description": "Destination file key"
+                  }
+                },
+                "required": [
+                  "sourceBucket",
+                  "sourceKey",
+                  "destinationBucket",
+                  "destinationKey"
+                ],
+                "description": "Copy file between buckets request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cross-bucket file operation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sourceBucket": {
+                      "type": "string"
+                    },
+                    "sourceKey": {
+                      "type": "string"
+                    },
+                    "destinationBucket": {
+                      "type": "string"
+                    },
+                    "destinationKey": {
+                      "type": "string"
+                    },
+                    "eTag": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "sourceBucket",
+                    "sourceKey",
+                    "destinationBucket",
+                    "destinationKey"
+                  ],
+                  "description": "Cross-bucket file operation response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/files/move-between-buckets": {
+      "post": {
+        "summary": "Move a file from one bucket to another",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "moveFileBetweenBuckets",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sourceBucket": {
+                    "type": "string",
+                    "description": "Source bucket name"
+                  },
+                  "sourceKey": {
+                    "type": "string",
+                    "description": "Source file key"
+                  },
+                  "destinationBucket": {
+                    "type": "string",
+                    "description": "Destination bucket name"
+                  },
+                  "destinationKey": {
+                    "type": "string",
+                    "description": "Destination file key"
+                  }
+                },
+                "required": [
+                  "sourceBucket",
+                  "sourceKey",
+                  "destinationBucket",
+                  "destinationKey"
+                ],
+                "description": "Move file between buckets request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cross-bucket file operation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sourceBucket": {
+                      "type": "string"
+                    },
+                    "sourceKey": {
+                      "type": "string"
+                    },
+                    "destinationBucket": {
+                      "type": "string"
+                    },
+                    "destinationKey": {
+                      "type": "string"
+                    },
+                    "eTag": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "sourceBucket",
+                    "sourceKey",
+                    "destinationBucket",
+                    "destinationKey"
+                  ],
+                  "description": "Cross-bucket file operation response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/buckets/stats": {
+      "get": {
+        "summary": "Get bucket statistics (object count, total size)",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bucketName",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "getBucketStats",
+        "responses": {
+          "200": {
+            "description": "Bucket statistics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bucketName": {
+                      "type": "string",
+                      "description": "Bucket name"
+                    },
+                    "objectCount": {
+                      "type": "integer",
+                      "description": "Total number of objects"
+                    },
+                    "totalSize": {
+                      "type": "number",
+                      "description": "Total size in bytes"
+                    }
+                  },
+                  "required": [
+                    "bucketName",
+                    "objectCount",
+                    "totalSize"
+                  ],
+                  "description": "Bucket statistics"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/files/download": {
+      "get": {
+        "summary": "Download file content directly",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileKey",
+            "in": "query",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "downloadFile",
+        "responses": {
+          "200": {
+            "description": "Download file response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fileKey": {
+                      "type": "string",
+                      "description": "File key"
+                    },
+                    "contentType": {
+                      "type": "string",
+                      "description": "MIME content type"
+                    },
+                    "contentLength": {
+                      "type": "integer",
+                      "description": "File size in bytes"
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "File content (base64 for binary)"
+                    },
+                    "eTag": {
+                      "type": "string",
+                      "description": "Entity tag"
+                    }
+                  },
+                  "required": [
+                    "fileKey",
+                    "content"
+                  ],
+                  "description": "Download file response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/sign-in/social": {
       "post": {
         "tags": [

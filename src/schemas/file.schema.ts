@@ -269,6 +269,106 @@ export const FileErrorResponseSchema = z.object({
   message: z.string(),
 });
 
+// Bucket operations
+export const BucketInfoSchema = z
+  .object({
+    name: z.string().describe('Bucket name'),
+    creationDate: z.date().optional().describe('Bucket creation date'),
+  })
+  .describe('Bucket information');
+
+export const CreateBucketRequestSchema = z
+  .object({
+    bucketName: z.string().describe('Name of bucket to create'),
+  })
+  .describe('Create bucket request');
+
+export const CreateBucketResponseSchema = z
+  .object({
+    bucketName: z.string().describe('Created bucket name'),
+    location: z.string().optional().describe('Bucket location/region'),
+  })
+  .describe('Create bucket response');
+
+export const DeleteBucketRequestSchema = z
+  .object({
+    bucketName: z.string().describe('Name of bucket to delete'),
+  })
+  .describe('Delete bucket request');
+
+export const DeleteBucketResponseSchema = z
+  .object({
+    bucketName: z.string().describe('Deleted bucket name'),
+    deleted: z.boolean().describe('Whether deletion was successful'),
+  })
+  .describe('Delete bucket response');
+
+export const ListBucketsResponseSchema = z
+  .object({
+    buckets: z.array(BucketInfoSchema).describe('List of buckets'),
+    owner: z
+      .object({
+        displayName: z.string().optional(),
+        id: z.string().optional(),
+      })
+      .optional()
+      .describe('Bucket owner information'),
+  })
+  .describe('List buckets response');
+
+export const CheckBucketExistsResponseSchema = z
+  .object({
+    bucketName: z.string().describe('Bucket name'),
+    exists: z.boolean().describe('Whether bucket exists'),
+  })
+  .describe('Check bucket exists response');
+
+export const CopyFileBetweenBucketsRequestSchema = z
+  .object({
+    sourceBucket: z.string().describe('Source bucket name'),
+    sourceKey: z.string().describe('Source file key'),
+    destinationBucket: z.string().describe('Destination bucket name'),
+    destinationKey: z.string().describe('Destination file key'),
+  })
+  .describe('Copy file between buckets request');
+
+export const MoveFileBetweenBucketsRequestSchema = z
+  .object({
+    sourceBucket: z.string().describe('Source bucket name'),
+    sourceKey: z.string().describe('Source file key'),
+    destinationBucket: z.string().describe('Destination bucket name'),
+    destinationKey: z.string().describe('Destination file key'),
+  })
+  .describe('Move file between buckets request');
+
+export const CrossBucketFileResponseSchema = z
+  .object({
+    sourceBucket: z.string(),
+    sourceKey: z.string(),
+    destinationBucket: z.string(),
+    destinationKey: z.string(),
+    eTag: z.string().optional(),
+  })
+  .describe('Cross-bucket file operation response');
+
+export const BucketStatsSchema = z
+  .object({
+    bucketName: z.string().describe('Bucket name'),
+    objectCount: z.number().int().describe('Total number of objects'),
+    totalSize: z.number().describe('Total size in bytes'),
+  })
+  .describe('Bucket statistics');
+
+export const DownloadFileResponseSchema = z
+  .object({
+    fileKey: z.string().describe('File key'),
+    contentType: z.string().optional().describe('MIME content type'),
+    contentLength: z.number().int().optional().describe('File size in bytes'),
+    content: z.string().describe('File content (base64 for binary)'),
+    eTag: z.string().optional().describe('Entity tag'),
+  })
+  .describe('Download file response');
+
 // Type exports
 export type FileMetadata = z.infer<typeof FileMetadataSchema>;
 export type FileListItem = z.infer<typeof FileListItemSchema>;
@@ -316,3 +416,23 @@ export type MoveFileResponse = z.infer<typeof MoveFileResponseSchema>;
 export type ListFilesResponse = z.infer<typeof ListFilesResponseSchema>;
 export type BookFilesListResponse = z.infer<typeof BookFilesListResponseSchema>;
 export type FileErrorResponse = z.infer<typeof FileErrorResponseSchema>;
+export type BucketInfo = z.infer<typeof BucketInfoSchema>;
+export type CreateBucketRequest = z.infer<typeof CreateBucketRequestSchema>;
+export type CreateBucketResponse = z.infer<typeof CreateBucketResponseSchema>;
+export type DeleteBucketRequest = z.infer<typeof DeleteBucketRequestSchema>;
+export type DeleteBucketResponse = z.infer<typeof DeleteBucketResponseSchema>;
+export type ListBucketsResponse = z.infer<typeof ListBucketsResponseSchema>;
+export type CheckBucketExistsResponse = z.infer<
+  typeof CheckBucketExistsResponseSchema
+>;
+export type CopyFileBetweenBucketsRequest = z.infer<
+  typeof CopyFileBetweenBucketsRequestSchema
+>;
+export type MoveFileBetweenBucketsRequest = z.infer<
+  typeof MoveFileBetweenBucketsRequestSchema
+>;
+export type CrossBucketFileResponse = z.infer<
+  typeof CrossBucketFileResponseSchema
+>;
+export type BucketStats = z.infer<typeof BucketStatsSchema>;
+export type DownloadFileResponse = z.infer<typeof DownloadFileResponseSchema>;
