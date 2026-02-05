@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/clc-blind/daisy-reader-contract/compare/v1.1.2...v1.2.0) (2026-02-05)
+
+
+### Features
+
+* setup bucket operations ([6e6cc78](https://github.com/clc-blind/daisy-reader-contract/commit/6e6cc78c550efca5349dce6718a08f28decd3508))
+* setup bucket operations ([8c40be1](https://github.com/clc-blind/daisy-reader-contract/commit/8c40be14f9708b0e74c3ad241fbe97a3f5efe8d4))
+
 ## [1.1.2](https://github.com/clc-blind/daisy-reader-contract/compare/v1.1.1...v1.1.2) (2026-02-03)
 
 
