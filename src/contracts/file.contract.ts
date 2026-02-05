@@ -401,6 +401,7 @@ export const fileRoutes = {
       200: DeleteBucketResponseSchema,
       401: FileErrorResponseSchema,
       404: FileErrorResponseSchema,
+      409: FileErrorResponseSchema,
     },
     summary: 'Delete a storage bucket (must be empty)',
   },

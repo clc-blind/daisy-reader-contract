@@ -26,12 +26,19 @@ export const ListBackupsResponseSchema = z
   })
   .describe('List of available backups in S3');
 
+export const GetBackupDownloadUrlResponseSchema = z
+  .object({
+    backupId: z.string().describe('Backup file ID'),
+    downloadUrl: z
+      .string()
+      .describe('Presigned URL to download backup (expires in 1 hour)'),
+    expiresAt: z.string().describe('When the download URL expires'),
+  })
+  .describe('Download URL for specific backup');
+
 export const RestoreDatabaseRequestSchema = z
   .object({
-    backupId: z
-      .string()
-      .optional()
-      .describe('Backup ID from S3 to restore (if omitted, must upload file)'),
+    backupId: z.string().describe('Backup ID from S3 to restore'),
     clearExisting: z
       .boolean()
       .optional()
@@ -39,6 +46,17 @@ export const RestoreDatabaseRequestSchema = z
       .describe('Clear all existing data before restore (DANGEROUS)'),
   })
   .describe('Restore database request');
+
+export const RestoreFromFileRequestSchema = z
+  .object({
+    file: z.any().describe('JSON backup file to restore'),
+    clearExisting: z
+      .boolean()
+      .optional()
+      .default(false)
+      .describe('Clear all existing data before restore (DANGEROUS)'),
+  })
+  .describe('Restore from uploaded file request');
 
 export const RestoreDatabaseResponseSchema = z
   .object({
