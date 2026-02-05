@@ -3,3 +3,4 @@ export * from '@/src/schemas/book.schema';
 export * from '@/src/schemas/reading.schema';
 export * from '@/src/schemas/mark.schema';
 export * from '@/src/schemas/file.schema';
+export * from '@/src/schemas/system.schema';
