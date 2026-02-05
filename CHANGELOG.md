@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.3...v1.3.4) (2026-02-05)
+
+
+### Bug Fixes
+
+* add bucket option to file handlers ([b91596b](https://github.com/clc-blind/daisy-reader-contract/commit/b91596b02dad850752cade8086d859417d86e90c))
+
 ## [1.3.3](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.2...v1.3.3) (2026-02-05)
 
 
