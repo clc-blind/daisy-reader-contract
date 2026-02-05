@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.0...v1.3.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* remove redundant body definition ([65a30c2](https://github.com/clc-blind/daisy-reader-contract/commit/65a30c29868586c007e111bf3f982eea2599f5b8))
+* update file handler contract ([c612d5f](https://github.com/clc-blind/daisy-reader-contract/commit/c612d5fe146671f3a216034de0f158225e16ad43))
+
 ## [1.3.0](https://github.com/clc-blind/daisy-reader-contract/compare/v1.2.0...v1.3.0) (2026-02-05)
 
 
