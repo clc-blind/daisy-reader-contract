@@ -412,10 +412,7 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    query: z.object({
-      continuationToken: z.string().optional(),
-      maxKeys: z.coerce.number().int().positive().optional(),
-    }),
+
     responses: {
       200: ListBucketsResponseSchema,
       401: FileErrorResponseSchema,
