@@ -3657,6 +3657,17 @@
             }
           },
           {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
             "name": "prefix",
             "in": "query",
             "content": {
@@ -3827,6 +3838,17 @@
             }
           },
           {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
             "name": "fileKey",
             "in": "query",
             "required": true,
@@ -3913,6 +3935,17 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {
@@ -4026,6 +4059,17 @@
             }
           },
           {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
             "name": "fileKey",
             "in": "query",
             "required": true,
@@ -4120,6 +4164,17 @@
             }
           },
           {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
             "name": "folderKey",
             "in": "query",
             "required": true,
@@ -4206,6 +4261,9 @@
                   "folderKey": {
                     "type": "string",
                     "description": "Folder key/path"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4303,6 +4361,9 @@
                   "fileSize": {
                     "type": "integer",
                     "description": "File size in bytes"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4414,6 +4475,9 @@
                   "content": {
                     "type": "string",
                     "description": "File content (base64 for binary)"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4523,6 +4587,9 @@
                   },
                   "fileSize": {
                     "type": "integer"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4619,6 +4686,9 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 10000
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4734,6 +4804,9 @@
                         "partNumber"
                       ]
                     }
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4826,6 +4899,9 @@
                   },
                   "fileKey": {
                     "type": "string"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4887,6 +4963,17 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {
@@ -5044,6 +5131,9 @@
                   },
                   "quiet": {
                     "type": "boolean"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -5145,6 +5235,17 @@
             }
           },
           {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
             "name": "fileKey",
             "in": "query",
             "required": true,
@@ -5228,6 +5329,9 @@
                     "type": "string"
                   },
                   "destinationFileKey": {
+                    "type": "string"
+                  },
+                  "bucket": {
                     "type": "string"
                   }
                 },
@@ -5325,6 +5429,9 @@
                   },
                   "newFileName": {
                     "type": "string"
+                  },
+                  "bucket": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -5420,6 +5527,9 @@
                     "type": "string"
                   },
                   "destinationFileKey": {
+                    "type": "string"
+                  },
+                  "bucket": {
                     "type": "string"
                   }
                 },
@@ -6264,6 +6374,17 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           {

@@ -102,6 +102,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       prefix: z.string().optional(),
       delimiter: z.string().optional(),
       continuationToken: z.string().optional(),
@@ -121,6 +122,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       fileKey: z.string(),
       expiresIn: z.coerce.number().optional(),
     }),
@@ -138,6 +140,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       fileKey: z.string(),
     }),
     responses: {
@@ -155,6 +158,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       fileKey: z.string(),
     }),
     responses: {
@@ -172,6 +176,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       folderKey: z.string(),
     }),
     responses: {
@@ -188,7 +193,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: CreateFolderRequestSchema,
+    body: CreateFolderRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: CreateFolderResponseSchema,
       401: FileErrorResponseSchema,
@@ -202,7 +209,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: UploadUrlRequestSchema,
+    body: UploadUrlRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: UploadUrlResponseSchema,
       401: FileErrorResponseSchema,
@@ -217,7 +226,9 @@ export const fileRoutes = {
       authorization: z.string(),
       'content-type': z.string(),
     }),
-    body: DirectUploadRequestSchema,
+    body: DirectUploadRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: DirectUploadResponseSchema,
       401: FileErrorResponseSchema,
@@ -231,7 +242,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: InitiateMultipartRequestSchema,
+    body: InitiateMultipartRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: InitiateMultipartResponseSchema,
       401: FileErrorResponseSchema,
@@ -245,7 +258,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: UploadPartRequestSchema,
+    body: UploadPartRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: UploadPartResponseSchema,
       401: FileErrorResponseSchema,
@@ -259,7 +274,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: CompleteMultipartRequestSchema,
+    body: CompleteMultipartRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: CompleteMultipartResponseSchema,
       401: FileErrorResponseSchema,
@@ -273,7 +290,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: AbortMultipartRequestSchema,
+    body: AbortMultipartRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: z.object({}),
       401: FileErrorResponseSchema,
@@ -288,6 +307,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       prefix: z.string().optional(),
       keyMarker: z.string().optional(),
       uploadIdMarker: z.string().optional(),
@@ -306,7 +326,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: BatchDeleteRequestSchema,
+    body: BatchDeleteRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: BatchDeleteResponseSchema,
       401: FileErrorResponseSchema,
@@ -321,6 +343,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       fileKey: z.string(),
     }),
     responses: {
@@ -336,7 +359,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: CopyFileRequestSchema,
+    body: CopyFileRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: CopyFileResponseSchema,
       401: FileErrorResponseSchema,
@@ -350,7 +375,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: RenameFileRequestSchema,
+    body: RenameFileRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: CopyFileResponseSchema,
       401: FileErrorResponseSchema,
@@ -364,7 +391,9 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: MoveFileRequestSchema,
+    body: MoveFileRequestSchema.extend({
+      bucket: z.string().optional(),
+    }),
     responses: {
       200: MoveFileResponseSchema,
       401: FileErrorResponseSchema,
@@ -490,6 +519,7 @@ export const fileRoutes = {
       authorization: z.string(),
     }),
     query: z.object({
+      bucket: z.string().optional(),
       fileKey: z.string(),
     }),
     responses: {
