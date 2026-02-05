@@ -103,7 +103,7 @@ export const bookRoutes = {
     pathParams: z.object({
       bookId: z.string(),
     }),
-    body: z.undefined(),
+    body: z.object({}),
     responses: {
       200: BookViewsResponseSchema,
     },
@@ -116,7 +116,9 @@ export const bookRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
-    body: z.undefined(),
+    pathParams: z.object({
+      bookId: z.string(),
+    }),
     responses: {
       204: z.undefined(),
     },

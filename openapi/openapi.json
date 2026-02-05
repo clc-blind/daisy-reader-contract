@@ -1469,14 +1469,6 @@
           }
         ],
         "operationId": "deleteBook",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
         "responses": {
           "204": {
             "description": "204",
@@ -1957,7 +1949,10 @@
           "description": "Body",
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
             }
           }
         },
@@ -5163,14 +5158,6 @@
           }
         ],
         "operationId": "deleteFile",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "200",
@@ -5650,14 +5637,6 @@
           }
         ],
         "operationId": "deleteBucket",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Delete bucket response",
@@ -6663,17 +6642,6 @@
           }
         ],
         "operationId": "deleteBackup",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "200",

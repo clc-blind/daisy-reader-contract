@@ -46,7 +46,6 @@ export const systemRoutes = {
     pathParams: z.object({
       backupId: z.string(),
     }),
-    body: z.object({}),
     responses: {
       200: z.object({
         success: z.boolean(),

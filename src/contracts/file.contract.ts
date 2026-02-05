@@ -323,7 +323,6 @@ export const fileRoutes = {
     query: z.object({
       fileKey: z.string(),
     }),
-    body: z.undefined(),
     responses: {
       200: DeleteFileResponseSchema,
       401: FileErrorResponseSchema,
@@ -398,7 +397,6 @@ export const fileRoutes = {
     query: z.object({
       bucketName: z.string(),
     }),
-    body: z.undefined(),
     responses: {
       200: DeleteBucketResponseSchema,
       401: FileErrorResponseSchema,
