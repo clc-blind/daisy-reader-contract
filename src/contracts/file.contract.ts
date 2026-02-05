@@ -4,15 +4,23 @@ import {
   BatchDeleteRequestSchema,
   BatchDeleteResponseSchema,
   BookFilesListResponseSchema,
+  BucketStatsSchema,
+  CheckBucketExistsResponseSchema,
   CompleteMultipartRequestSchema,
   CompleteMultipartResponseSchema,
+  CopyFileBetweenBucketsRequestSchema,
   CopyFileRequestSchema,
   CopyFileResponseSchema,
+  CreateBucketRequestSchema,
+  CreateBucketResponseSchema,
   CreateFolderRequestSchema,
   CreateFolderResponseSchema,
+  CrossBucketFileResponseSchema,
+  DeleteBucketResponseSchema,
   DeleteFileResponseSchema,
   DirectUploadRequestSchema,
   DirectUploadResponseSchema,
+  DownloadFileResponseSchema,
   FileContentResponseSchema,
   FileErrorResponseSchema,
   FileExistsResponseSchema,
@@ -20,8 +28,10 @@ import {
   FolderExistsResponseSchema,
   InitiateMultipartRequestSchema,
   InitiateMultipartResponseSchema,
+  ListBucketsResponseSchema,
   ListFilesResponseSchema,
   ListMultipartUploadsResponseSchema,
+  MoveFileBetweenBucketsRequestSchema,
   MoveFileRequestSchema,
   MoveFileResponseSchema,
   RenameFileRequestSchema,
@@ -361,5 +371,132 @@ export const fileRoutes = {
       401: FileErrorResponseSchema,
     },
     summary: 'Move a file (copy to destination and delete source)',
+  },
+
+  // Bucket operations
+  createBucket: {
+    method: 'POST',
+    path: '/api/buckets/create',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: CreateBucketRequestSchema,
+    responses: {
+      200: CreateBucketResponseSchema,
+      401: FileErrorResponseSchema,
+      409: FileErrorResponseSchema,
+    },
+    summary: 'Create a new storage bucket',
+  },
+
+  deleteBucket: {
+    method: 'DELETE',
+    path: '/api/buckets/delete',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    query: z.object({
+      bucketName: z.string(),
+    }),
+    body: z.undefined(),
+    responses: {
+      200: DeleteBucketResponseSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+    },
+    summary: 'Delete a storage bucket (must be empty)',
+  },
+
+  listBuckets: {
+    method: 'GET',
+    path: '/api/buckets/list',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    responses: {
+      200: ListBucketsResponseSchema,
+      401: FileErrorResponseSchema,
+    },
+    summary: 'List all storage buckets',
+  },
+
+  checkBucketExists: {
+    method: 'GET',
+    path: '/api/buckets/exists',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    query: z.object({
+      bucketName: z.string(),
+    }),
+    responses: {
+      200: CheckBucketExistsResponseSchema,
+      401: FileErrorResponseSchema,
+    },
+    summary: 'Check if a bucket exists',
+  },
+
+  copyFileBetweenBuckets: {
+    method: 'POST',
+    path: '/api/files/copy-between-buckets',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: CopyFileBetweenBucketsRequestSchema,
+    responses: {
+      200: CrossBucketFileResponseSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+    },
+    summary: 'Copy a file from one bucket to another',
+  },
+
+  moveFileBetweenBuckets: {
+    method: 'POST',
+    path: '/api/files/move-between-buckets',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    body: MoveFileBetweenBucketsRequestSchema,
+    responses: {
+      200: CrossBucketFileResponseSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+    },
+    summary: 'Move a file from one bucket to another',
+  },
+
+  getBucketStats: {
+    method: 'GET',
+    path: '/api/buckets/stats',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    query: z.object({
+      bucketName: z.string(),
+    }),
+    responses: {
+      200: BucketStatsSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+    },
+    summary: 'Get bucket statistics (object count, total size)',
+  },
+
+  downloadFile: {
+    method: 'GET',
+    path: '/api/files/download',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    query: z.object({
+      fileKey: z.string(),
+    }),
+    responses: {
+      200: DownloadFileResponseSchema,
+      401: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+    },
+    summary: 'Download file content directly',
   },
 } as const;
