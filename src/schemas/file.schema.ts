@@ -313,13 +313,6 @@ export const ListBucketsResponseSchema = z
       })
       .optional()
       .describe('Bucket owner information'),
-    isTruncated: z
-      .boolean()
-      .describe('Whether there are more buckets to fetch'),
-    nextContinuationToken: z
-      .string()
-      .optional()
-      .describe('Token for next page'),
   })
   .describe('List buckets response');
 
