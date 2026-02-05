@@ -5698,6 +5698,24 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -6617,6 +6635,137 @@
         }
       }
     },
+    "/api/system/backups/{backupId}/download": {
+      "get": {
+        "summary": "Get download URL for a specific backup (admin only)",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "backupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getBackupDownloadUrl",
+        "responses": {
+          "200": {
+            "description": "Download URL for specific backup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "backupId": {
+                      "type": "string",
+                      "description": "Backup file ID"
+                    },
+                    "downloadUrl": {
+                      "type": "string",
+                      "description": "Presigned URL to download backup (expires in 1 hour)"
+                    },
+                    "expiresAt": {
+                      "type": "string",
+                      "description": "When the download URL expires"
+                    }
+                  },
+                  "required": [
+                    "backupId",
+                    "downloadUrl",
+                    "expiresAt"
+                  ],
+                  "description": "Download URL for specific backup"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "System operation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "description": "System operation error response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "System operation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "description": "System operation error response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "System operation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "description": "System operation error response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/system/backups/{backupId}": {
       "delete": {
         "summary": "Delete a backup from S3 (admin only)",
@@ -6747,7 +6896,7 @@
     },
     "/api/system/restore": {
       "post": {
-        "summary": "Restore database from S3 backup ID or uploaded file (admin only)",
+        "summary": "Restore database from S3 backup ID (admin only)",
         "tags": [
           "General"
         ],
@@ -6765,23 +6914,166 @@
         "requestBody": {
           "description": "Body",
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": {
-                    "nullable": true,
-                    "description": "JSON backup file to restore (if not using backupId)"
-                  },
                   "backupId": {
                     "type": "string",
-                    "description": "Backup ID from S3 to restore (if not uploading file)"
+                    "description": "Backup ID from S3 to restore"
                   },
                   "clearExisting": {
                     "type": "boolean",
                     "description": "Clear all existing data before restore (DANGEROUS)"
                   }
+                },
+                "required": [
+                  "backupId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restore database response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Whether restore was successful"
+                    },
+                    "imported": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "integer"
+                      },
+                      "description": "Import statistics per table (tableName: recordCount)"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Any errors encountered"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "imported"
+                  ],
+                  "description": "Restore database response"
                 }
+              }
+            }
+          },
+          "400": {
+            "description": "System operation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "description": "System operation error response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "System operation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "description": "System operation error response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "System operation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "Error details"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "description": "System operation error response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/system/restore/upload": {
+      "post": {
+        "summary": "Restore database from uploaded backup file (admin only)",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "restoreFromFile",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "description": "Multipart form data with file and optional clearExisting",
+                "nullable": true
               }
             }
           }
