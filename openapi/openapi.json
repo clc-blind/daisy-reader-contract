@@ -1469,14 +1469,6 @@
           }
         ],
         "operationId": "deleteBook",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
         "responses": {
           "204": {
             "description": "204",
@@ -1957,7 +1949,10 @@
           "description": "Body",
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
             }
           }
         },
@@ -5163,14 +5158,6 @@
           }
         ],
         "operationId": "deleteFile",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "200",
@@ -5650,14 +5637,6 @@
           }
         ],
         "operationId": "deleteBucket",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Delete bucket response",
@@ -5730,7 +5709,7 @@
     },
     "/api/buckets/list": {
       "get": {
-        "summary": "List all storage buckets",
+        "summary": "List all storage buckets with pagination",
         "tags": [
           "General"
         ],
@@ -5741,6 +5720,30 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "continuationToken",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "maxKeys",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "exclusiveMinimum": 0
+                }
+              }
             }
           }
         ],
@@ -5786,10 +5789,19 @@
                         }
                       },
                       "description": "Bucket owner information"
+                    },
+                    "isTruncated": {
+                      "type": "boolean",
+                      "description": "Whether there are more buckets to fetch"
+                    },
+                    "nextContinuationToken": {
+                      "type": "string",
+                      "description": "Token for next page"
                     }
                   },
                   "required": [
-                    "buckets"
+                    "buckets",
+                    "isTruncated"
                   ],
                   "description": "List buckets response"
                 }
@@ -6630,17 +6642,6 @@
           }
         ],
         "operationId": "deleteBackup",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "200",

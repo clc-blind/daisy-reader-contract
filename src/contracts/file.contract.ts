@@ -323,7 +323,6 @@ export const fileRoutes = {
     query: z.object({
       fileKey: z.string(),
     }),
-    body: z.undefined(),
     responses: {
       200: DeleteFileResponseSchema,
       401: FileErrorResponseSchema,
@@ -398,7 +397,6 @@ export const fileRoutes = {
     query: z.object({
       bucketName: z.string(),
     }),
-    body: z.undefined(),
     responses: {
       200: DeleteBucketResponseSchema,
       401: FileErrorResponseSchema,
@@ -413,11 +411,15 @@ export const fileRoutes = {
     headers: z.object({
       authorization: z.string(),
     }),
+    query: z.object({
+      continuationToken: z.string().optional(),
+      maxKeys: z.coerce.number().int().positive().optional(),
+    }),
     responses: {
       200: ListBucketsResponseSchema,
       401: FileErrorResponseSchema,
     },
-    summary: 'List all storage buckets',
+    summary: 'List all storage buckets with pagination',
   },
 
   checkBucketExists: {
