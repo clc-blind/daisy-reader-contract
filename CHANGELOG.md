@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/clc-blind/daisy-reader-contract/compare/v1.2.0...v1.3.0) (2026-02-05)
+
+
+### Features
+
+* setup system contracts ([8fc9e37](https://github.com/clc-blind/daisy-reader-contract/commit/8fc9e378d12e76c85e32e5672c234ef0ebf402c7))
+
 ## [1.2.0](https://github.com/clc-blind/daisy-reader-contract/compare/v1.1.2...v1.2.0) (2026-02-05)
 
 
