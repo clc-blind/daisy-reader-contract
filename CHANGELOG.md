@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.4...v1.3.5) (2026-02-11)
+
+
+### Bug Fixes
+
+* add proxy file handler ([a7ddfef](https://github.com/clc-blind/daisy-reader-contract/commit/a7ddfef138d401568f7990d796242bfa1f0cae90))
+
 ## [1.3.4](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.3...v1.3.4) (2026-02-05)
 
 
