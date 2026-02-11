@@ -95,6 +95,22 @@ export const fileRoutes = {
       'Get presigned URL for any book file (cover, content, etc.) without authentication',
   },
 
+  proxyFile: {
+    method: 'GET',
+    path: '/api/files/proxy',
+    query: z.object({
+      url: z.string(),
+    }),
+    responses: {
+      200: z.any(), // Binary stream response
+      400: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+      500: FileErrorResponseSchema,
+    },
+    summary:
+      'Proxy streaming endpoint - accepts MinIO signed URL and streams the file to client',
+  },
+
   listFiles: {
     method: 'GET',
     path: '/api/files/list',
