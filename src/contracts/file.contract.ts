@@ -96,19 +96,24 @@ export const fileRoutes = {
   },
 
   proxyFile: {
-    method: 'GET',
+    method: 'POST',
     path: '/api/files/proxy',
-    query: z.object({
+    body: z.object({
       url: z.string(),
+      method: z
+        .enum(['GET', 'POST', 'PUT', 'DELETE'])
+        .optional()
+        .default('GET'),
+      data: z.any().optional(),
     }),
     responses: {
-      200: z.any(), // Binary stream response
+      200: z.any(), // Binary stream response or JSON with etag for uploads
       400: FileErrorResponseSchema,
       404: FileErrorResponseSchema,
       500: FileErrorResponseSchema,
     },
     summary:
-      'Proxy streaming endpoint - accepts MinIO signed URL and streams the file to client',
+      'Generic proxy endpoint - accepts MinIO signed URL and forwards the request with specified HTTP method',
   },
 
   listFiles: {
