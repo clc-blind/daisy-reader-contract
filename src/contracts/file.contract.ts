@@ -112,8 +112,23 @@ export const fileRoutes = {
       404: FileErrorResponseSchema,
       500: FileErrorResponseSchema,
     },
+    summary: 'Generic proxy endpoint - supports GET/POST/PUT/DELETE to MinIO',
+  },
+
+  proxyFileGet: {
+    method: 'GET',
+    path: '/api/files/proxy',
+    query: z.object({
+      url: z.string(),
+    }),
+    responses: {
+      200: z.any(), // Binary stream response
+      400: FileErrorResponseSchema,
+      404: FileErrorResponseSchema,
+      500: FileErrorResponseSchema,
+    },
     summary:
-      'Generic proxy endpoint - accepts MinIO signed URL and forwards the request with specified HTTP method',
+      'Proxy GET endpoint - for use in HTML src attributes (audio, img, video)',
   },
 
   listFiles: {
