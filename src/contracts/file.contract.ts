@@ -95,26 +95,6 @@ export const fileRoutes = {
       'Get presigned URL for any book file (cover, content, etc.) without authentication',
   },
 
-  proxyFile: {
-    method: 'POST',
-    path: '/api/files/proxy',
-    body: z.object({
-      url: z.string(),
-      method: z
-        .enum(['GET', 'POST', 'PUT', 'DELETE'])
-        .optional()
-        .default('GET'),
-      data: z.any().optional(),
-    }),
-    responses: {
-      200: z.any(), // Binary stream response or JSON with etag for uploads
-      400: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-      500: FileErrorResponseSchema,
-    },
-    summary: 'Generic proxy endpoint - supports GET/POST/PUT/DELETE to MinIO',
-  },
-
   proxyFileGet: {
     method: 'GET',
     path: '/api/files/proxy',
@@ -128,7 +108,30 @@ export const fileRoutes = {
       500: FileErrorResponseSchema,
     },
     summary:
-      'Proxy GET endpoint - for use in HTML src attributes (audio, img, video)',
+      'Proxy GET for downloads - streams binary from MinIO (for HTML media elements)',
+  },
+
+  proxyFileUpload: {
+    method: 'POST',
+    path: '/api/files/proxy-upload',
+    headers: z.object({
+      authorization: z.string(),
+    }),
+    query: z.object({
+      url: z.string(),
+    }),
+    contentType: 'multipart/form-data',
+    body: z.any().describe('Multipart form data with file'),
+    responses: {
+      200: z.object({
+        etag: z.string(),
+      }),
+      400: FileErrorResponseSchema,
+      401: FileErrorResponseSchema,
+      500: FileErrorResponseSchema,
+    },
+    summary:
+      'Proxy multipart upload to MinIO - receives file via multipart and forwards to presigned URL',
   },
 
   listFiles: {
