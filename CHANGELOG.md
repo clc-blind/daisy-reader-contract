@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.8](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.7...v1.3.8) (2026-02-14)
+
+
+### Bug Fixes
+
+* update proxy route ([7859380](https://github.com/clc-blind/daisy-reader-contract/commit/78593807bc0f7a73da0464da0bc304e430366c06))
+
 ## [1.3.7](https://github.com/clc-blind/daisy-reader-contract/compare/v1.3.6...v1.3.7) (2026-02-13)
 
 
