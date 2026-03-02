@@ -95,75 +95,8 @@ export const fileRoutes = {
       'Get presigned URL for any book file (cover, content, etc.) without authentication',
   },
 
-  proxyFileGet: {
-    method: 'GET',
-    path: '/api/files/proxy',
-    query: z.object({
-      url: z.string(),
-    }),
-    responses: {
-      200: z.any(), // OK - Full binary stream response
-      201: z.any(), // Created
-      204: z.any(), // No Content
-      206: z.any(), // Partial Content for Range requests
-      301: z.any(), // Moved Permanently
-      302: z.any(), // Found
-      304: z.any(), // Not Modified
-      400: z.any(), // Bad Request
-      401: z.any(), // Unauthorized
-      403: z.any(), // Forbidden
-      404: z.any(), // Not Found
-      405: z.any(), // Method Not Allowed
-      409: z.any(), // Conflict
-      411: z.any(), // Length Required
-      412: z.any(), // Precondition Failed
-      413: z.any(), // Payload Too Large
-      416: z.any(), // Range Not Satisfiable
-      429: z.any(), // Too Many Requests
-      500: z.any(), // Internal Server Error
-      501: z.any(), // Not Implemented
-      502: z.any(), // Bad Gateway
-      503: z.any(), // Service Unavailable
-      504: z.any(), // Gateway Timeout
-    },
-    summary:
-      'Proxy GET for downloads - streams binary from MinIO (for HTML media elements)',
-  },
-
-  proxyFileUpload: {
-    method: 'POST',
-    path: '/api/files/proxy-upload',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      url: z.string(),
-    }),
-    contentType: 'multipart/form-data',
-    body: z.any().describe('Multipart form data with file'),
-    responses: {
-      200: z.any(), // OK - Successful upload
-      201: z.any(), // Created
-      204: z.any(), // No Content
-      400: z.any(), // Bad Request
-      401: z.any(), // Unauthorized
-      403: z.any(), // Forbidden
-      404: z.any(), // Not Found
-      405: z.any(), // Method Not Allowed
-      409: z.any(), // Conflict
-      411: z.any(), // Length Required
-      412: z.any(), // Precondition Failed
-      413: z.any(), // Payload Too Large
-      429: z.any(), // Too Many Requests
-      500: z.any(), // Internal Server Error
-      501: z.any(), // Not Implemented
-      502: z.any(), // Bad Gateway
-      503: z.any(), // Service Unavailable
-      504: z.any(), // Gateway Timeout
-    },
-    summary:
-      'Proxy multipart upload to MinIO - receives file via multipart and forwards to presigned URL',
-  },
+  // NOTE: Proxy routes (proxyFileGet, proxyFileUpload) are handled by custom Fastify routes
+  // in engine/src/routes/proxy.routes.ts to support Range requests and multipart handling
 
   listFiles: {
     method: 'GET',
