@@ -1,5 +1,7 @@
+/* eslint-disable no-continue */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { generateOpenApi } from '@ts-rest/open-api';
+import { OpenAPIGenerator } from '@orpc/openapi';
+import { ZodToJsonSchemaConverter } from '@orpc/zod';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { betterAuth } from 'better-auth';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -41,60 +43,168 @@ const editorRole = ac.newRole({
   ...userAc.statements,
 });
 
-const generateOpenApiDocument = async () => {
-  const baseOpenApiDocument = generateOpenApi(
-    appContract,
-    {
-      info: {
-        title: 'DAISY API',
-        version: '1.0.0',
-        description:
-          'REST API for DAISY Reader application - accessible books for visually impaired users',
-      },
-      components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
-            description: 'Better-auth session token',
-          },
+const HTTP_METHODS = [
+  'get',
+  'post',
+  'put',
+  'patch',
+  'delete',
+  'options',
+  'head',
+] as const;
+
+type HttpMethod = (typeof HTTP_METHODS)[number];
+
+type PathsObject = Record<string, Record<string, unknown>>;
+type OperationObject = Record<string, unknown>;
+
+const isHttpMethod = (method: string): method is HttpMethod =>
+  (HTTP_METHODS as readonly string[]).includes(method);
+
+const forEachOperation = (
+  paths: PathsObject,
+  callback: (options: {
+    path: string;
+    method: HttpMethod;
+    operation: OperationObject;
+  }) => void,
+) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [path, pathItem] of Object.entries(paths)) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [method, operation] of Object.entries(pathItem)) {
+      if (!isHttpMethod(method)) continue;
+      if (!operation || typeof operation !== 'object') continue;
+
+      callback({
+        path,
+        method,
+        operation: operation as OperationObject,
+      });
+    }
+  }
+};
+
+const applyParameterDescriptionsToPaths = (paths: PathsObject): PathsObject => {
+  forEachOperation(paths, ({ operation }) => {
+    const { parameters } = operation;
+    if (!Array.isArray(parameters)) return;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const parameter of parameters) {
+      if (!parameter || typeof parameter !== 'object') continue;
+      const typedParameter = parameter as Record<string, unknown>;
+
+      const existingDescription = typedParameter.description;
+      if (typeof existingDescription === 'string' && existingDescription) {
+        continue;
+      }
+
+      const { schema } = typedParameter;
+      if (!schema || typeof schema !== 'object') continue;
+
+      const typedSchema = schema as Record<string, unknown>;
+      const schemaDescription = typedSchema.description;
+      if (typeof schemaDescription !== 'string' || !schemaDescription) {
+        continue;
+      }
+
+      typedParameter.description = schemaDescription;
+    }
+  });
+
+  return paths;
+};
+
+const buildBetterAuthPaths = (
+  paths: unknown,
+): Record<string, Record<string, unknown>> => {
+  const prefixedPaths: Record<string, Record<string, unknown>> = {};
+  if (!paths || typeof paths !== 'object') return prefixedPaths;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [path, pathItem] of Object.entries(paths)) {
+    if (!pathItem || typeof pathItem !== 'object') continue;
+    const updatedPathItem = pathItem as Record<string, unknown>;
+
+    // Tag Better Auth routes
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [method, operation] of Object.entries(updatedPathItem)) {
+      if (!isHttpMethod(method)) continue;
+      if (!operation || typeof operation !== 'object') continue;
+
+      const typedOperation = operation as Record<string, unknown>;
+      typedOperation.tags = ['Auth'];
+    }
+
+    prefixedPaths[`/api/auth${path}`] = updatedPathItem;
+  }
+
+  return prefixedPaths;
+};
+
+const KNOWN_TAGS = [
+  {
+    name: 'Auth',
+    description: 'Authentication and authorization endpoints',
+  },
+  { name: 'Books', description: 'Book catalog and content management' },
+  { name: 'Users', description: 'User profile and preferences' },
+  {
+    name: 'Reading Progress',
+    description: 'Track reading progress and history',
+  },
+  { name: 'Marks', description: 'Bookmarks, highlights, and notes' },
+  { name: 'Files', description: 'File storage and management' },
+  { name: 'System', description: 'System operations (backup/restore)' },
+] as const;
+
+const buildTags = (paths: PathsObject) => {
+  const knownByName = new Set<string>(KNOWN_TAGS.map((t) => t.name));
+  const discovered = new Set<string>();
+
+  forEachOperation(paths, ({ operation }) => {
+    const { tags } = operation;
+    if (!Array.isArray(tags)) return;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const tag of tags) {
+      if (typeof tag !== 'string' || !tag) continue;
+      discovered.add(tag);
+    }
+  });
+
+  const extraTags = Array.from(discovered)
+    .filter((name) => !knownByName.has(name))
+    .sort((a, b) => a.localeCompare(b))
+    .map((name) => ({ name }));
+
+  return [...KNOWN_TAGS, ...extraTags];
+};
+
+const generateOpenApiDocument = async (): Promise<unknown> => {
+  const generator = new OpenAPIGenerator({
+    schemaConverters: [new ZodToJsonSchemaConverter()],
+  });
+
+  const baseOpenApiDocument = await generator.generate(appContract, {
+    info: {
+      title: 'DAISY API',
+      version: '1.0.0',
+      description:
+        'REST API for DAISY Reader application - accessible books for visually impaired users',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'Better-auth session token',
         },
       },
     },
-    {
-      setOperationId: true,
-      jsonQuery: true,
-      operationMapper: (operation, appRoute) => {
-        // Add security to mutations (POST, PATCH, DELETE, PUT)
-        const requiresAuth = ['POST', 'PATCH', 'DELETE', 'PUT'].includes(
-          appRoute.method,
-        );
-
-        // Determine tags based on path
-        let tags: string[] = ['General'];
-        if (appRoute.path.includes('/books')) {
-          tags = ['Books'];
-        } else if (appRoute.path.includes('/users')) {
-          tags = ['Users'];
-        } else if (appRoute.path.includes('/progress')) {
-          tags = ['Reading Progress'];
-        } else if (appRoute.path.includes('/marks')) {
-          tags = ['Marks'];
-        } else if (appRoute.path.includes('/files')) {
-          tags = ['Files'];
-        }
-
-        return {
-          ...operation,
-          tags,
-          ...(requiresAuth && {
-            security: [{ bearerAuth: [] }],
-          }),
-        };
-      },
-    },
-  );
+  });
 
   const betterAuthOpenApiDocument = await betterAuth({
     emailAndPassword: {
@@ -116,27 +226,17 @@ const generateOpenApiDocument = async () => {
     ],
   }).api.generateOpenAPISchema();
 
-  // Prefix Better Auth paths with /api/auth and update tags
-  const betterAuthPaths: Record<string, unknown> = {};
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [path, pathItem] of Object.entries(
-    betterAuthOpenApiDocument.paths || {},
-  )) {
-    const updatedPathItem = pathItem as Record<string, unknown>;
-    // Update tags for all methods in this path
-    // eslint-disable-next-line no-restricted-syntax
-    for (const method of Object.keys(updatedPathItem)) {
-      if (
-        ['get', 'post', 'put', 'patch', 'delete', 'options', 'head'].includes(
-          method,
-        )
-      ) {
-        const operation = updatedPathItem[method] as Record<string, unknown>;
-        operation.tags = ['Auth'];
-      }
-    }
-    betterAuthPaths[`/api/auth${path}`] = updatedPathItem;
-  }
+  const betterAuthPaths = buildBetterAuthPaths(betterAuthOpenApiDocument.paths);
+
+  const basePaths = (baseOpenApiDocument.paths || {}) as PathsObject;
+  const describedBasePaths = applyParameterDescriptionsToPaths(basePaths);
+  const describedBetterAuthPaths =
+    applyParameterDescriptionsToPaths(betterAuthPaths);
+
+  const combinedPaths: PathsObject = {
+    ...describedBasePaths,
+    ...describedBetterAuthPaths,
+  };
 
   return {
     ...baseOpenApiDocument,
@@ -180,25 +280,11 @@ const generateOpenApiDocument = async () => {
         ...baseOpenApiDocument.components?.securitySchemes,
       },
     },
-    tags: [
-      {
-        name: 'Auth',
-        description: 'Authentication and authorization endpoints',
-      },
-      { name: 'Books', description: 'Book catalog and content management' },
-      { name: 'Users', description: 'User profile and preferences' },
-      {
-        name: 'Reading Progress',
-        description: 'Track reading progress and history',
-      },
-      { name: 'Marks', description: 'Bookmarks, highlights, and notes' },
-      { name: 'Files', description: 'File storage and management' },
-    ],
+    tags: buildTags(combinedPaths),
     paths: {
-      ...baseOpenApiDocument.paths,
-      ...betterAuthPaths,
+      ...combinedPaths,
     },
   };
 };
 
-export const openApiDocument = await generateOpenApiDocument();
+export const openApiDocument: unknown = await generateOpenApiDocument();

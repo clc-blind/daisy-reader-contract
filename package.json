@@ -33,6 +33,9 @@
     "openapi:generate": "tsx ./scripts/generateOpenApi.ts"
   },
   "dependencies": {
+    "@orpc/contract": "1.13.13",
+    "@orpc/openapi": "1.13.14",
+    "@orpc/zod": "1.13.14",
     "@ts-rest/core": "3.52.1",
     "zod": "3.25.76"
   },

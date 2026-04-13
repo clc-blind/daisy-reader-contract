@@ -1,3 +1,4 @@
+import { oc } from '@orpc/contract';
 import { z } from 'zod';
 import {
   BookSchema,
@@ -5,40 +6,72 @@ import {
   UpdateReadingProgressSchema,
 } from '@/src/schema';
 
+const authHeaderSchema = z.object({
+  authorization: z.string(),
+});
+
+const o = oc.$route({
+  inputStructure: 'detailed',
+  tags: ['Reading Progress'],
+});
+
 export const readingRoutes = {
-  getRecentlyReadBooks: {
-    method: 'GET',
-    path: '/api/progress/recent/:userId',
-    query: z.object({ limit: z.coerce.number().optional() }),
-    responses: {
-      200: z.array(BookSchema),
-    },
-    summary: 'Get recently read books for a user',
-  },
+  getRecentlyReadBooks: o
+    .route({
+      method: 'GET',
+      path: '/api/progress/recent/{userId}',
+      summary: 'Get recently read books for a user',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          userId: z.string(),
+        }),
+        query: z.object({
+          limit: z.coerce.number().optional(),
+        }),
+      }),
+    )
+    .output(z.array(BookSchema)),
 
-  getInprogressBooks: {
-    method: 'GET',
-    path: '/api/progress/inprogress/:userId',
-    query: z.object({
-      limit: z.coerce.number().optional(),
-      offset: z.coerce.number().optional(),
-    }),
-    responses: {
-      200: z.object({ data: z.array(BookSchema), total: z.number() }),
-    },
-    summary: 'Get in-progress books for a user',
-  },
+  getInprogressBooks: o
+    .route({
+      method: 'GET',
+      path: '/api/progress/inprogress/{userId}',
+      summary: 'Get in-progress books for a user',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          userId: z.string(),
+        }),
+        query: z.object({
+          limit: z.coerce.number().optional(),
+          offset: z.coerce.number().optional(),
+        }),
+      }),
+    )
+    .output(
+      z.object({
+        data: z.array(BookSchema),
+        total: z.number(),
+      }),
+    ),
 
-  updateReadingProgress: {
-    method: 'PATCH',
-    path: '/api/progress/:id',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: UpdateReadingProgressSchema,
-    responses: {
-      200: ReadingProgressSchema,
-    },
-    summary: 'Update reading progress',
-  },
+  updateReadingProgress: o
+    .route({
+      method: 'PATCH',
+      path: '/api/progress/{id}',
+      summary: 'Update reading progress',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          id: z.string(),
+        }),
+        headers: authHeaderSchema,
+        body: UpdateReadingProgressSchema,
+      }),
+    )
+    .output(ReadingProgressSchema),
 } as const;

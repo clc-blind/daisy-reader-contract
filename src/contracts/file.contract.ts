@@ -1,3 +1,4 @@
+import { oc } from '@orpc/contract';
 import { z } from 'zod';
 import {
   AbortMultipartRequestSchema,
@@ -22,7 +23,6 @@ import {
   DirectUploadResponseSchema,
   DownloadFileResponseSchema,
   FileContentResponseSchema,
-  FileErrorResponseSchema,
   FileExistsResponseSchema,
   FileMetadataSchema,
   FolderExistsResponseSchema,
@@ -42,494 +42,514 @@ import {
   UploadUrlResponseSchema,
 } from '@/src/schema';
 
+const authHeaderSchema = z.object({
+  authorization: z.string(),
+});
+
+const authUploadHeaderSchema = z.object({
+  authorization: z.string(),
+  'content-type': z.string(),
+});
+
+const o = oc.$route({ inputStructure: 'detailed', tags: ['Files'] });
+
 export const fileRoutes = {
-  listBookFiles: {
-    method: 'GET',
-    path: '/api/books/:bookId/files',
-    pathParams: z.object({ bookId: z.string() }),
-    responses: {
-      200: BookFilesListResponseSchema,
-    },
-    summary: 'List all files for a book',
-  },
+  listBookFiles: o
+    .route({
+      method: 'GET',
+      path: '/api/books/{bookId}/files',
+      summary: 'List all files for a book',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+        }),
+      }),
+    )
+    .output(BookFilesListResponseSchema),
 
-  getBookFileContent: {
-    method: 'GET',
-    path: '/api/books/:bookId/files/:fileName',
-    pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
-    query: z.object({
-      expiresIn: z.coerce.number().optional(),
-    }),
-    responses: {
-      200: FileContentResponseSchema,
-    },
-    summary: 'Get file content for a book',
-  },
+  getBookFileContent: o
+    .route({
+      method: 'GET',
+      path: '/api/books/{bookId}/files/{fileName}',
+      summary: 'Get file content for a book',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+          fileName: z.string(),
+        }),
+        query: z.object({
+          expiresIn: z.coerce.number().optional(),
+        }),
+      }),
+    )
+    .output(FileContentResponseSchema),
 
-  getBookAudioSignedUrl: {
-    method: 'GET',
-    path: '/api/books/:bookId/audio/:fileName/signed-url',
-    pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
-    query: z.object({
-      expiresIn: z.coerce.number().optional(),
-    }),
-    responses: {
-      200: SignedUrlResponseSchema,
-    },
-    summary:
-      'Get presigned URL for book audio file (deprecated: use getBookFileSignedUrl instead)',
-    deprecated: true,
-  },
+  getBookAudioSignedUrl: o
+    .route({
+      method: 'GET',
+      path: '/api/books/{bookId}/audio/{fileName}/signed-url',
+      summary:
+        'Get presigned URL for book audio file (deprecated: use getBookFileSignedUrl instead)',
+      deprecated: true,
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+          fileName: z.string(),
+        }),
+        query: z.object({
+          expiresIn: z.coerce.number().optional(),
+        }),
+      }),
+    )
+    .output(SignedUrlResponseSchema),
 
-  getBookFileSignedUrl: {
-    method: 'GET',
-    path: '/api/books/:bookId/files/:fileName/signed-url',
-    pathParams: z.object({ bookId: z.string(), fileName: z.string() }),
-    query: z.object({
-      expiresIn: z.coerce.number().optional(),
-    }),
-    responses: {
-      200: SignedUrlResponseSchema,
-    },
-    summary:
-      'Get presigned URL for any book file (cover, content, etc.) without authentication',
-  },
+  getBookFileSignedUrl: o
+    .route({
+      method: 'GET',
+      path: '/api/books/{bookId}/files/{fileName}/signed-url',
+      summary:
+        'Get presigned URL for any book file (cover, content, etc.) without authentication',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+          fileName: z.string(),
+        }),
+        query: z.object({
+          expiresIn: z.coerce.number().optional(),
+        }),
+      }),
+    )
+    .output(SignedUrlResponseSchema),
 
-  // NOTE: Proxy routes (proxyFileGet, proxyFileUpload) are handled by custom Fastify routes
-  // in engine/src/routes/proxy.routes.ts to support Range requests and multipart handling
+  listFiles: o
+    .route({
+      method: 'GET',
+      path: '/api/files/list',
+      summary: 'List files and folders in storage with pagination support',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          prefix: z.string().optional(),
+          delimiter: z.string().optional(),
+          continuationToken: z.string().optional(),
+          maxKeys: z.coerce.number().int().min(1).optional(),
+        }),
+      }),
+    )
+    .output(ListFilesResponseSchema),
 
-  listFiles: {
-    method: 'GET',
-    path: '/api/files/list',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      prefix: z.string().optional(),
-      delimiter: z.string().optional(),
-      continuationToken: z.string().optional(),
-      maxKeys: z.coerce.number().int().min(1).optional(),
-    }),
-    responses: {
-      200: ListFilesResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'List files and folders in storage with pagination support',
-  },
+  getSignedGetUrl: o
+    .route({
+      method: 'GET',
+      path: '/api/files/signed-url',
+      summary: 'Get presigned URL for downloading a file',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          fileKey: z.string(),
+          expiresIn: z.coerce.number().optional(),
+        }),
+      }),
+    )
+    .output(SignedUrlResponseSchema),
 
-  getSignedGetUrl: {
-    method: 'GET',
-    path: '/api/files/signed-url',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      fileKey: z.string(),
-      expiresIn: z.coerce.number().optional(),
-    }),
-    responses: {
-      200: SignedUrlResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Get presigned URL for downloading a file',
-  },
+  getFileMetadata: o
+    .route({
+      method: 'GET',
+      path: '/api/files/metadata',
+      summary: 'Get object metadata for a file',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          fileKey: z.string(),
+        }),
+      }),
+    )
+    .output(FileMetadataSchema),
 
-  getFileMetadata: {
-    method: 'GET',
-    path: '/api/files/metadata',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      fileKey: z.string(),
-    }),
-    responses: {
-      200: FileMetadataSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-    },
-    summary: 'Get object metadata for a file',
-  },
+  checkFileExists: o
+    .route({
+      method: 'GET',
+      path: '/api/files/exists',
+      summary: 'Check whether a file exists',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          fileKey: z.string(),
+        }),
+      }),
+    )
+    .output(FileExistsResponseSchema),
 
-  checkFileExists: {
-    method: 'GET',
-    path: '/api/files/exists',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      fileKey: z.string(),
-    }),
-    responses: {
-      200: FileExistsResponseSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-    },
-    summary: 'Check whether a file exists',
-  },
+  checkFolderExists: o
+    .route({
+      method: 'GET',
+      path: '/api/files/folder/exists',
+      summary:
+        'Check whether a folder (prefix) exists and optionally count objects',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          folderKey: z.string(),
+        }),
+      }),
+    )
+    .output(FolderExistsResponseSchema),
 
-  checkFolderExists: {
-    method: 'GET',
-    path: '/api/files/folder/exists',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      folderKey: z.string(),
-    }),
-    responses: {
-      200: FolderExistsResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary:
-      'Check whether a folder (prefix) exists and optionally count objects',
-  },
+  createFolder: o
+    .route({
+      method: 'POST',
+      path: '/api/files/folder/create',
+      summary:
+        'Create a folder by uploading an empty object with trailing slash',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: CreateFolderRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(CreateFolderResponseSchema),
 
-  createFolder: {
-    method: 'POST',
-    path: '/api/files/folder/create',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: CreateFolderRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: CreateFolderResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Create a folder by uploading an empty object with trailing slash',
-  },
+  requestFileUploadUrl: o
+    .route({
+      method: 'POST',
+      path: '/api/files/upload-url',
+      summary: 'Get a presigned URL for uploading a file',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: UploadUrlRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(UploadUrlResponseSchema),
 
-  requestFileUploadUrl: {
-    method: 'POST',
-    path: '/api/files/upload-url',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: UploadUrlRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: UploadUrlResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Get a presigned URL for uploading a file',
-  },
+  uploadFile: o
+    .route({
+      method: 'PUT',
+      path: '/api/files/upload',
+      summary: 'Upload a file directly using S3 PutObject',
+    })
+    .input(
+      z.object({
+        headers: authUploadHeaderSchema,
+        body: DirectUploadRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(DirectUploadResponseSchema),
 
-  uploadFile: {
-    method: 'PUT',
-    path: '/api/files/upload',
-    headers: z.object({
-      authorization: z.string(),
-      'content-type': z.string(),
-    }),
-    body: DirectUploadRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: DirectUploadResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Upload a file directly using S3 PutObject',
-  },
+  initiateMultipartUpload: o
+    .route({
+      method: 'POST',
+      path: '/api/files/multipart/initiate',
+      summary: 'Initiate multipart upload for large files',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: InitiateMultipartRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(InitiateMultipartResponseSchema),
 
-  initiateMultipartUpload: {
-    method: 'POST',
-    path: '/api/files/multipart/initiate',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: InitiateMultipartRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: InitiateMultipartResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Initiate multipart upload for large files',
-  },
+  getUploadPartUrl: o
+    .route({
+      method: 'POST',
+      path: '/api/files/multipart/part-url',
+      summary: 'Get presigned URL for uploading a part',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: UploadPartRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(UploadPartResponseSchema),
 
-  getUploadPartUrl: {
-    method: 'POST',
-    path: '/api/files/multipart/part-url',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: UploadPartRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: UploadPartResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Get presigned URL for uploading a part',
-  },
+  completeMultipartUpload: o
+    .route({
+      method: 'POST',
+      path: '/api/files/multipart/complete',
+      summary: 'Complete multipart upload',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: CompleteMultipartRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(CompleteMultipartResponseSchema),
 
-  completeMultipartUpload: {
-    method: 'POST',
-    path: '/api/files/multipart/complete',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: CompleteMultipartRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: CompleteMultipartResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Complete multipart upload',
-  },
+  abortMultipartUpload: o
+    .route({
+      method: 'POST',
+      path: '/api/files/multipart/abort',
+      summary: 'Abort multipart upload',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: AbortMultipartRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(z.object({})),
 
-  abortMultipartUpload: {
-    method: 'POST',
-    path: '/api/files/multipart/abort',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: AbortMultipartRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: z.object({}),
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Abort multipart upload',
-  },
+  listMultipartUploads: o
+    .route({
+      method: 'GET',
+      path: '/api/files/multipart/list',
+      summary: 'List in-progress multipart uploads',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          prefix: z.string().optional(),
+          keyMarker: z.string().optional(),
+          uploadIdMarker: z.string().optional(),
+          maxUploads: z.coerce.number().int().min(1).max(1000).optional(),
+        }),
+      }),
+    )
+    .output(ListMultipartUploadsResponseSchema),
 
-  listMultipartUploads: {
-    method: 'GET',
-    path: '/api/files/multipart/list',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      prefix: z.string().optional(),
-      keyMarker: z.string().optional(),
-      uploadIdMarker: z.string().optional(),
-      maxUploads: z.coerce.number().int().min(1).max(1000).optional(),
-    }),
-    responses: {
-      200: ListMultipartUploadsResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'List in-progress multipart uploads',
-  },
+  deleteFiles: o
+    .route({
+      method: 'POST',
+      path: '/api/files/batch-delete',
+      summary: 'Delete multiple files in a single request',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: BatchDeleteRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(BatchDeleteResponseSchema),
 
-  deleteFiles: {
-    method: 'POST',
-    path: '/api/files/batch-delete',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: BatchDeleteRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: BatchDeleteResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Delete multiple files in a single request',
-  },
+  deleteFile: o
+    .route({
+      method: 'DELETE',
+      path: '/api/files/delete',
+      summary: 'Delete a file',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          fileKey: z.string(),
+        }),
+      }),
+    )
+    .output(DeleteFileResponseSchema),
 
-  deleteFile: {
-    method: 'DELETE',
-    path: '/api/files/delete',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      fileKey: z.string(),
-    }),
-    responses: {
-      200: DeleteFileResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Delete a file',
-  },
+  copyFile: o
+    .route({
+      method: 'POST',
+      path: '/api/files/copy',
+      summary: 'Copy a file',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: CopyFileRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(CopyFileResponseSchema),
 
-  copyFile: {
-    method: 'POST',
-    path: '/api/files/copy',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: CopyFileRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: CopyFileResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Copy a file',
-  },
+  renameFile: o
+    .route({
+      method: 'POST',
+      path: '/api/files/rename',
+      summary: 'Rename a file',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: RenameFileRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(CopyFileResponseSchema),
 
-  renameFile: {
-    method: 'POST',
-    path: '/api/files/rename',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: RenameFileRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: CopyFileResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Rename a file',
-  },
+  moveFile: o
+    .route({
+      method: 'POST',
+      path: '/api/files/move',
+      summary: 'Move a file (copy to destination and delete source)',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: MoveFileRequestSchema.extend({
+          bucket: z.string().optional(),
+        }),
+      }),
+    )
+    .output(MoveFileResponseSchema),
 
-  moveFile: {
-    method: 'POST',
-    path: '/api/files/move',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: MoveFileRequestSchema.extend({
-      bucket: z.string().optional(),
-    }),
-    responses: {
-      200: MoveFileResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Move a file (copy to destination and delete source)',
-  },
+  createBucket: o
+    .route({
+      method: 'POST',
+      path: '/api/buckets/create',
+      summary: 'Create a new storage bucket',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: CreateBucketRequestSchema,
+      }),
+    )
+    .output(CreateBucketResponseSchema),
 
-  // Bucket operations
-  createBucket: {
-    method: 'POST',
-    path: '/api/buckets/create',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: CreateBucketRequestSchema,
-    responses: {
-      200: CreateBucketResponseSchema,
-      401: FileErrorResponseSchema,
-      409: FileErrorResponseSchema,
-    },
-    summary: 'Create a new storage bucket',
-  },
+  deleteBucket: o
+    .route({
+      method: 'DELETE',
+      path: '/api/buckets/delete',
+      summary: 'Delete a storage bucket (must be empty)',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucketName: z.string(),
+        }),
+      }),
+    )
+    .output(DeleteBucketResponseSchema),
 
-  deleteBucket: {
-    method: 'DELETE',
-    path: '/api/buckets/delete',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucketName: z.string(),
-    }),
-    responses: {
-      200: DeleteBucketResponseSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-      409: FileErrorResponseSchema,
-    },
-    summary: 'Delete a storage bucket (must be empty)',
-  },
+  listBuckets: o
+    .route({
+      method: 'GET',
+      path: '/api/buckets/list',
+      summary: 'List all storage buckets with pagination',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+      }),
+    )
+    .output(ListBucketsResponseSchema),
 
-  listBuckets: {
-    method: 'GET',
-    path: '/api/buckets/list',
-    headers: z.object({
-      authorization: z.string(),
-    }),
+  checkBucketExists: o
+    .route({
+      method: 'GET',
+      path: '/api/buckets/exists',
+      summary: 'Check if a bucket exists',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucketName: z.string(),
+        }),
+      }),
+    )
+    .output(CheckBucketExistsResponseSchema),
 
-    responses: {
-      200: ListBucketsResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'List all storage buckets with pagination',
-  },
+  copyFileBetweenBuckets: o
+    .route({
+      method: 'POST',
+      path: '/api/files/copy-between-buckets',
+      summary: 'Copy a file from one bucket to another',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: CopyFileBetweenBucketsRequestSchema,
+      }),
+    )
+    .output(CrossBucketFileResponseSchema),
 
-  checkBucketExists: {
-    method: 'GET',
-    path: '/api/buckets/exists',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucketName: z.string(),
-    }),
-    responses: {
-      200: CheckBucketExistsResponseSchema,
-      401: FileErrorResponseSchema,
-    },
-    summary: 'Check if a bucket exists',
-  },
+  moveFileBetweenBuckets: o
+    .route({
+      method: 'POST',
+      path: '/api/files/move-between-buckets',
+      summary: 'Move a file from one bucket to another',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: MoveFileBetweenBucketsRequestSchema,
+      }),
+    )
+    .output(CrossBucketFileResponseSchema),
 
-  copyFileBetweenBuckets: {
-    method: 'POST',
-    path: '/api/files/copy-between-buckets',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: CopyFileBetweenBucketsRequestSchema,
-    responses: {
-      200: CrossBucketFileResponseSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-    },
-    summary: 'Copy a file from one bucket to another',
-  },
+  getBucketStats: o
+    .route({
+      method: 'GET',
+      path: '/api/buckets/stats',
+      summary: 'Get bucket statistics (object count, total size)',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucketName: z.string(),
+        }),
+      }),
+    )
+    .output(BucketStatsSchema),
 
-  moveFileBetweenBuckets: {
-    method: 'POST',
-    path: '/api/files/move-between-buckets',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: MoveFileBetweenBucketsRequestSchema,
-    responses: {
-      200: CrossBucketFileResponseSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-    },
-    summary: 'Move a file from one bucket to another',
-  },
-
-  getBucketStats: {
-    method: 'GET',
-    path: '/api/buckets/stats',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucketName: z.string(),
-    }),
-    responses: {
-      200: BucketStatsSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-    },
-    summary: 'Get bucket statistics (object count, total size)',
-  },
-
-  downloadFile: {
-    method: 'GET',
-    path: '/api/files/download',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    query: z.object({
-      bucket: z.string().optional(),
-      fileKey: z.string(),
-    }),
-    responses: {
-      200: DownloadFileResponseSchema,
-      401: FileErrorResponseSchema,
-      404: FileErrorResponseSchema,
-    },
-    summary: 'Download file content directly',
-  },
+  downloadFile: o
+    .route({
+      method: 'GET',
+      path: '/api/files/download',
+      summary: 'Download file content directly',
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        query: z.object({
+          bucket: z.string().optional(),
+          fileKey: z.string(),
+        }),
+      }),
+    )
+    .output(DownloadFileResponseSchema),
 } as const;

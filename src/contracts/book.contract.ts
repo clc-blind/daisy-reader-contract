@@ -1,3 +1,4 @@
+import { oc } from '@orpc/contract';
 import { z } from 'zod';
 import {
   BookFilterQuerySchema,
@@ -11,117 +12,161 @@ import {
   UpdateBookSchema,
 } from '@/src/schema';
 
+const authHeaderSchema = z.object({
+  authorization: z.string(),
+});
+
+const o = oc.$route({ inputStructure: 'detailed', tags: ['Books'] });
+
 export const bookRoutes = {
-  getAllBooks: {
-    method: 'GET',
-    path: '/api/books',
-    query: BookFilterQuerySchema,
-    responses: {
-      200: BookListResponseSchema,
-    },
-    summary: 'Get all books with optional filtering and pagination',
-  },
+  getAllBooks: o
+    .route({
+      method: 'GET',
+      path: '/api/books',
+      summary: 'Get all books with optional filtering and pagination',
+    })
+    .input(
+      z.object({
+        query: BookFilterQuerySchema,
+      }),
+    )
+    .output(BookListResponseSchema),
 
-  getFeaturedBooks: {
-    method: 'GET',
-    path: '/api/books/featured',
-    query: PaginationQuerySchema.merge(SortQuerySchema),
-    responses: {
-      200: BookListResponseSchema,
-    },
-    summary: 'Get featured books',
-  },
+  getFeaturedBooks: o
+    .route({
+      method: 'GET',
+      path: '/api/books/featured',
+      summary: 'Get featured books',
+    })
+    .input(
+      z.object({
+        query: PaginationQuerySchema.merge(SortQuerySchema),
+      }),
+    )
+    .output(BookListResponseSchema),
 
-  searchBooks: {
-    method: 'GET',
-    path: '/api/books/search',
-    query: SearchQuerySchema,
-    responses: {
-      200: BookListResponseSchema,
-    },
-    summary: 'Search books by query string',
-  },
+  searchBooks: o
+    .route({
+      method: 'GET',
+      path: '/api/books/search',
+      summary: 'Search books by query string',
+    })
+    .input(
+      z.object({
+        query: SearchQuerySchema,
+      }),
+    )
+    .output(BookListResponseSchema),
 
-  getBookById: {
-    method: 'GET',
-    path: '/api/books/:bookId',
-    responses: {
-      200: BookSchema,
-    },
-    summary: 'Get a book by ID',
-  },
+  getBookById: o
+    .route({
+      method: 'GET',
+      path: '/api/books/{bookId}',
+      summary: 'Get a book by ID',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+        }),
+      }),
+    )
+    .output(BookSchema),
 
-  getBooksByLanguage: {
-    method: 'GET',
-    path: '/api/books/language/:language',
-    query: PaginationQuerySchema,
-    responses: {
-      200: BookListResponseSchema,
-    },
-    summary: 'Get books by language',
-  },
+  getBooksByLanguage: o
+    .route({
+      method: 'GET',
+      path: '/api/books/language/{language}',
+      summary: 'Get books by language',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          language: z.string(),
+        }),
+        query: PaginationQuerySchema,
+      }),
+    )
+    .output(BookListResponseSchema),
 
-  getBookBySubject: {
-    method: 'GET',
-    path: '/api/books/subject/:subjectSlug',
-    query: PaginationQuerySchema.merge(SortQuerySchema),
-    responses: {
-      200: BookListResponseSchema,
-    },
-    summary: 'Get books by subject',
-  },
+  getBookBySubject: o
+    .route({
+      method: 'GET',
+      path: '/api/books/subject/{subjectSlug}',
+      summary: 'Get books by subject',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          subjectSlug: z.string(),
+        }),
+        query: PaginationQuerySchema.merge(SortQuerySchema),
+      }),
+    )
+    .output(BookListResponseSchema),
 
-  uploadBook: {
-    method: 'POST',
-    path: '/api/books',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: CreateBookSchema,
-    responses: {
-      201: BookSchema,
-    },
-    summary: 'Upload a new book',
-  },
+  uploadBook: o
+    .route({
+      method: 'POST',
+      path: '/api/books',
+      summary: 'Upload a new book',
+      successStatus: 201,
+    })
+    .input(
+      z.object({
+        headers: authHeaderSchema,
+        body: CreateBookSchema,
+      }),
+    )
+    .output(BookSchema),
 
-  editBook: {
-    method: 'PATCH',
-    path: '/api/books/:bookId',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    body: UpdateBookSchema,
-    responses: {
-      200: BookSchema,
-    },
-    summary: 'Edit a book',
-  },
+  editBook: o
+    .route({
+      method: 'PATCH',
+      path: '/api/books/{bookId}',
+      summary: 'Edit a book',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+        }),
+        headers: authHeaderSchema,
+        body: UpdateBookSchema,
+      }),
+    )
+    .output(BookSchema),
 
-  incrementBookViews: {
-    method: 'POST',
-    path: '/api/books/:bookId/views',
-    pathParams: z.object({
-      bookId: z.string(),
-    }),
-    body: z.object({}),
-    responses: {
-      200: BookViewsResponseSchema,
-    },
-    summary: 'Increment view count for a book',
-  },
+  incrementBookViews: o
+    .route({
+      method: 'POST',
+      path: '/api/books/{bookId}/views',
+      summary: 'Increment view count for a book',
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+        }),
+        body: z.object({}),
+      }),
+    )
+    .output(BookViewsResponseSchema),
 
-  deleteBook: {
-    method: 'DELETE',
-    path: '/api/books/:bookId',
-    headers: z.object({
-      authorization: z.string(),
-    }),
-    pathParams: z.object({
-      bookId: z.string(),
-    }),
-    responses: {
-      204: z.undefined(),
-    },
-    summary: 'Delete a book',
-  },
+  deleteBook: o
+    .route({
+      method: 'DELETE',
+      path: '/api/books/{bookId}',
+      summary: 'Delete a book',
+      successStatus: 204,
+    })
+    .input(
+      z.object({
+        params: z.object({
+          bookId: z.string(),
+        }),
+        headers: authHeaderSchema,
+      }),
+    )
+    .output(z.void()),
 } as const;

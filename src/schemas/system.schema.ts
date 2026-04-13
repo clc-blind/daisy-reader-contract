@@ -68,13 +68,6 @@ export const RestoreDatabaseResponseSchema = z
   })
   .describe('Restore database response');
 
-export const SystemErrorResponseSchema = z
-  .object({
-    message: z.string().describe('Error message'),
-    details: z.string().optional().describe('Error details'),
-  })
-  .describe('System operation error response');
-
 // Type exports
 export type BackupDatabaseResponse = z.infer<
   typeof BackupDatabaseResponseSchema
@@ -86,4 +79,3 @@ export type RestoreDatabaseRequest = z.infer<
 export type RestoreDatabaseResponse = z.infer<
   typeof RestoreDatabaseResponseSchema
 >;
-export type SystemErrorResponse = z.infer<typeof SystemErrorResponseSchema>;

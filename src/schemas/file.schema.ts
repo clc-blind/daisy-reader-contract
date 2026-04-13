@@ -264,11 +264,6 @@ export const BookFilesListResponseSchema = z
   })
   .describe('List of files associated with a book');
 
-// Error response
-export const FileErrorResponseSchema = z.object({
-  message: z.string(),
-});
-
 // Bucket operations
 export const BucketInfoSchema = z
   .object({
@@ -415,7 +410,6 @@ export type MoveFileRequest = z.infer<typeof MoveFileRequestSchema>;
 export type MoveFileResponse = z.infer<typeof MoveFileResponseSchema>;
 export type ListFilesResponse = z.infer<typeof ListFilesResponseSchema>;
 export type BookFilesListResponse = z.infer<typeof BookFilesListResponseSchema>;
-export type FileErrorResponse = z.infer<typeof FileErrorResponseSchema>;
 export type BucketInfo = z.infer<typeof BucketInfoSchema>;
 export type CreateBucketRequest = z.infer<typeof CreateBucketRequestSchema>;
 export type CreateBucketResponse = z.infer<typeof CreateBucketResponseSchema>;
